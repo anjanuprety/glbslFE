@@ -37,14 +37,14 @@ const RoomDetails: React.FC = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, i want!",
       color: "#fff",
-      background: "#c19d68",
+      background: "#ffc300",
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
           title: "Congratulation!",
           text: "Booking Successful!",
           icon: "success",
-          background: "#c19d68",
+          background: "#ffc300",
           color: "#fff",
           confirmButtonColor: "#008000",
         });

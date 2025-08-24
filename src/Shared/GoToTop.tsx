@@ -48,9 +48,9 @@ const Wrapper = styled.section`
     font-size: 1.2rem;
     width: 3rem;
     height: 3rem;
-    color: #c19d68;
+    color: #ffc300;
     background-color: transparent;
-    border: 3px dotted #c19d68;
+    border: 3px dotted #ffc300;
     box-shadow: ;
     border-radius: 50%;
     position: fixed;
@@ -90,7 +90,7 @@ const Wrapper = styled.section`
   }
   .top-btn:hover {
     color: #fff;
-    background-color: #c19d68;
+    background-color: #ffc300;
     transition-property: all;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
