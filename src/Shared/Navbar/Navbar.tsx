@@ -34,10 +34,10 @@ const Navbar: React.FC = () => {
       <div className="lg:px-10">
         <div className="flex flex-col lg:flex-row items-center justify-between">
           {/* website Logo */}
-          <div className=" w-48 lg:w-52 lg:p-4 ">
+          <div className=" w-64 lg:w-52 lg:p-4 ">
             <Link to="/">
               <img
-                src="/images/home-3/logo.png"
+                src="/images/home-1/logo-1.png"
                 className="hidden lg:block w-full"
                 alt="website_logo"
               />

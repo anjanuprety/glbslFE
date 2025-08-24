@@ -127,7 +127,7 @@ const HeroSection: React.FC = () => {
                 <FaStar className="w-[14px] h-[14px] lg:w-[16px] lg:h-[16px] text-khaki" />
                 <FaStar className="w-[14px] h-[14px] lg:w-[16px] lg:h-[16px] text-khaki" />
               </div>
-              <h4 className="text-base mb-4">LUXURY HOTEL AND RESORT</h4>
+              <h4 className="text-base mb-4">GURANS LAGHUBITTA BITTIYA SANSTHA LIMITED</h4>
               <div className="mb-7 md:mb-8 lg:mb-9 xl:mb-10">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl 3xl:text-6xl font-semibold leading-[40px] md:leading-[50px] 3xl:leading-[70px]">
                   THE BEST LUXURY HOTEL
