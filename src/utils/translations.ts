@@ -116,6 +116,22 @@ export const translations: Translations = {
     en: 'IN KASHMIR',
     ne: 'कश्मीरमा'
   },
+  'hero.gurans_full': {
+    en: 'GURANS LAGHUBITTA BITTIYA SANSTHA LIMITED',
+    ne: 'गुराँस लघुवित्त वित्तीय संस्था लिमिटेड'
+  },
+  'hero.gurans_tagline': {
+    en: 'Gurans Microfinance: Empowering the Poor',
+    ne: 'गुराँस सूक्ष्म वित्त: गरिबलाई सशक्त पार्दै'
+  },
+  'hero.in_colosseum': {
+    en: 'IN COLOSSEUM',
+    ne: 'कोलोसियममा'
+  },
+  'hero.in_srilanka': {
+    en: 'IN SRILANKA',
+    ne: 'श्रीलङ्कामा'
+  },
   'hero.discover_more': {
     en: 'Discover More',
     ne: 'थप पत्ता लगाउनुहोस्'
