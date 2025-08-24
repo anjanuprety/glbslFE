@@ -1,0 +1,14 @@
+{
+  "title": "Board",
+  "name": "Board of Directors",
+  "children": [
+    {
+      "title": "Executive Director",
+      "name": "Executive Director",
+      "children": [
+        { "title": "Operations Manager", "name": "Ops Manager" },
+        { "title": "Finance Manager", "name": "Finance Manager" }
+      ]
+    }
+  ]
+}

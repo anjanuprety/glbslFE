@@ -4,8 +4,10 @@ import { createBrowserRouter } from "react-router-dom";
 import Main from "../Main/Main";
 import Home1 from "../Pages/Home1/Home1";
 
+// About pages
+import { AboutUs, BoardOfDirectors, ManagementTeam, CorporateTeam, Committee, OrganizationStructure } from "../Pages/About";
+
 // Inner pages
-import About from "../Pages/InnerPage/About";
 import Room from "../Pages/InnerPage/Room";
 import FindRoom from "../Pages/InnerPage/FindRoom";
 import RoomDetails from "../Pages/InnerPage/RoomDetails";
@@ -31,7 +33,27 @@ const router = createBrowserRouter([
       },
       {
         path: "/about",
-        element: <About />,
+        element: <AboutUs />,
+      },
+      {
+        path: "/board-of-directors",
+        element: <BoardOfDirectors />,
+      },
+      {
+        path: "/management-team",
+        element: <ManagementTeam />,
+      },
+      {
+        path: "/corporate-team",
+        element: <CorporateTeam />,
+      },
+      {
+        path: "/committee",
+        element: <Committee />,
+      },
+      {
+        path: "/organization-structure",
+        element: <OrganizationStructure />,
       },
       {
         path: "/room",
