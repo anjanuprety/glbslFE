@@ -2,7 +2,6 @@ import React from "react";
 import { BsArrowRight } from "react-icons/bs";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import "../../Components4/Testimonial/testimonials.css";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import { useState } from "react";
