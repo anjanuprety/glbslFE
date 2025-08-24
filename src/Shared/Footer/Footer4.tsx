@@ -27,7 +27,7 @@ const Footer4: React.FC = () => {
             <div className="mt-5 lg:mt-[24px]">
               <ul className="flex space-x-3">
                 <li className="hover-animBg group bg-white w-[36px] h-[36px]  grid items-center justify-center rounded-full border border-white hover:border-khaki cursor-pointer after:z-[-1]">
-                  <Link  className="">
+                  <Link to="#" className="">
                     <FaFacebookF className="text-khaki group-hover:text-white group-hover:text-slateBlue-0 w-4 h-4 " />
                   </Link>
                 </li>

@@ -3,13 +3,21 @@ import { BsCheck2 } from "react-icons/bs";
 import BreadCrumb from "../../BreadCrumb/BreadCrumb";
 import { useEffect, useState } from "react";
 
+interface MenuItem {
+  category: string;
+  image: string;
+  title: string;
+  price: number;
+  description: string;
+}
+
 const ServiceDetails: React.FC = () => {
-  const [menu, setMenu] = useState([]);
-  const [showItem, setShowItem] = useState([]);
+  const [menu, setMenu] = useState<MenuItem[]>([]);
+  const [showItem, setShowItem] = useState<MenuItem[]>([]);
   useEffect(() => {
     fetch("/food.menu.json")
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: MenuItem[]) => {
         setMenu(data), setShowItem(data);
       });
   }, []);

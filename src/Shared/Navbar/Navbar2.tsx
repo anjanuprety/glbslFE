@@ -176,7 +176,7 @@ const Navbar2: React.FC = () => {
                   : isActive
                   ? "active"
                   : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
-              
+              to="#"
             >
               <span className="flex items-center">
                 Rooms
@@ -215,7 +215,7 @@ const Navbar2: React.FC = () => {
                   : isActive
                   ? "active"
                   : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
-              
+              to="#"
             >
               <span className="flex items-center">
                 Page
@@ -272,7 +272,7 @@ const Navbar2: React.FC = () => {
                   : isActive
                   ? "active"
                   : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
-              
+              to="#"
             >
               <span className="flex items-center">
                 BLOG

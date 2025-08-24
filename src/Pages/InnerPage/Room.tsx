@@ -15,24 +15,19 @@ const Room: React.FC = () => {
   const [sliderRef] = useKeenSlider({
     breakpoints: {
       "(min-width: 400px)": {
-        slides: { origin: "center", perView: 1 },
-        spacing: 10,
+        slides: { origin: "center", perView: 1, spacing: 10 },
       },
       "(min-width: 500px)": {
-        slides: { origin: "center", perView: 1.5 },
-        spacing: 10,
+        slides: { origin: "center", perView: 1.5, spacing: 10 },
       },
       "(min-width: 600px)": {
-        slides: { origin: "center", perView: 1 },
-        spacing: 15,
+        slides: { origin: "center", perView: 1, spacing: 15 },
       },
       "(min-width: 768px)": {
-        slides: { origin: "center", perView: 1 },
-        spacing: 18,
+        slides: { origin: "center", perView: 1, spacing: 18 },
       },
       "(min-width: 992px)": {
-        slides: { origin: "center", perView: 2 },
-        spacing: 20,
+        slides: { origin: "center", perView: 2, spacing: 20 },
       },
     },
     loop: true,

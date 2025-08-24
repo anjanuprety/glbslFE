@@ -89,10 +89,10 @@ const Navbar5: React.FC = () => {
                     Our Review
                   </li>
                   <li className="text-white text-[14px] tracking-[1px] leading-[22px] font-normal font-Lora border-r-[1px] pr-[25px] border-lightGray">
-                    <Link > Login</Link>
+                    <Link to="#"> Login</Link>
                   </li>
                   <li className="text-white text-[14px] tracking-[1px] leading-[22px] font-normal font-Lora  ">
-                    <Link > Sign Up</Link>
+                    <Link to="#"> Sign Up</Link>
                   </li>
                 </ul>
               </div>
@@ -240,7 +240,7 @@ const Navbar5: React.FC = () => {
                     : isActive
                     ? "active"
                     : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative hover:text-khaki `}
-                
+                to="#"
               >
                 <span className="flex items-center">
                   Rooms
@@ -282,7 +282,7 @@ const Navbar5: React.FC = () => {
                     : isActive
                     ? "active"
                     : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative hover:text-khaki `}
-                
+                to="#"
               >
                 <span className="flex items-center">
                   Page
@@ -339,7 +339,7 @@ const Navbar5: React.FC = () => {
                     : isActive
                     ? "active"
                     : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative hover:text-khaki `}
-                
+                to="#"
               >
                 <span className="flex items-center">
                   BLOG

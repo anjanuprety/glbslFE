@@ -179,7 +179,7 @@ const Navbar3: React.FC = () => {
                   : isActive
                   ? "active"
                   : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative hover:text-khaki  `}
-              
+              to="#"
             >
               <span className="flex items-center">
                 Rooms
@@ -218,7 +218,7 @@ const Navbar3: React.FC = () => {
                   : isActive
                   ? "active"
                   : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative hover:text-khaki  `}
-              
+              to="#"
             >
               <span className="flex items-center">
                 Page
@@ -275,7 +275,7 @@ const Navbar3: React.FC = () => {
                   : isActive
                   ? "active"
                   : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative hover:text-khaki  `}
-              
+              to="#"
             >
               <span className="flex items-center">
                 BLOG
@@ -331,7 +331,7 @@ const Navbar3: React.FC = () => {
                   />
                 )}
               </span>
-              <Link  className=" pr-3">
+              <Link to="#" className=" pr-3">
                 <FaBars size={28} className="text-white hover:text-khaki" />
               </Link>
             </div>

@@ -189,7 +189,7 @@ const Navbar4: React.FC = () => {
                   : isActive
                   ? "active"
                   : ""} text-lightBlack  dark:text-white hover:text-khaki dark:hover:text-khaki  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
-              
+              to="#"
             >
               <span className="flex items-center">
                 Rooms
@@ -228,7 +228,7 @@ const Navbar4: React.FC = () => {
                   : isActive
                   ? "active"
                   : ""} text-lightBlack  dark:text-white hover:text-khaki dark:hover:text-khaki  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
-              
+              to="#"
             >
               <span className="flex items-center">
                 Page
@@ -285,7 +285,7 @@ const Navbar4: React.FC = () => {
                   : isActive
                   ? "active"
                   : ""} text-lightBlack  dark:text-white hover:text-khaki dark:hover:text-khaki  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
-              
+              to="#"
             >
               <span className="flex items-center">
                 BLOG
