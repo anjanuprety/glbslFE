@@ -74,23 +74,23 @@ const Footer3: React.FC = () => {
           <div>
             <ul className="flex space-x-3">
               <li className="hover-animBg hover:scale-100 group transition-all duration-300 w-[35px] h-[35px] md:w-[40px] md:h-[40px] xl:w-[50px] xl:h-[50px] grid items-center justify-center rounded-full border border-[#353535] hover:border-khaki cursor-pointer ">
-                <Link  className="">
+                <Link to="#" className="">
                   <FaFacebookF className="text-white group-hover:text-slateBlue-0 w-4 h-4" />
                 </Link>
               </li>
 
               <li className="hover-animBg group transition-all duration-300 w-[35px] h-[35px] md:w-[40px] md:h-[40px] xl:w-[50px] xl:h-[50px] grid items-center justify-center rounded-full border border-[#353535] hover:border-khaki cursor-pointer">
-                <Link >
+                <Link to="#">
                   <FaTwitter className="text-white group-hover:text-slateBlue-0 w-4 h-4" />
                 </Link>
               </li>
               <li className="hover-animBg group transition-all duration-300 w-[35px] h-[35px] md:w-[40px] md:h-[40px] xl:w-[50px] xl:h-[50px] grid items-center justify-center rounded-full border border-[#353535] hover:border-khaki cursor-pointer">
-                <Link >
+                <Link to="#">
                   <BiLogoLinkedin className="text-white group-hover:text-slateBlue-0 w-4 h-4" />
                 </Link>
               </li>
               <li className="hover-animBg group transition-all duration-300 w-[35px] h-[35px] md:w-[40px] md:h-[40px] xl:w-[50px] xl:h-[50px] grid items-center justify-center rounded-full border border-[#353535] hover:border-khaki cursor-pointer">
-                <Link >
+                <Link to="#">
                   <FaPinterestP className="text-white group-hover:text-slateBlue-0 w-4 h-4" />
                 </Link>
               </li>

@@ -2,7 +2,12 @@ import React from "react";
 import { useState, useEffect } from "react";
 
 /* eslint-disable react/prop-types */
-export default function Accordion({ children, title, id, active = false }) {
+export default function Accordion({ children, title, id, active = false }: { 
+  children: React.ReactNode; 
+  title: string; 
+  id: string; 
+  active?: boolean 
+}) {
   const [accordionOpen, setAccordionOpen] = useState(false);
 
   useEffect(() => {

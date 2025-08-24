@@ -31,6 +31,7 @@
     "tw-daterange": "^1.1.25"
   },
   "devDependencies": {
+    "@types/aos": "^3.0.7",
     "@types/fslightbox-react": "^1.8.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",

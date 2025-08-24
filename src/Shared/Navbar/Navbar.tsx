@@ -20,11 +20,11 @@ const Navbar: React.FC = () => {
   const navbarBgColor =
     scrollPosition > 100 ? "lg:bg-lightBlack" : "lg:bg-transparent";
 
-  const toggleNavbar : React.FC = () => {
+  const toggleNavbar = (): void => {
     setIsOpen(!isOpen);
   };
 
-  const handleClick : React.FC = () => {
+  const handleClick = (): void => {
     const newMode = !isDarkMode;
     setIsDarkMode(newMode);
     localStorage.setItem("darkMode", String(newMode));
@@ -159,7 +159,7 @@ const Navbar: React.FC = () => {
               </div>
             </NavLink>
             <NavLink
-              className={`${({ isActive, isPending }) =>
+              className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
                 isPending
                   ? "pending"
                   : isActive
@@ -170,13 +170,13 @@ const Navbar: React.FC = () => {
               About
             </NavLink>
             <NavLink
-              className={`${({ isActive, isPending }) =>
+              className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
                 isPending
                   ? "pending"
                   : isActive
                   ? "active"
                   : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
-              
+              to="#"
             >
               <span className="flex items-center">
                 Rooms
@@ -209,13 +209,13 @@ const Navbar: React.FC = () => {
               </div>
             </NavLink>
             <NavLink
-              className={`${({ isActive, isPending }) =>
+              className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
                 isPending
                   ? "pending"
                   : isActive
                   ? "active"
                   : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
-              
+              to="#"
             >
               <span className="flex items-center">
                 Page
@@ -263,13 +263,13 @@ const Navbar: React.FC = () => {
             </NavLink>
             {/* blog sub menu link */}
             <NavLink
-              className={`${({ isActive, isPending }) =>
+              className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
                 isPending
                   ? "pending"
                   : isActive
                   ? "active"
                   : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
-              
+              to="#"
             >
               <span className="flex items-center">
                 BLOG
@@ -295,7 +295,7 @@ const Navbar: React.FC = () => {
               </div>
             </NavLink>
             <NavLink
-              className={`${({ isActive, isPending }) =>
+              className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
                 isPending
                   ? "pending"
                   : isActive

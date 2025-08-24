@@ -61,16 +61,16 @@ const Footer2: React.FC = () => {
             </h4>
             <ul className="">
               <li className="text-gray dark:text-lightGray font-normal font-Lora text-sm xl:text-base mb-[15px] hover:text-khaki transition-all duration-300">
-                <Link > Our Location</Link>
+                <Link to="#"> Our Location</Link>
               </li>
               <li className="text-gray dark:text-lightGray font-normal font-Lora text-sm xl:text-base mb-[15px] hover:text-khaki transition-all duration-300">
-                <Link > Career</Link>
+                <Link to="#"> Career</Link>
               </li>
               <li className="text-gray dark:text-lightGray font-normal font-Lora text-sm xl:text-base mb-[15px] hover:text-khaki transition-all duration-300">
-                <Link > Customer support</Link>
+                <Link to="#"> Customer support</Link>
               </li>
               <li className="text-gray dark:text-lightGray font-normal font-Lora text-sm xl:text-base mb-[15px] hover:text-khaki transition-all duration-300">
-                <Link > About Us</Link>
+                <Link to="#"> About Us</Link>
               </li>
             </ul>
           </div>

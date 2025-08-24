@@ -27,23 +27,23 @@ const Footer5: React.FC = () => {
                 Follow Us:
               </p>
               <li className="hover-animBg after:bg-white group bg-normalBlack w-[36px] h-[36px]  grid items-center justify-center rounded-full border border-white hover:border-khaki cursor-pointer after:z-[-1]">
-                <Link  className="">
+                <Link to="#" className="">
                   <FaFacebookF className="text-white group-hover:text-khaki group-hover:text-slateBlue-0 w-4 h-4 " />
                 </Link>
               </li>
 
               <li className="hover-animBg after:bg-white group bg-normalBlack w-[36px] h-[36px]  grid items-center justify-center rounded-full border border-white hover:border-khaki cursor-pointer">
-                <Link >
+                <Link to="#">
                   <FaTwitter className="text-white group-hover:text-khaki group-hover:text-slateBlue-0 w-4 h-4 z-[1]" />
                 </Link>
               </li>
               <li className="hover-animBg after:bg-white group bg-normalBlack w-[36px] h-[36px]  grid items-center justify-center rounded-full border border-white hover:border-khaki cursor-pointer">
-                <Link >
+                <Link to="#">
                   <FaInstagram className="text-white group-hover:text-khaki group-hover:text-slateBlue-0 w-4 h-4" />
                 </Link>
               </li>
               <li className="hover-animBg after:bg-white group bg-normalBlack w-[36px] h-[36px]  grid items-center justify-center rounded-full border border-white hover:border-khaki cursor-pointer">
-                <Link >
+                <Link to="#">
                   <BiLogoLinkedin className="text-white group-hover:text-khaki group-hover:text-slateBlue-0 w-4 h-4" />
                 </Link>
               </li>
@@ -68,19 +68,19 @@ const Footer5: React.FC = () => {
                  "
             >
               <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] md:leading-[36px]">
-                <Link > Careers</Link>
+                <Link to="#"> Careers</Link>
               </li>
               <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] md:leading-[36px]">
-                <Link > Cookie Policy</Link>
+                <Link to="#"> Cookie Policy</Link>
               </li>
               <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] md:leading-[36px]">
-                <Link > Website Feedback</Link>
+                <Link to="#"> Website Feedback</Link>
               </li>
               <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] md:leading-[36px]">
-                <Link > Service Guarantee</Link>
+                <Link to="#"> Service Guarantee</Link>
               </li>
               <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] md:leading-[36px]">
-                <Link > Insights</Link>
+                <Link to="#"> Insights</Link>
               </li>
             </ul>
           </div>
@@ -103,22 +103,22 @@ const Footer5: React.FC = () => {
                  "
             >
               <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] md:leading-[36px]">
-                <Link > Store Directory</Link>
+                <Link to="#"> Store Directory</Link>
               </li>
               <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] md:leading-[36px]">
-                <Link > Top Hotels</Link>
+                <Link to="#"> Top Hotels</Link>
               </li>
               <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] md:leading-[36px]">
-                <Link > Quick Links</Link>
+                <Link to="#"> Quick Links</Link>
               </li>
               <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] md:leading-[36px]">
-                <Link > Important Links</Link>
+                <Link to="#"> Important Links</Link>
               </li>
               <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] md:leading-[36px]">
-                <Link > Insights</Link>
+                <Link to="#"> Insights</Link>
               </li>
               <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] md:leading-[36px]">
-                <Link > Knowledge Center</Link>
+                <Link to="#"> Knowledge Center</Link>
               </li>
             </ul>
           </div>

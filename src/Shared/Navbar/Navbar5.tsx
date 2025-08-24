@@ -167,7 +167,7 @@ const Navbar5: React.FC = () => {
               } text-left w-full lg:w-fit  ease-in-out lg:flex space-y-2 lg:space-y-0 lg:text-center space-x-0 lg:space-x-5 xl:space-x-4 2xl:space-x-5 3xl:space-x-[24px] flex items-center flex-col lg:flex-row text-sm text-lightBlack   uppercase font-normal bg-white dark:bg-normalBlack z-10 lg:bg-transparent dark:lg:bg-transparent py-3 lg:py-0 `}
             >
               <NavLink
-                className={`${({ isActive, isPending }) =>
+                className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
                   isPending
                     ? "pending"
                     : isActive
@@ -223,7 +223,7 @@ const Navbar5: React.FC = () => {
                 </div>
               </NavLink>
               <NavLink
-                className={`${({ isActive, isPending }) =>
+                className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
                   isPending
                     ? "pending"
                     : isActive
@@ -234,7 +234,7 @@ const Navbar5: React.FC = () => {
                 About
               </NavLink>
               <NavLink
-                className={`${({ isActive, isPending }) =>
+                className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
                   isPending
                     ? "pending"
                     : isActive
@@ -276,7 +276,7 @@ const Navbar5: React.FC = () => {
                 </div>
               </NavLink>
               <NavLink
-                className={`${({ isActive, isPending }) =>
+                className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
                   isPending
                     ? "pending"
                     : isActive
@@ -333,7 +333,7 @@ const Navbar5: React.FC = () => {
               </NavLink>
               {/* blog sub menu link */}
               <NavLink
-                className={`${({ isActive, isPending }) =>
+                className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
                   isPending
                     ? "pending"
                     : isActive
@@ -368,7 +368,7 @@ const Navbar5: React.FC = () => {
                 </div>
               </NavLink>
               <NavLink
-                className={`${({ isActive, isPending }) =>
+                className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
                   isPending
                     ? "pending"
                     : isActive

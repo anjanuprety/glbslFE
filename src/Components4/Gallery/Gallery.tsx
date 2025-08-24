@@ -58,7 +58,7 @@ const Gallery: React.FC = () => {
                   <h3 className="text-2xl md:text-[26px]  leading-5 md:leading-[26px] xl:text-[25px] 2xl:text-3xl 3xl:text-4xl 2xl:leading-[42px] text-white  font-Garamond font-semibold ">
                     Bed Female Dorm
                   </h3>
-                  <Link >
+                  <Link to="#">
                     <p className="text-sm sm:text-base leading-[22px] lg:leading-[26px] xl:leading-[38px] font-Lora font-normal text-white mt-2 ">
                       Check Details
                     </p>
@@ -81,7 +81,7 @@ const Gallery: React.FC = () => {
                   <h3 className="text-2xl md:text-[26px]  leading-5 md:leading-[26px] xl:text-[25px] 2xl:text-3xl 3xl:text-4xl 2xl:leading-[42px] text-white  font-Garamond font-semibold ">
                     Bed Female Dorm
                   </h3>
-                  <Link >
+                  <Link to="#">
                     <p className="text-sm sm:text-base leading-[22px] lg:leading-[26px] xl:leading-[38px] font-Lora font-normal text-white mt-2 ">
                       Check Details
                     </p>
@@ -104,7 +104,7 @@ const Gallery: React.FC = () => {
                   <h3 className="text-2xl md:text-[26px]  leading-5 md:leading-[26px] xl:text-[25px] 2xl:text-3xl 3xl:text-4xl 2xl:leading-[42px] text-white  font-Garamond font-semibold ">
                     Bed Female Dorm
                   </h3>
-                  <Link >
+                  <Link to="#">
                     <p className="text-sm sm:text-base leading-[22px] lg:leading-[26px] xl:leading-[38px] font-Lora font-normal text-white mt-2 ">
                       Check Details
                     </p>
@@ -127,7 +127,7 @@ const Gallery: React.FC = () => {
                   <h3 className="text-2xl md:text-[26px]  leading-5 md:leading-[26px] xl:text-[25px] 2xl:text-3xl 3xl:text-4xl 2xl:leading-[42px] text-white  font-Garamond font-semibold ">
                     Bed Female Dorm
                   </h3>
-                  <Link >
+                  <Link to="#">
                     <p className="text-sm sm:text-base leading-[22px] lg:leading-[26px] xl:leading-[38px] font-Lora font-normal text-white mt-2 ">
                       Check Details
                     </p>
@@ -150,7 +150,7 @@ const Gallery: React.FC = () => {
                   <h3 className="text-2xl md:text-[26px]  leading-5 md:leading-[26px] xl:text-[25px] 2xl:text-3xl 3xl:text-4xl 2xl:leading-[42px] text-white  font-Garamond font-semibold ">
                     Bed Female Dorm
                   </h3>
-                  <Link >
+                  <Link to="#">
                     <p className="text-sm sm:text-base leading-[22px] lg:leading-[26px] xl:leading-[38px] font-Lora font-normal text-white mt-2 ">
                       Check Details
                     </p>

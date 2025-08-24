@@ -20,11 +20,11 @@ const FindRoom: React.FC = () => {
   const [selectedInDate, setSelectedInDate] = useState("");
   const [selectedOutDate, setSelectedOutDate] = useState("");
 
-  const handleCheckInDate = (e) => {
+  const handleCheckInDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newDate = e.target.value;
     setSelectedInDate(newDate);
   };
-  const handleCheckOutDate = (e) => {
+  const handleCheckOutDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newDate = e.target.value;
     setSelectedOutDate(newDate);
   };

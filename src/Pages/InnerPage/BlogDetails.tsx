@@ -145,25 +145,25 @@ const BlogDetails: React.FC = () => {
                   <h5 className="text-lg text-[#101010] dark:text-white leading-[28px] font-semibold font-Garamond mr-2">
                     Share :
                   </h5>
-                  <Link
+                  <Link to="#"
                     
                     className="text-sm  px-3 py-1 dark:text-white hover:text-khaki hover:underline underline-offset-4"
                   >
                     FB
                   </Link>
-                  <Link
+                  <Link to="#"
                     
                     className="text-sm  px-3 py-1 dark:text-white hover:text-khaki hover:underline underline-offset-4"
                   >
                     TW
                   </Link>
-                  <Link
+                  <Link to="#"
                     
                     className="text-sm  px-3 py-1 dark:text-white hover:text-khaki hover:underline underline-offset-4"
                   >
                     LN
                   </Link>
-                  <Link
+                  <Link to="#"
                     
                     className="text-sm  px-3 py-1 dark:text-white hover:text-khaki hover:underline underline-offset-4"
                   >
@@ -200,7 +200,7 @@ const BlogDetails: React.FC = () => {
                   data-aos="fade-up"
                   data-aos-duration="1000"
                 >
-                  <Link
+                  <Link 
                     to="/blog_details"
                     className="flex flex-row-reverse items-center"
                   >

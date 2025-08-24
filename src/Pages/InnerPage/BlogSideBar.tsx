@@ -19,7 +19,7 @@ const BlogSideBar: React.FC = () => {
                   border-none outline-none rounded-md text-gray dark:text-lightGray focus:border-none placeholder:text-[#515151] focus:ring-0 focus:outline-none dark:bg-lightBlack"
           />
           <Link
-            
+            to="#"
             className="absolute top-5 right-4 text-lightGray dark:text-gray"
           >
             <FaSearch className="w-4 h-4 " />

@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 
 const Make_Appointment = () => {
   // booking alert message
-  const handleAlert: React.FC = () => {
+  const handleAlert = (): void => {
     Swal.fire({
       title: "Form Fill-Up Complete?",
       text: "Please Fill All Type Of Field",

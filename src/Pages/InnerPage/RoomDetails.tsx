@@ -17,17 +17,17 @@ const RoomDetails: React.FC = () => {
     "/images/inner/room-details-2.jpg",
   ];
 
-  const prevBtn: React.FC = () => {
+  const prevBtn = (): void => {
     setImageIndex(
       (prevIndex) => (prevIndex - 1 + images.length) % images.length
     );
   };
-  const nextBtn: React.FC = () => {
+  const nextBtn = (): void => {
     setImageIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
 
   // booking alert message
-  const setAlert: React.FC = () => {
+  const setAlert = (): void => {
     Swal.fire({
       title: "Are you sure?",
       text: "You booking this rooms?",

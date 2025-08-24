@@ -33,22 +33,22 @@ const Footer4: React.FC = () => {
                 </li>
 
                 <li className="hover-animBg group bg-white w-[36px] h-[36px]  grid items-center justify-center rounded-full border border-white hover:border-khaki cursor-pointer">
-                  <Link >
+                  <Link to="#">
                     <FaTwitter className="text-khaki group-hover:text-white group-hover:text-slateBlue-0 w-4 h-4 z-[1]" />
                   </Link>
                 </li>
                 <li className="hover-animBg group bg-white w-[36px] h-[36px]  grid items-center justify-center rounded-full border border-white hover:border-khaki cursor-pointer">
-                  <Link >
+                  <Link to="#">
                     <BiLogoYoutube className="text-khaki group-hover:text-white group-hover:text-slateBlue-0 w-4 h-4" />
                   </Link>
                 </li>
                 <li className="hover-animBg group bg-white w-[36px] h-[36px]  grid items-center justify-center rounded-full border border-white hover:border-khaki cursor-pointer">
-                  <Link >
+                  <Link to="#">
                     <BiLogoLinkedin className="text-khaki group-hover:text-white group-hover:text-slateBlue-0 w-4 h-4" />
                   </Link>
                 </li>
                 <li className="hover-animBg group bg-white w-[36px] h-[36px]  grid items-center justify-center rounded-full border border-white hover:border-khaki cursor-pointer">
-                  <Link >
+                  <Link to="#">
                     <FaPinterestP className="text-khaki group-hover:text-white group-hover:text-slateBlue-0 w-4 h-4" />
                   </Link>
                 </li>
@@ -73,19 +73,19 @@ const Footer4: React.FC = () => {
                  "
               >
                 <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] lg:leading-[35px] 3xl:leading-[42px]">
-                  <Link > About Us</Link>
+                  <Link to="#"> About Us</Link>
                 </li>
                 <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] lg:leading-[35px] 3xl:leading-[42px]">
-                  <Link > Activities</Link>
+                  <Link to="#"> Activities</Link>
                 </li>
                 <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] lg:leading-[35px] 3xl:leading-[42px]">
-                  <Link > Contact Us</Link>
+                  <Link to="#"> Contact Us</Link>
                 </li>
                 <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] lg:leading-[35px] 3xl:leading-[42px]">
-                  <Link > News & Blogs</Link>
+                  <Link to="#"> News & Blogs</Link>
                 </li>
                 <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] lg:leading-[35px] 3xl:leading-[42px]">
-                  <Link > Checkout</Link>
+                  <Link to="#"> Checkout</Link>
                 </li>
               </ul>
             </div>
@@ -108,19 +108,19 @@ const Footer4: React.FC = () => {
                  "
               >
                 <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] lg:leading-[35px] 3xl:leading-[42px]">
-                  <Link > Accommodation</Link>
+                  <Link to="#"> Accommodation</Link>
                 </li>
                 <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] lg:leading-[35px] 3xl:leading-[42px]">
-                  <Link > Dine & Drink</Link>
+                  <Link to="#"> Dine & Drink</Link>
                 </li>
                 <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] lg:leading-[35px] 3xl:leading-[42px]">
-                  <Link > Spa & Leisure</Link>
+                  <Link to="#"> Spa & Leisure</Link>
                 </li>
                 <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] lg:leading-[35px] 3xl:leading-[42px]">
-                  <Link > Services</Link>
+                  <Link to="#"> Services</Link>
                 </li>
                 <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[30px] sm:leading-[32px] lg:leading-[35px] 3xl:leading-[42px]">
-                  <Link > Our Location</Link>
+                  <Link to="#"> Our Location</Link>
                 </li>
               </ul>
             </div>
@@ -158,11 +158,11 @@ const Footer4: React.FC = () => {
           {` © ${new Date().getFullYear()} All Rights Reserved Royella Luxury Hotel`}
         </p>
         <p className="flex items-center space-x-1 text-center justify-center mt-[6px] lg:mt-0">
-          <Link className="hover:text-khaki transition-all duration-300">
+          <Link to="#" className="hover:text-khaki transition-all duration-300">
             Terms of Use
           </Link>{" "}
           /
-          <Link className="hover:text-khaki transition-all duration-300">
+          <Link to="#" className="hover:text-khaki transition-all duration-300">
             Privacy Policy
           </Link>{" "}
         </p>

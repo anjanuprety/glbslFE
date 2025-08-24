@@ -53,23 +53,23 @@ const Footer: React.FC = () => {
                 <div>
                   <ul className="flex space-x-3">
                     <li className="hover-animBg group transition-all duration-300  rounded-full border border-lightGray border-opacity-75 hover:border-khaki cursor-pointer w-[37px] h-[37px] grid items-center justify-center">
-                      <Link  className="">
+                      <Link to="#" className="">
                         <FaFacebookF className="text-lightGray text-opacity-75 group-hover:text-white group-hover:text-slateBlue-0 w-4 h-4 " />
                       </Link>
                     </li>
 
                     <li className="hover-animBg group transition-all duration-300  rounded-full border border-lightGray border-opacity-75 hover:border-khaki cursor-pointer w-[37px] h-[37px] grid items-center justify-center">
-                      <Link >
+                      <Link to="#">
                         <FaTwitter className="text-lightGray text-opacity-75 group-hover:text-white group-hover:text-slateBlue-0 w-4 h-4 " />
                       </Link>
                     </li>
                     <li className="hover-animBg group transition-all duration-300  rounded-full border border-lightGray border-opacity-75 hover:border-khaki cursor-pointer w-[37px] h-[37px] grid items-center justify-center">
-                      <Link >
+                      <Link to="#">
                         <BiLogoLinkedin className="text-lightGray text-opacity-75 group-hover:text-white group-hover:text-slateBlue-0 w-4 h-4 " />
                       </Link>
                     </li>
                     <li className="hover-animBg group transition-all duration-300  rounded-full border border-lightGray border-opacity-75 hover:border-khaki cursor-pointer w-[37px] h-[37px] grid items-center justify-center">
-                      <Link >
+                      <Link to="#">
                         <FaPinterestP className="text-lightGray text-opacity-75 group-hover:text-white group-hover:text-slateBlue-0 w-4 h-4 " />
                       </Link>
                     </li>
@@ -93,19 +93,19 @@ const Footer: React.FC = () => {
                  "
                 >
                   <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[44px]">
-                    <Link >About Hotel</Link>
+                    <Link to="#">About Hotel</Link>
                   </li>
                   <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[44px]">
-                    <Link >Rooms & Suites</Link>
+                    <Link to="#">Rooms & Suites</Link>
                   </li>
                   <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[44px]">
-                    <Link >Reservations</Link>
+                    <Link to="#">Reservations</Link>
                   </li>
                   <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[44px]">
-                    <Link >News & Blogs</Link>
+                    <Link to="#">News & Blogs</Link>
                   </li>
                   <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[44px]">
-                    <Link >Contact Us</Link>
+                    <Link to="#">Contact Us</Link>
                   </li>
                 </ul>
               </div>
