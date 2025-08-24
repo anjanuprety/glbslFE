@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useLanguage } from "../contexts/LanguageContext";
 
 interface BreadCrumbProps {
   title: string;
@@ -9,6 +10,8 @@ interface BreadCrumbProps {
 const BreadCrumb: React.FC<BreadCrumbProps> = ({ title, home: _home }) => {
   const location = useLocation();
   const pathName = location.pathname.split("/")[1];
+  const { t } = useLanguage();
+  
   return (
     <section className="bg-[url('/images/inner/breadcumb.jpg')] bg-no-repeat bg-cover h-[550px] bg-center grid items-center justify-center">
       <div className="mt-10 text-center">
@@ -20,7 +23,7 @@ const BreadCrumb: React.FC<BreadCrumbProps> = ({ title, home: _home }) => {
             to={`${pathName ? `/${pathName}` : "/"}`}
             className="text-base lg:text-2xl leading-10 2xl:leading-[70px] text-khaki font-semibold font-Garamond flex items-center"
           >
-            Home <span className="mx-2 text-white">/</span>
+            {t('nav.home')} <span className="mx-2 text-white">/</span>
           </Link>
           <Link
             to={`#`}

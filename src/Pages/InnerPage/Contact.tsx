@@ -2,11 +2,14 @@ import React from "react";
 import { MdEmail, MdOutlineShareLocation } from "react-icons/md";
 import BreadCrumb from "../../BreadCrumb/BreadCrumb";
 import { IoIosCall } from "react-icons/io";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 const Contact: React.FC = () => {
+  const { t } = useLanguage();
+  
   return (
     <div>
-      <BreadCrumb title="Contact " />
+      <BreadCrumb title={t('contact.title')} />
 
       {/* Contact */}
       {/* Contact with Us */}
@@ -19,16 +22,13 @@ const Contact: React.FC = () => {
               data-aos-duration="1000"
             >
               <p className="text-Garamond text-base leading-[26px] text-khaki font-medium">
-                CONTACT US
+                {t('contact.contact_us')}
               </p>
               <h2 className="text-Garamond text-[22px] sm:text-2xl md:text-3xl lg:text-4xl 2xl:text-[38px] leading-7 md:leading-8 lg:leading-9 xl:leading-10 2xl:leading-[44px] text-uppercase text-lightBlack dark:text-white font-semibold my-3 md:my-5">
-                CONTACT WITH US
+                {t('contact.contact_with_us')}
               </h2>
               <p className="text-Lora text-sm sm:text-base leading-[26px]  text-gray dark:text-lightGray font-normal">
-                Rapidiously myocardinate cross-platform intellectual capital
-                after the model. Appropriately create interactive
-                infrastructures after maintance Holisticly facilitate
-                stand-alone
+                {t('contact.description') || 'Rapidiously myocardinate cross-platform intellectual capital after the model. Appropriately create interactive infrastructures after maintance Holisticly facilitate stand-alone'}
               </p>
 
               {/* call */}
@@ -41,7 +41,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div className="ml-3 md:ml-4">
                   <p className="font-Lora text-sm leading-[26px] text-gray dark:text-lightGray font-normal">
-                    Call Us Now
+                    {t('contact.call_us_now')}
                   </p>
                   <p className="font-Garamond text-lg sm:text-xl md:text-[22px] leading-[26px] text-lightBlack dark:text-white font-medium">
                     +980 123 (4567) 890
@@ -59,7 +59,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div className="ml-3 md:ml-4">
                   <p className="font-Lora text-sm leading-[26px] text-gray dark:text-lightGray font-normal">
-                    Send Email
+                    {t('contact.send_email')}
                   </p>
                   <p className="font-Garamond text-lg sm:text-xl md:text-[22px] leading-[26px] text-lightBlack dark:text-white font-medium ">
                     example@gmail.com
@@ -77,7 +77,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div className="ml-3 md:ml-4">
                   <p className="font-Lora text-sm leading-[26px] text-gray dark:text-lightGray font-normal">
-                    Our Locations
+                    {t('contact.our_locations')}
                   </p>
                   <p className="font-Garamond text-lg sm:text-xl md:text-[22px] leading-[26px] text-lightBlack dark:text-white font-medium ">
                     New elephant Road, Dhanmondi <br />
@@ -93,19 +93,19 @@ const Contact: React.FC = () => {
             >
               <div className="bg-lightBlack  p-[30px] lg:p-[45px] 2xl:p-[61px]">
                 <h2 className="font-Garamond text-[22px] sm:text-2xl md:text-[28px] leading-7 md:leading-8 lg:leading-9 xl:leading-10 2xl:leading-[44px] text-white font-semibold text-center">
-                  GET IN TOUCH
+                  {t('contact.get_in_touch')}
                 </h2>
                 <div className="grid items-center grid-cols-1 gap-2 mt-8">
                   <input
                     type="text"
                     className="w-full h-12 md:h-13 lg:h-[59px] px-4 border border-gray dark:border-lightGray text-gray dark:text-lightGray outline-none  bg-transparent mt-4 focus:ring-0 placeholder:text-gray focus:border-gray dark:focus:border-lightGray focus:outline-none"
-                    placeholder="Your Name"
+                    placeholder={t('contact.your_name')}
                     required
                   />
                   <input
                     type="email"
                     className="w-full h-12 md:h-13 lg:h-[59px] px-4 border  border-gray dark:border-lightGray text-gray dark:text-lightGray outline-none  bg-transparent mt-4 focus:ring-0 placeholder:text-gray focus:border-gray dark:focus:border-lightGray focus:outline-none"
-                    placeholder="Enter E-mail"
+                    placeholder={t('contact.enter_email')}
                     required
                   />
                   <select
@@ -126,13 +126,13 @@ const Contact: React.FC = () => {
                       value=""
                       disabled
                     >
-                      Select Subject
+                      {t('contact.select_subject')}
                     </option>
                     <option
                       className="bg-whiteSmoke dark:bg-normalBlack text-lightBlack dark:text-white px-3 py-3"
                       value="option1"
                     >
-                      Subject One
+                      {t('form.select_one')}
                     </option>
                     <option
                       className="bg-whiteSmoke dark:bg-normalBlack text-lightBlack dark:text-white px-3 py-3"
@@ -159,10 +159,10 @@ const Contact: React.FC = () => {
                     cols={30}
                     rows={10}
                     className="w-full h-[121px] px-4 border border-gray dark:border-lightGray text-gray dark:text-lightGray outline-none  bg-transparent mt-4 focus:ring-0 placeholder:text-gray resize-none focus:border-gray dark:focus:border-lightGray focus:outline-none"
-                    placeholder="Write Message:"
+                    placeholder={t('contact.write_message')}
                   ></textarea>
                   <button className="w-full bg-khaki text-white text-center h-10 2xl:h-[55px] mt-5">
-                    SEND MESSAGE
+                    {t('contact.send_message')}
                   </button>
                 </div>
               </div>

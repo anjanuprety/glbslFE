@@ -10,8 +10,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { FaStar } from "react-icons/fa";
 import { BiPhoneCall } from "react-icons/bi";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 const HeroSection: React.FC = () => {
+  const { t } = useLanguage();
+  
   return (
     <div className="">
       <Swiper
@@ -42,13 +45,13 @@ const HeroSection: React.FC = () => {
                 <FaStar className="w-[14px] h-[14px] lg:w-[16px] lg:h-[16px] text-khaki" />
                 <FaStar className="w-[14px] h-[14px] lg:w-[16px] lg:h-[16px] text-khaki" />
               </div>
-              <h4 className="text-base mb-4">LUXURY HOTEL AND RESORT</h4>
+              <h4 className="text-base mb-4">{t('hero.luxury_hotel_resort')}</h4>
               <div className="mb-7 md:mb-8 lg:mb-9 xl:mb-10">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl 3xl:text-6xl font-semibold leading-[40px] md:leading-[50px] 3xl:leading-[70px]">
-                  THE BEST LUXURY HOTEL
+                  {t('hero.best_luxury_hotel')}
                 </h1>
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl 3xl:text-6xl font-semibold leading-[40px] lg:leading-[50px] 2xl:leading-[60px]">
-                  IN CALIFORNIA
+                  {t('hero.in_california')}
                 </h1>
               </div>
               <Link to={"/about"}>
@@ -58,7 +61,7 @@ const HeroSection: React.FC = () => {
                font-Garamond
                 font-medium mt-[-6px] hover-animBg after:bg-normalBlack after:rounded-none hover:before:bg-normalBlack uppercase"
                 >
-                  Discover More
+                  {t('hero.discover_more')}
                 </button>
               </Link>
             </div>
@@ -83,13 +86,13 @@ const HeroSection: React.FC = () => {
                 <FaStar className="w-[14px] h-[14px] lg:w-[16px] lg:h-[16px] text-khaki" />
                 <FaStar className="w-[14px] h-[14px] lg:w-[16px] lg:h-[16px] text-khaki" />
               </div>
-              <h4 className="text-base mb-4">LUXURY HOTEL AND RESORT</h4>
+              <h4 className="text-base mb-4">{t('hero.luxury_hotel_resort')}</h4>
               <div className="mb-7 md:mb-8 lg:mb-9 xl:mb-10">
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl 3xl:text-6xl font-semibold leading-[40px] md:leading-[50px] 3xl:leading-[70px]">
-                  THE BEST LUXURY HOTEL
+                  {t('hero.best_luxury_hotel')}
                 </h1>
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl 3xl:text-6xl font-semibold leading-[40px] lg:leading-[50px] 2xl:leading-[60px]">
-                  IN KASHMIR
+                  {t('hero.in_kashmir')}
                 </h1>
               </div>
               <Link to={"/about"}>
@@ -99,7 +102,7 @@ const HeroSection: React.FC = () => {
                font-Garamond
                 font-medium mt-[-6px] hover-animBg after:bg-normalBlack after:rounded-none hover:before:bg-normalBlack uppercase"
                 >
-                  Discover More
+                  {t('hero.discover_more')}
                 </button>
               </Link>
             </div>
