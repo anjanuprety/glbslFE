@@ -6,6 +6,7 @@
   "scripts": {
     "predev": "bash -lc \"export NVM_DIR=\\\"$HOME/.nvm\\\"; [ -s \\\"$NVM_DIR/nvm.sh\\\" ] && . \\\"$NVM_DIR/nvm.sh\\\"; nvm use 22 >/dev/null 2>&1 || true; node -e \\\"const v=process.versions.node.split('\\\\.').map(Number); if(v[0]>20 || (v[0]===20 && (v[1]>19 || (v[1]===19 && v[2]>=0)))){console.log('Node OK',process.versions.node);} else {console.error('Node version too old:',process.versions.node); process.exit(1);} \\\"\"",
     "dev": "bash -lc 'export NVM_DIR=\"$HOME/.nvm\"; [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"; nvm use 22 >/dev/null 2>&1 || true; echo Using node $(node -v); node ./node_modules/vite/bin/vite.js'",
+    "dev:windows": "vite",
     "dev:5173": "bash -lc 'export NVM_DIR=\"$HOME/.nvm\"; [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"; nvm use 22 >/dev/null 2>&1 || true; echo Using node $(node -v); PORT=5173 node ./node_modules/vite/bin/vite.js'",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0",

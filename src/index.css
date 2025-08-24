@@ -160,5 +160,5 @@ option:hover {
 /* Inner page */
 
 .member {
-  @apply p-[30px] border border-lightGray dark:border-gray px-[30px]  text-center  relative z-[1] before:absolute before:w-0 before:h-full before:left-1/2 before:top-0 before:bg-khaki before:z-[-1] before:transition-all before:duration-500 before:hover:w-full before:hover:left-0 overflow-hidden bg-center bg-cover;
+  @apply p-[30px] border border-lightGray dark:border-gray px-[30px]  text-center  relative z-[1] before:absolute before:w-0 before:h-full before:left-1/2 before:top-0 before:bg-normalBlack before:z-[-1] before:transition-all before:duration-500 before:hover:w-full before:hover:left-0 overflow-hidden bg-center bg-cover;
 }

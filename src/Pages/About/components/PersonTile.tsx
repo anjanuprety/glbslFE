@@ -32,7 +32,7 @@ const PersonTile: React.FC<PersonProps> = ({
           </p>
         </div>
 
-        <div className="p-[30px] bg-khaki grid items-center justify-center absolute bottom-[-150px] sm:bottom-[-170px] md:bottom-[-150px] group-hover:bottom-[-38px] lg:group-hover:bottom-[-30px] transition-all duration-500 left-0 right-0">
+        <div className="p-[30px] bg-normalBlack grid items-center justify-center absolute bottom-[-150px] sm:bottom-[-170px] md:bottom-[-150px] group-hover:bottom-[-38px] lg:group-hover:bottom-[-30px] transition-all duration-500 left-0 right-0">
           <div className="text-center text-white space-y-1">
             <p className="text-white font-medium leading-6 text-lg lg:text-xl font-Garamond">
               {phone || "+977-1-234567"}
