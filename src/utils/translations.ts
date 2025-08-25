@@ -26,6 +26,10 @@ export const translations: Translations = {
     en: 'Contact',
     ne: 'सम्पर्क'
   },
+  'nav.services': {
+    en: 'Services',
+    ne: 'सेवाहरू'
+  },
   'nav.booking_online': {
     en: 'Booking Online',
     ne: 'अनलाइन बुकिङ'
@@ -71,6 +75,46 @@ export const translations: Translations = {
   'submenu.about_us': {
     en: 'About Us',
     ne: 'हाम्रो बारेमा'
+  },
+  'submenu.board_directors': {
+    en: 'Board of Directors',
+    ne: 'निर्देशक बोर्ड'
+  },
+  'submenu.management_team': {
+    en: 'Management Team',
+    ne: 'व्यवस्थापन टीम'
+  },
+  'submenu.corporate_team': {
+    en: 'Corporate Team',
+    ne: 'कर्पोरेट टीम'
+  },
+  'submenu.committee': {
+    en: 'Committee',
+    ne: 'समिति'
+  },
+  'submenu.organization_structure': {
+    en: 'Organization Structure',
+    ne: 'संगठन संरचना'
+  },
+  'submenu.all_services': {
+    en: 'All Services',
+    ne: 'सबै सेवाहरू'
+  },
+  'submenu.loan_services': {
+    en: 'Loan Services',
+    ne: 'ऋण सेवाहरू'
+  },
+  'submenu.savings_services': {
+    en: 'Savings Services',
+    ne: 'बचत सेवाहरू'
+  },
+  'submenu.remittance_services': {
+    en: 'Remittance Services',
+    ne: 'रेमिट्यान्स सेवाहरू'
+  },
+  'submenu.member_welfare': {
+    en: 'Member Welfare',
+    ne: 'सदस्य कल्याण'
   },
   'submenu.services': {
     en: 'Services',
