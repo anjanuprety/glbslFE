@@ -97,16 +97,32 @@ const BranchMap: React.FC<BranchMapProps> = ({
   // This will be replaced with actual map rendering
   return (
     <div 
-      className={`bg-gradient-to-br from-green-100 to-green-200 dark:from-green-800 dark:to-green-900 border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden ${className}`}
+      className={`bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900 dark:to-green-800 border border-white/20 rounded-lg overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 ${className}`}
       style={{ height, width }}
       role="img"
-      aria-label={`Map showing location of ${location} at coordinates ${coordinates.latitude}, ${coordinates.longitude}`}
+      aria-label={`Interactive map showing location of ${location} at coordinates ${coordinates.latitude}, ${coordinates.longitude}`}
+      onClick={() => {
+        // Open Google Maps with the branch location
+        const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${coordinates.latitude},${coordinates.longitude}`;
+        window.open(googleMapsUrl, '_blank');
+      }}
     >
-      {/* Map placeholder content */}
-      <div className="h-full w-full flex flex-col items-center justify-center p-4 text-center">
-        <div className="bg-white dark:bg-gray-800 rounded-full p-3 mb-3 shadow-md">
+      {/* Map placeholder content with enhanced design */}
+      <div className="h-full w-full flex flex-col items-center justify-center p-2 text-center relative overflow-hidden">
+        
+        {/* Animated background grid pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="grid grid-cols-4 grid-rows-4 h-full w-full">
+            {Array.from({ length: 16 }, (_, i) => (
+              <div key={i} className="border border-green-300 dark:border-green-700"></div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Map pin icon */}
+        <div className="bg-white dark:bg-gray-800 rounded-full p-2 mb-2 shadow-md relative z-10 group-hover:scale-110 transition-transform duration-300">
           <svg 
-            className="w-6 h-6 text-green-600 dark:text-green-400" 
+            className="w-5 h-5 text-red-500 animate-pulse" 
             fill="currentColor" 
             viewBox="0 0 24 24"
             aria-hidden="true"
@@ -114,15 +130,28 @@ const BranchMap: React.FC<BranchMapProps> = ({
             <path fillRule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
           </svg>
         </div>
-        <h4 className="font-semibold text-sm text-gray-800 dark:text-gray-200 mb-1">
-          {location}
-        </h4>
-        <p className="text-xs text-gray-600 dark:text-gray-400">
-          {coordinates.latitude.toFixed(4)}, {coordinates.longitude.toFixed(4)}
-        </p>
-        <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
-          Map integration pending
-        </p>
+        
+        {/* Location info */}
+        <div className="relative z-10">
+          <h4 className="font-semibold text-xs text-gray-800 dark:text-gray-200 mb-1 truncate max-w-full">
+            {location}
+          </h4>
+          <p className="text-xs text-gray-600 dark:text-gray-400 font-mono">
+            {coordinates.latitude.toFixed(3)}, {coordinates.longitude.toFixed(3)}
+          </p>
+        </div>
+        
+        {/* Click hint */}
+        <div className="absolute bottom-1 right-1 bg-black/20 dark:bg-white/20 rounded-full p-1 opacity-70 hover:opacity-100 transition-opacity duration-300">
+          <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+          </svg>
+        </div>
+        
+        {/* Loading animation overlay for when real maps load */}
+        <div className="hidden absolute inset-0 bg-white/80 dark:bg-gray-900/80 items-center justify-center">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-green-600"></div>
+        </div>
       </div>
     </div>
   );

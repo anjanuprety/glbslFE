@@ -85,59 +85,80 @@ const BranchTile: React.FC<BranchTileProps> = ({
 
         {/* Hover reveal panel - similar to PersonTile but with branch-specific content */}
         {/* Uses bg-normalBlack (green) instead of bg-khaki (yellow) for consistency */}
-        <div className="p-[30px] bg-normalBlack grid items-center justify-center absolute bottom-[-200px] sm:bottom-[-220px] md:bottom-[-200px] group-hover:bottom-[-38px] lg:group-hover:bottom-[-30px] transition-all duration-500 left-0 right-0">
+        <div className="p-[30px] bg-normalBlack grid items-center justify-center absolute bottom-[-250px] sm:bottom-[-270px] md:bottom-[-250px] group-hover:bottom-[-38px] lg:group-hover:bottom-[-30px] transition-all duration-500 left-0 right-0">
           
-          {/* Contact information and branch details */}
-          <div className="text-center text-white space-y-2">
+          {/* Main content container with two sections: contact info and map */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
             
-            {/* Branch phone number */}
-            <p className="text-white font-medium leading-6 text-base lg:text-lg font-Garamond">
-              {phoneNumber}
-            </p>
-            
-            {/* Branch address */}
-            <p className="text-white font-medium leading-5 text-sm lg:text-base font-Lora">
-              {address}
-            </p>
-            
-            {/* Divider line */}
-            <div className="border-t border-white/30 my-3"></div>
-            
-            {/* Manager contact information */}
-            <div className="space-y-1">
-              <p className="text-white font-medium leading-5 text-sm font-Garamond">
-                {managerName}
-              </p>
-              <p className="text-white/90 font-normal leading-4 text-xs font-Lora">
-                {managerPosition}
+            {/* Contact information section */}
+            <div className="text-center lg:text-left text-white space-y-2">
+              
+              {/* Branch phone number */}
+              <p className="text-white font-medium leading-6 text-base lg:text-lg font-Garamond">
+                {phoneNumber}
               </p>
               
-              {/* Manager phone if different from branch phone */}
-              {managerPhone && managerPhone !== phoneNumber && (
+              {/* Branch address */}
+              <p className="text-white font-medium leading-5 text-sm lg:text-base font-Lora">
+                {address}
+              </p>
+              
+              {/* Divider line */}
+              <div className="border-t border-white/30 my-3"></div>
+              
+              {/* Manager contact information */}
+              <div className="space-y-1">
+                <p className="text-white font-medium leading-5 text-sm font-Garamond">
+                  {managerName}
+                </p>
                 <p className="text-white/90 font-normal leading-4 text-xs font-Lora">
-                  Direct: {managerPhone}
+                  {managerPosition}
                 </p>
-              )}
-              
-              {/* Manager email if available */}
-              {managerEmail && (
-                <p className="text-white/90 font-normal leading-4 text-xs font-Lora break-all">
-                  {managerEmail}
-                </p>
-              )}
+                
+                {/* Manager phone if different from branch phone */}
+                {managerPhone && managerPhone !== phoneNumber && (
+                  <p className="text-white/90 font-normal leading-4 text-xs font-Lora">
+                    Direct: {managerPhone}
+                  </p>
+                )}
+                
+                {/* Manager email if available */}
+                {managerEmail && (
+                  <p className="text-white/90 font-normal leading-4 text-xs font-Lora break-all">
+                    {managerEmail}
+                  </p>
+                )}
+              </div>
             </div>
             
-            {/* Small map thumbnail - optional, can be toggled */}
-            <div className="mt-4 hidden">
-              <BranchMap 
-                coordinates={coordinates}
-                location={location}
-                height="80px"
-                width="100%"
-                zoom={14}
-                showMarker={true}
-                className="rounded-md"
-              />
+            {/* Map section - shows branch location */}
+            <div className="flex items-center justify-center">
+              <div className="w-full lg:w-auto">
+                <BranchMap 
+                  coordinates={coordinates}
+                  location={location}
+                  height="120px"
+                  width="100%"
+                  zoom={15}
+                  showMarker={true}
+                  className="rounded-md border-2 border-white/20 hover:border-white/40 transition-all duration-300"
+                />
+                {/* View larger map link */}
+                <div className="text-center mt-2">
+                  <button 
+                    className="text-white/80 hover:text-white text-xs font-Lora underline underline-offset-2 hover:no-underline transition-all duration-300"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      // TODO: Open larger map modal or redirect to Google Maps
+                      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${coordinates.latitude},${coordinates.longitude}`;
+                      window.open(googleMapsUrl, '_blank');
+                    }}
+                    aria-label={`View ${location} on larger map`}
+                  >
+                    View on Map
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
