@@ -116,12 +116,11 @@ const LoanServicesPage: React.FC = () => {
             <p className="text-sm text-gray dark:text-lightGray font-Lora mb-6">
               Contact us today to discuss your loan requirements and get personalized assistance.
             </p>
-            <a 
-              href="/contact" 
-              className="inline-block bg-khaki text-white px-8 py-3 rounded hover:bg-opacity-90 transition-all duration-300 font-medium uppercase font-Garamond text-center"
-            >
-              Contact Us
-            </a>
+            <div className="mt-5 md:mt-0">
+              <a href="/contact">
+                <button className="btn-items">Contact Us</button>
+              </a>
+            </div>
           </div>
         </section>
       </div>

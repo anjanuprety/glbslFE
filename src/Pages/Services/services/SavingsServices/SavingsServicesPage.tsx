@@ -132,12 +132,11 @@ const SavingsServicesPage: React.FC = () => {
             <p className="text-sm text-gray dark:text-lightGray font-Lora mb-6">
               Open a savings account with us and take the first step towards a secure financial future.
             </p>
-            <a 
-              href="/contact" 
-              className="inline-block bg-khaki text-white px-8 py-3 rounded hover:bg-opacity-90 transition-all duration-300 font-medium uppercase font-Garamond text-center"
-            >
-              Open Account
-            </a>
+            <div className="mt-5 md:mt-0">
+              <a href="/contact">
+                <button className="btn-items">Open Account</button>
+              </a>
+            </div>
           </div>
         </section>
       </div>

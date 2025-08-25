@@ -140,18 +140,16 @@ const MemberWelfareServicesPage: React.FC = () => {
                 about eligibility criteria and application processes for our welfare programs.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a 
-                  href="/contact" 
-                  className="inline-block bg-khaki text-white px-8 py-3 rounded hover:bg-opacity-90 transition-all duration-300 font-medium uppercase font-Garamond text-center"
-                >
-                  Contact Welfare Team
-                </a>
-                <a 
-                  href="/branches" 
-                  className="inline-block border border-khaki text-khaki hover:bg-khaki hover:text-white px-8 py-3 rounded transition-all duration-300 font-medium uppercase font-Garamond text-center"
-                >
-                  Visit Branch
-                </a>
+                <div className="mt-5 md:mt-0">
+                  <a href="/contact">
+                    <button className="btn-items">Contact Welfare Team</button>
+                  </a>
+                </div>
+                <div className="mt-5 md:mt-0">
+                  <a href="/branches">
+                    <button className="btn-items">Visit Branch</button>
+                  </a>
+                </div>
               </div>
             </div>
           </div>

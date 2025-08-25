@@ -183,18 +183,16 @@ const RemittanceServicesPage: React.FC = () => {
                 Our friendly staff will guide you through the process and help you choose the best option for your needs.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a 
-                  href="/contact" 
-                  className="inline-block bg-khaki text-white px-8 py-3 rounded hover:bg-opacity-90 transition-all duration-300 font-medium uppercase font-Garamond text-center"
-                >
-                  Contact Us
-                </a>
-                <a 
-                  href="/branches" 
-                  className="inline-block border border-khaki text-khaki hover:bg-khaki hover:text-white px-8 py-3 rounded transition-all duration-300 font-medium uppercase font-Garamond text-center"
-                >
-                  Find Branch
-                </a>
+                <div className="mt-5 md:mt-0">
+                  <a href="/contact">
+                    <button className="btn-items">Contact Us</button>
+                  </a>
+                </div>
+                <div className="mt-5 md:mt-0">
+                  <a href="/branches">
+                    <button className="btn-items">Find Branch</button>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
