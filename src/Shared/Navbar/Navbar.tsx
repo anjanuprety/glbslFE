@@ -281,13 +281,6 @@ const Navbar: React.FC = () => {
                   </div>
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
-                      <NavLink to="/services" className="py-2 block">
-                        SERVICE
-                      </NavLink>
-                    </li>
-                  </div>
-                  <div className=" px-5 group hover:bg-khaki hover:text-white">
-                    <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/service_details" className="py-2 block">
                         SERVICE DETAILS
                       </NavLink>
@@ -353,6 +346,17 @@ const Navbar: React.FC = () => {
               to="/branches"
             >
               Branches
+            </NavLink>
+            <NavLink
+              className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
+                isPending
+                  ? "pending"
+                  : isActive
+                  ? "active"
+                  : ""} text-lightBlack lg:text-white dark:text-white lg:border-b-0 px-3 py-2 w-full block transition-all duration-300`}
+              to="/services"
+            >
+              Services
             </NavLink>
             <NavLink
               className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
