@@ -30,7 +30,7 @@ const Rooms: React.FC = () => {
         slides: { perView: 3, spacing: 20 },
       },
     },
-    loop: true,
+  loop: false,
     initial: 0,
     slideChanged(slider) {
       setCurrentSlide(slider.track.details.rel);
@@ -88,7 +88,7 @@ const Rooms: React.FC = () => {
             </div>
 
             <h1 className="text-[22px] sm:text-2xl md:text-3xl 2xl:text-[38px] leading-7 sm:leading-8 md:leading-9 lg:leading-[42px] 2xl:leading-[52px] text-lightBlack dark:text-white mb-[6]  font-Garamond font-semibold uppercase">
-              Royella’s Rooms & Suites
+              OUR PRODUCTS AND SERVICES
             </h1>
             <p className="font-Lora leading-[26px] text-gray dark:text-lightGray font-normal text-sm sm:text-base mt-[15px] lg:mt-0">
               Proactively morph optimal infomediaries rather than accurate
@@ -122,58 +122,21 @@ const Rooms: React.FC = () => {
                       </div>
                     </div>
                     <div className="font-Garamond">
-                      <div className="px-5 3xl:px-6 py-2 inline-flex bg-khaki text-sm  items-center justify-center text-white  absolute top-[10px] right-[10px] font-Lora font-normal leading-[26px]">
-                        <span className="">$560</span>
-                        <span className="mx-2">|</span>
-                        <span>Night</span>
-                      </div>
+                      {/* price badge removed per request */}
 
                       <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242] border-t-0">
                         <div className="py-6 px-[30px]">
                           <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
-                            Luxury Room
+                            Loan Services
                           </h4>
                           <Link to="/room">
                             <h2 className="text-2xl lg:text-[28px] leading-[26px] font-semibold text-lightBlack dark:text-white py-4">
-                              Double Suite Rooms
+                              Loan Services
                             </h2>
                           </Link>
                           <p className="text-sm font-normal text-gray  dark:text-lightGray font-Lora">
-                            1500 SQ.FT/Rooms
+                            Microfinance loans tailored for small enterprises and individuals.
                           </p>
-                        </div>
-                        <div className="  border-t-[1px] border-[#e8e8e8] dark:border-[#424242] py-5">
-                          <div className="px-[30px] flex items-center justify-between">
-                            <div className="">
-                              <span className="font-Lora text-base flex items-center ">
-                                <img
-                                  src="/images/home-1/room-bottom-icon.png"
-                                  alt=""
-                                />
-                                <span className="ml-[10px] text-gray dark:text-lightGray">
-                                  2 King Bed
-                                </span>
-                              </span>
-                            </div>
-                            <span className="w-[1px] h-[25px] bg-[#ddd] dark:bg-gray"></span>
-                            <ul className="flex items-center text-khaki space-x-[5px]">
-                              <li>
-                                <FaStar />
-                              </li>
-                              <li>
-                                <FaStar />
-                              </li>
-                              <li>
-                                <FaStar />
-                              </li>
-                              <li>
-                                <FaStar />
-                              </li>
-                              <li>
-                                <FaStar />
-                              </li>
-                            </ul>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -202,58 +165,21 @@ const Rooms: React.FC = () => {
                       </div>
                     </div>
                     <div className="font-Garamond">
-                      <div className="px-5 3xl:px-6 py-2 inline-flex bg-khaki text-sm  items-center justify-center font-Lora font-normal leading-[26px] text-white  absolute top-[10px] right-[10px] ">
-                        <span className="">$560</span>
-                        <span className="mx-2">|</span>
-                        <span>Night</span>
-                      </div>
+                      {/* price badge removed per request */}
 
                       <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242] border-t-0">
                         <div className="py-6 px-[30px]">
                           <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
-                            Luxury Room
+                            Saving Accounts
                           </h4>
                           <Link to="/room">
                             <h2 className="text-2xl lg:text-[28px] leading-[26px] font-semibold text-lightBlack dark:text-white py-4">
-                              Delux Family Rooms
+                              Saving Accounts
                             </h2>
                           </Link>
                           <p className="text-sm font-normal text-gray  dark:text-lightGray font-Lora">
-                            1500 SQ.FT/Rooms
+                            Secure savings products with competitive interest rates and easy access.
                           </p>
-                        </div>
-                        <div className="  border-t-[1px] border-[#e8e8e8] dark:border-[#424242] py-5">
-                          <div className="px-[30px] flex items-center justify-between">
-                            <div className="">
-                              <span className="font-Lora text-base flex items-center ">
-                                <img
-                                  src="/images/home-1/room-bottom-icon.png"
-                                  alt=""
-                                />
-                                <span className="ml-[10px] text-gray dark:text-lightGray">
-                                  2 King Bed
-                                </span>
-                              </span>
-                            </div>
-                            <span className="w-[1px] h-[25px] bg-[#ddd] dark:bg-gray"></span>
-                            <ul className="flex items-center text-khaki space-x-[5px]">
-                              <li>
-                                <FaStar />
-                              </li>
-                              <li>
-                                <FaStar />
-                              </li>
-                              <li>
-                                <FaStar />
-                              </li>
-                              <li>
-                                <FaStar />
-                              </li>
-                              <li>
-                                <FaStar />
-                              </li>
-                            </ul>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -282,58 +208,21 @@ const Rooms: React.FC = () => {
                       </div>
                     </div>
                     <div className="font-Garamond">
-                      <div className="px-5 3xl:px-6 py-2 inline-flex bg-khaki text-sm  items-center justify-center font-Lora font-normal leading-[26px] text-white  absolute top-[10px] right-[10px] ">
-                        <span className="">$560</span>
-                        <span className="mx-2">|</span>
-                        <span>Night</span>
-                      </div>
+                      {/* price badge removed per request */}
 
                       <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242] border-t-0">
                         <div className="py-6 px-[30px]">
                           <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
-                            Luxury Room
+                            Remittance
                           </h4>
                           <Link to="/room">
                             <h2 className="text-2xl lg:text-[28px] leading-[26px] font-semibold text-lightBlack dark:text-white py-4">
-                              Suprior Bed Rooms
+                              Remittance
                             </h2>
                           </Link>
                           <p className="text-sm font-normal text-gray  dark:text-lightGray font-Lora">
-                            1500 SQ.FT/Rooms
+                            Fast and reliable money transfer services locally and internationally.
                           </p>
-                        </div>
-                        <div className="  border-t-[1px] border-[#e8e8e8] dark:border-[#424242] py-5">
-                          <div className="px-[30px] flex items-center justify-between">
-                            <div className="">
-                              <span className="font-Lora text-base flex items-center ">
-                                <img
-                                  src="/images/home-1/room-bottom-icon.png"
-                                  alt=""
-                                />
-                                <span className="ml-[10px] text-gray dark:text-lightGray">
-                                  2 King Bed
-                                </span>
-                              </span>
-                            </div>
-                            <span className="w-[1px] h-[25px] bg-[#ddd] dark:bg-gray"></span>
-                            <ul className="flex items-center text-khaki space-x-[5px]">
-                              <li>
-                                <FaStar />
-                              </li>
-                              <li>
-                                <FaStar />
-                              </li>
-                              <li>
-                                <FaStar />
-                              </li>
-                              <li>
-                                <FaStar />
-                              </li>
-                              <li>
-                                <FaStar />
-                              </li>
-                            </ul>
-                          </div>
                         </div>
                       </div>
                     </div>
