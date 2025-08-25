@@ -4,8 +4,19 @@ import { createBrowserRouter } from "react-router-dom";
 import Main from "../Main/Main";
 import Home1 from "../Pages/Home1/Home1";
 
+// About pages
+import { AboutUs, BoardOfDirectors, ManagementTeam, CorporateTeam, Committee, OrganizationStructure } from "../Pages/About";
+
+// Branches page
+import BranchesPage from "../Pages/Branches/BranchesPage";
+
+// Service pages
+import LoanServicesPage from "../Pages/Services/services/LoanServices/LoanServicesPage";
+import SavingsServicesPage from "../Pages/Services/services/SavingsServices/SavingsServicesPage";
+import RemittanceServicesPage from "../Pages/Services/services/RemittanceServices/RemittanceServicesPage";
+import MemberWelfareServicesPage from "../Pages/Services/services/MemberWelfare/MemberWelfareServicesPage";
+
 // Inner pages
-import About from "../Pages/InnerPage/About";
 import Room from "../Pages/InnerPage/Room";
 import FindRoom from "../Pages/InnerPage/FindRoom";
 import RoomDetails from "../Pages/InnerPage/RoomDetails";
@@ -31,7 +42,31 @@ const router = createBrowserRouter([
       },
       {
         path: "/about",
-        element: <About />,
+        element: <AboutUs />,
+      },
+      {
+        path: "/board-of-directors",
+        element: <BoardOfDirectors />,
+      },
+      {
+        path: "/management-team",
+        element: <ManagementTeam />,
+      },
+      {
+        path: "/corporate-team",
+        element: <CorporateTeam />,
+      },
+      {
+        path: "/committee",
+        element: <Committee />,
+      },
+      {
+        path: "/organization-structure",
+        element: <OrganizationStructure />,
+      },
+      {
+        path: "/branches",
+        element: <BranchesPage />,
       },
       {
         path: "/room",
@@ -48,6 +83,22 @@ const router = createBrowserRouter([
       {
         path: "/services",
         element: <Services />,
+      },
+      {
+        path: "/services/loan",
+        element: <LoanServicesPage />,
+      },
+      {
+        path: "/services/savings",
+        element: <SavingsServicesPage />,
+      },
+      {
+        path: "/services/remittance",
+        element: <RemittanceServicesPage />,
+      },
+      {
+        path: "/services/member-welfare",
+        element: <MemberWelfareServicesPage />,
       },
       {
         path: "/service_details",
