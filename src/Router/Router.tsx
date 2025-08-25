@@ -7,6 +7,9 @@ import Home1 from "../Pages/Home1/Home1";
 // About pages
 import { AboutUs, BoardOfDirectors, ManagementTeam, CorporateTeam, Committee, OrganizationStructure } from "../Pages/About";
 
+// Branches page
+import BranchesPage from "../Pages/Branches/BranchesPage";
+
 // Inner pages
 import Room from "../Pages/InnerPage/Room";
 import FindRoom from "../Pages/InnerPage/FindRoom";
@@ -54,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "/organization-structure",
         element: <OrganizationStructure />,
+      },
+      {
+        path: "/branches",
+        element: <BranchesPage />,
       },
       {
         path: "/room",
