@@ -2,7 +2,7 @@ import React from "react";
 import Action from "../../Components/CallDoAction/Action";
 import Facilities from "../../Components/Facilities/Facilities";
 import HeroSection from "../../Components/HeroSection/HeroSection";
-import HotelAndFacilities from "../../Components/HotelAndFacilities/HotelAndFacilities";
+// import HotelAndFacilities from "../../Components/HotelAndFacilities/HotelAndFacilities";
 import HotelAndResort from "../../Components/HotelAndResort/HotelAndResort";
 import LatestBlog from "../../Components/LatestBlog/LatestBlog";
 import Offers from "../../Components/Offers/Offers";
@@ -15,7 +15,7 @@ const Home1: React.FC = () => {
       <HeroSection />
       <Rooms />
       <HotelAndResort />
-      <HotelAndFacilities />
+      {/* <HotelAndFacilities /> */}
       <Action />
       <Facilities />
       <Offers />
