@@ -124,7 +124,7 @@ const Footer: React.FC = () => {
 
             {/* footer content-4 */}
             <div
-              className="pt-0 pb-8 overflow-x-hidden lg:col-span-3 2xl:col-span-3"
+              className="pt-0 pb-8 overflow-x-hidden lg:col-span-2 2xl:col-span-3"
               data-aos="fade-up"
               data-aos-duration="1000"
             >
