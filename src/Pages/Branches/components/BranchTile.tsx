@@ -62,75 +62,55 @@ const BranchTile: React.FC<BranchTileProps> = ({
       />
       
       {/* Content container with relative positioning for hover overlay */}
-      <div className="relative overflow-hidden">
+      <div className="relative">
         
-        {/* Visible content - branch name only */}
-        <div className="px-4 lg:px-[30px] pt-5 pb-8">
-          {/* Combined branch name - no separate location line */}
-          <h3 className="text-xl sm:text-2xl lg:text-2xl xl:text-[28px] leading-7 md:leading-8 lg:leading-10 text-lightBlack dark:text-white font-semibold font-Garamond text-center group-hover:opacity-0 transition-opacity duration-500">
+        {/* Visible content - branch name and manager name */}
+        <div className="px-4 lg:px-[30px] pt-5">
+          {/* Combined branch name */}
+          <h3 className="text-xl sm:text-2xl lg:text-2xl xl:text-[28px] leading-7 md:leading-8 lg:leading-10 text-lightBlack dark:text-white font-semibold font-Garamond text-center hover:opacity-0">
             {displayName}
           </h3>
+          {/* Manager name - visible normally, hidden on hover like PersonTile */}
+          <p className="text-sm md:text-base leading-[26px] text-Gray dark:text-lightGray font-normal font-Lora text-center group-hover:text-white dark:hover:text-white hover:opacity-0">
+            {managerName}
+          </p>
         </div>
 
-        {/* Hover reveal panel - positioned to not show when not hovered */}
-        {/* Uses bg-normalBlack (green) instead of bg-khaki (yellow) for consistency */}
-        <div className="p-6 bg-normalBlack flex items-center justify-center absolute bottom-[-100%] group-hover:bottom-0 transition-all duration-500 left-0 right-0 h-full">
+        {/* Hover reveal panel - follows PersonTile pattern exactly */}
+        {/* Uses bg-normalBlack (green) and proper positioning like PersonTile */}
+        <div className="p-[30px] bg-normalBlack grid items-center justify-center absolute bottom-[-150px] sm:bottom-[-170px] md:bottom-[-150px] group-hover:bottom-[-38px] lg:group-hover:bottom-[-30px] transition-all duration-500 left-0 right-0">
           
-          {/* Main content container with two sections: contact info and map */}
-          <div className="grid grid-cols-5 gap-6 w-full h-full items-center">
+          {/* Contact information and map in grid layout */}
+          <div className="grid grid-cols-3 gap-4 w-full items-center">
             
-            {/* Contact information section - takes 3/5 of the width for bigger fonts */}
-            <div className="col-span-3 text-center lg:text-left text-white space-y-3">
+            {/* Contact information section - takes 2/3 of the width */}
+            <div className="col-span-2 text-center text-white space-y-1">
               
-              {/* Branch name in hover */}
-              <h4 className="text-white font-semibold text-lg lg:text-xl font-Garamond leading-tight">
-                {displayName}
-              </h4>
-              
-              {/* Branch phone number */}
-              <p className="text-white font-medium text-base lg:text-lg font-Lora leading-relaxed">
-                📞 {phoneNumber}
+              {/* Branch phone number - no emoji, better font */}
+              <p className="text-white font-medium leading-6 text-lg lg:text-xl font-Garamond">
+                {phoneNumber}
               </p>
               
-              {/* Branch address */}
-              <p className="text-white font-medium text-sm lg:text-base font-Lora leading-relaxed">
-                📍 {address}
-              </p>
-              
-              {/* Manager email if available */}
+              {/* Manager email if available - no emoji, better font */}
               {managerEmail && (
-                <p className="text-white font-medium text-sm lg:text-base font-Lora leading-relaxed break-all">
-                  ✉️ {managerEmail}
+                <p className="text-white font-medium leading-6 text-lg lg:text-xl font-Garamond break-all">
+                  {managerEmail}
                 </p>
               )}
             </div>
             
-            {/* Map section - takes 2/5 of the width, positioned to the right */}
-            <div className="col-span-2 flex items-center justify-center">
+            {/* Map section - takes 1/3 of the width */}
+            <div className="col-span-1 flex items-center justify-center">
               <div className="w-full">
                 <BranchMap 
                   coordinates={coordinates}
                   location={location}
-                  height="140px"
+                  height="80px"
                   width="100%"
                   zoom={15}
                   showMarker={true}
-                  className="rounded-lg border-2 border-white/20 hover:border-white/40 transition-all duration-300"
+                  className="rounded-md border border-white/20"
                 />
-                {/* View larger map link */}
-                <div className="text-center mt-2">
-                  <button 
-                    className="text-white/80 hover:text-white text-sm font-Lora underline underline-offset-2 hover:no-underline transition-all duration-300"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${coordinates.latitude},${coordinates.longitude}`;
-                      window.open(googleMapsUrl, '_blank');
-                    }}
-                    aria-label={`View ${location} on larger map`}
-                  >
-                    View on Map
-                  </button>
-                </div>
               </div>
             </div>
           </div>
