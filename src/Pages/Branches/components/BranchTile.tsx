@@ -40,9 +40,10 @@ const BranchTile: React.FC<BranchTileProps> = ({
   // Fallback values for missing data
   const managerImage = manager.image || "/images/inner/member-1.jpg";
   const managerName = manager.name || "Branch Manager";
-  const managerPosition = manager.position || "Manager";
-  const managerPhone = manager.phone || phoneNumber;
   const managerEmail = manager.email || "";
+  
+  // Create combined branch name (e.g., "Bharatpur Branch" instead of "Chitwan Branch" + "Bharatpur")
+  const displayName = name.includes(location) ? name : `${location} Branch`;
   
   return (
     // Main container with member class for consistent styling with PersonTile
@@ -53,7 +54,7 @@ const BranchTile: React.FC<BranchTileProps> = ({
       <img 
         src={managerImage} 
         className="w-full object-cover" 
-        alt={`${managerName} - ${name}`}
+        alt={`${managerName} - ${displayName}`}
         onError={(e) => {
           // Fallback image if manager photo fails to load
           e.currentTarget.src = "/images/inner/member-1.jpg";
@@ -61,95 +62,67 @@ const BranchTile: React.FC<BranchTileProps> = ({
       />
       
       {/* Content container with relative positioning for hover overlay */}
-      <div className="relative">
+      <div className="relative overflow-hidden">
         
-        {/* Visible content - branch name and location */}
-        <div className="px-4 lg:px-[30px] pt-5">
-          {/* Branch name - similar styling to PersonTile name */}
-          <h3 className="text-xl sm:text-2xl lg:text-2xl xl:text-[28px] leading-7 md:leading-8 lg:leading-10 text-lightBlack dark:text-white font-semibold font-Garamond text-center hover:opacity-0 transition-opacity duration-500">
-            {name}
+        {/* Visible content - branch name only */}
+        <div className="px-4 lg:px-[30px] pt-5 pb-8">
+          {/* Combined branch name - no separate location line */}
+          <h3 className="text-xl sm:text-2xl lg:text-2xl xl:text-[28px] leading-7 md:leading-8 lg:leading-10 text-lightBlack dark:text-white font-semibold font-Garamond text-center group-hover:opacity-0 transition-opacity duration-500">
+            {displayName}
           </h3>
-          
-          {/* Branch location - similar to PersonTile position */}
-          <p className="text-sm md:text-base leading-[26px] text-Gray dark:text-lightGray font-normal font-Lora text-center group-hover:text-white dark:hover:text-white hover:opacity-0 transition-all duration-500">
-            {location}
-          </p>
-          
-          {/* Manager info - shows on normal state */}
-          <div className="mt-2 group-hover:opacity-0 transition-opacity duration-500">
-            <p className="text-xs text-center text-gray-600 dark:text-gray-400 font-Lora">
-              Manager: {managerName}
-            </p>
-          </div>
         </div>
 
-        {/* Hover reveal panel - similar to PersonTile but with branch-specific content */}
+        {/* Hover reveal panel - positioned to not show when not hovered */}
         {/* Uses bg-normalBlack (green) instead of bg-khaki (yellow) for consistency */}
-        <div className="p-[30px] bg-normalBlack grid items-center justify-center absolute bottom-[-250px] sm:bottom-[-270px] md:bottom-[-250px] group-hover:bottom-[-38px] lg:group-hover:bottom-[-30px] transition-all duration-500 left-0 right-0">
+        <div className="p-6 bg-normalBlack flex items-center justify-center absolute bottom-[-100%] group-hover:bottom-0 transition-all duration-500 left-0 right-0 h-full">
           
           {/* Main content container with two sections: contact info and map */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
+          <div className="grid grid-cols-5 gap-6 w-full h-full items-center">
             
-            {/* Contact information section */}
-            <div className="text-center lg:text-left text-white space-y-2">
+            {/* Contact information section - takes 3/5 of the width for bigger fonts */}
+            <div className="col-span-3 text-center lg:text-left text-white space-y-3">
+              
+              {/* Branch name in hover */}
+              <h4 className="text-white font-semibold text-lg lg:text-xl font-Garamond leading-tight">
+                {displayName}
+              </h4>
               
               {/* Branch phone number */}
-              <p className="text-white font-medium leading-6 text-base lg:text-lg font-Garamond">
-                {phoneNumber}
+              <p className="text-white font-medium text-base lg:text-lg font-Lora leading-relaxed">
+                📞 {phoneNumber}
               </p>
               
               {/* Branch address */}
-              <p className="text-white font-medium leading-5 text-sm lg:text-base font-Lora">
-                {address}
+              <p className="text-white font-medium text-sm lg:text-base font-Lora leading-relaxed">
+                📍 {address}
               </p>
               
-              {/* Divider line */}
-              <div className="border-t border-white/30 my-3"></div>
-              
-              {/* Manager contact information */}
-              <div className="space-y-1">
-                <p className="text-white font-medium leading-5 text-sm font-Garamond">
-                  {managerName}
+              {/* Manager email if available */}
+              {managerEmail && (
+                <p className="text-white font-medium text-sm lg:text-base font-Lora leading-relaxed break-all">
+                  ✉️ {managerEmail}
                 </p>
-                <p className="text-white/90 font-normal leading-4 text-xs font-Lora">
-                  {managerPosition}
-                </p>
-                
-                {/* Manager phone if different from branch phone */}
-                {managerPhone && managerPhone !== phoneNumber && (
-                  <p className="text-white/90 font-normal leading-4 text-xs font-Lora">
-                    Direct: {managerPhone}
-                  </p>
-                )}
-                
-                {/* Manager email if available */}
-                {managerEmail && (
-                  <p className="text-white/90 font-normal leading-4 text-xs font-Lora break-all">
-                    {managerEmail}
-                  </p>
-                )}
-              </div>
+              )}
             </div>
             
-            {/* Map section - shows branch location */}
-            <div className="flex items-center justify-center">
-              <div className="w-full lg:w-auto">
+            {/* Map section - takes 2/5 of the width, positioned to the right */}
+            <div className="col-span-2 flex items-center justify-center">
+              <div className="w-full">
                 <BranchMap 
                   coordinates={coordinates}
                   location={location}
-                  height="120px"
+                  height="140px"
                   width="100%"
                   zoom={15}
                   showMarker={true}
-                  className="rounded-md border-2 border-white/20 hover:border-white/40 transition-all duration-300"
+                  className="rounded-lg border-2 border-white/20 hover:border-white/40 transition-all duration-300"
                 />
                 {/* View larger map link */}
                 <div className="text-center mt-2">
                   <button 
-                    className="text-white/80 hover:text-white text-xs font-Lora underline underline-offset-2 hover:no-underline transition-all duration-300"
+                    className="text-white/80 hover:text-white text-sm font-Lora underline underline-offset-2 hover:no-underline transition-all duration-300"
                     onClick={(e) => {
                       e.preventDefault();
-                      // TODO: Open larger map modal or redirect to Google Maps
                       const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${coordinates.latitude},${coordinates.longitude}`;
                       window.open(googleMapsUrl, '_blank');
                     }}
@@ -168,20 +141,3 @@ const BranchTile: React.FC<BranchTileProps> = ({
 };
 
 export default BranchTile;
-
-// Usage example:
-// <BranchTile 
-//   id="1"
-//   name="Kathmandu Main Branch"
-//   location="Kathmandu"
-//   address="New Road, Kathmandu 44600"
-//   phoneNumber="+977-1-4000001"
-//   manager={{
-//     name: "Rajesh Sharma",
-//     position: "Branch Manager",
-//     image: "/images/inner/member-1.jpg",
-//     phone: "+977-1-4000001",
-//     email: "rajesh.sharma@globalimebank.com"
-//   }}
-//   coordinates={{ latitude: 27.7172, longitude: 85.3240 }}
-// />
