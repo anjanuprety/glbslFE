@@ -48,141 +48,23 @@ const Rooms: React.FC = () => {
           data-aos="fade-down"
           data-aos-duration="1000"
         >
-          <div className="p-3">
-            <p className="text-sm text-lightGray ml-3">Check In</p>
-            <div className="flex items-center pt-[2px] ">
-              <input
-                type="date"
-                className="border-none bg-transparent focus:outline-transparent focus:border-transparent text-white focus:border-none outline-0  text-sm lg:text-base focus:ring-transparent"
-                required
-              />
+          <div className="col-span-6 md:col-span-5 lg:col-span-5 flex items-center justify-center px-6 gap-6">
+            <div className="text-center">
+              <p className="text-white font-Garamond font-bold" style={{ fontSize: "150%" }}>
+                GURANS LAGHUBITTA BITTIYA SANSTHA LIMITED
+              </p>
+              <p className="text-lightGray font-bold mt-1" style={{ fontSize: "150%" }}>
+                गरिबको मित्र गुराँस लघुवीत्त
+              </p>
+            </div>
+            <div>
+              <Link to="/about">
+                <button style={{ marginLeft: '100px' }} className="w-[142px] h-10 lg:h-[50px] text-[15px] bg-khaki font-Garamond border border-khaki text-white mx-auto relative z-10 before:absolute before:top-0 before:right-0 before:-z-10 before:w-0 before:h-full before:bg-lightBlack before:transition-all before:duration-500 hover:before:w-full hover:before:left-0">
+                  Learn more
+                </button>
+              </Link>
             </div>
           </div>
-          <div className="p-3">
-            <p className="text-sm text-lightGray ml-3">Check Out</p>
-            <div className="flex items-center pt-[2px] ">
-              <input
-                type="date"
-                className="border-none bg-transparent focus:outline-transparent focus:border-transparent text-white focus:border-none outline-0  text-sm lg:text-base focus:ring-transparent"
-                defaultValue="26 August, 2023"
-                required
-              />
-            </div>
-          </div>
-          <div className="p-3">
-            <Link
-              className="text-white px-3 py-2 w-full block transition-all duration-300 group relative"
-              to="#"
-            >
-              <span
-                className="flex items-center justify-between text-sm text-lightGray cursor-pointer"
-                onClick={() => setOpen(!open)}
-                title="click hear to open and close rooms extender"
-              >
-                Rooms
-                <BiChevronDown className="" />
-              </span>
-              <div className="pt-[10px] text-sm sm:text-base">{room} Room</div>
-              <div className="absolute pt-5  z-20">
-                <div
-                  className={`shadow-2xl ${
-                    open ? "" : "hidden"
-                  } rounded-sm bg-white text-black w-60 text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 `}
-                >
-                  <div className="py-2 px-5 group cursor-pointer">
-                    <li className="flex items-center justify-between">
-                      <div className="">{room} Room</div>
-                      <div className="flex items-center space-x-2">
-                        <button
-                          className="w-5 h-5 md:w-6 md:h-6 bg-khaki text-white"
-                          onClick={() => setRoom(room + 1)}
-                        >
-                          +
-                        </button>
-                        <button
-                          className="w-5 h-5 md:w-6 md:h-6 bg-khaki text-white"
-                          onClick={() => setRoom(room - 1)}
-                          disabled={room <= 1}
-                        >
-                          -
-                        </button>
-                      </div>
-                    </li>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
-
-          <div className="p-3">
-            <div
-              className={`text-white   px-3 py-2 w-full block transition-all duration-300 group relative `}
-              
-            >
-              <span
-                className="flex items-center justify-between text-sm text-lightGray cursor-pointer"
-                onClick={() => setGuestOpen(!guestOpen)}
-                title="click hear to open and close Adult And Children extender"
-              >
-                Guests
-                <BiChevronDown className="" />
-              </span>
-              <div className="pt-[10px] text-sm sm:text-base">
-                {adult} Adult, {children} Child
-              </div>
-              <div className="absolute pt-5  z-20 ml-[-120px] sm:ml-0">
-                <div
-                  className={`shadow-2xl ${
-                    guestOpen ? "" : "hidden"
-                  } rounded-sm bg-white text-black w-60 text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 left`}
-                >
-                  <div className="py-2 px-5 group cursor-pointer">
-                    <li className="flex items-center justify-between">
-                      <div className="">{adult} Adult</div>
-                      <div className="flex items-center space-x-2">
-                        <button
-                          className="w-5 h-5 md:w-6 md:h-6 bg-khaki text-white"
-                          onClick={() => setAdult(adult + 1)}
-                        >
-                          +
-                        </button>
-                        <button
-                          className="w-5 h-5 md:w-6 md:h-6 bg-khaki text-white"
-                          onClick={() => setAdult(adult - 1)}
-                          disabled={adult <= 1}
-                        >
-                          -
-                        </button>
-                      </div>
-                    </li>
-                    <li className="flex items-center justify-between mt-1">
-                      <div className="">{children} Child</div>
-                      <div className="flex items-center space-x-2">
-                        <button
-                          className="w-5 h-5 md:w-6 md:h-6 bg-khaki text-white"
-                          onClick={() => setChildren(children + 1)}
-                        >
-                          +
-                        </button>
-                        <button
-                          className="w-5 h-5 md:w-6 md:h-6 bg-khaki text-white"
-                          onClick={() => setChildren(children - 1)}
-                          disabled={children < 1}
-                        >
-                          -
-                        </button>
-                      </div>
-                    </li>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <Link to="/find_room">
-            <button className="w-[142px] h-10 lg:h-[50px] text-[15px] bg-khaki font-Garamond border border-khaki text-white mx-auto col-span-2  md:col-span-1 lg:col-span-1 relative z-10 before:absolute before:top-0 before:right-0 before:-z-10 before:w-0 before:h-full before:bg-lightBlack before:transition-all before:duration-500 hover:before:w-full hover:before:left-0">
-              Checkout Now
-            </button>
-          </Link>
         </div>
       </div>
       {/* Rooms section heading */}

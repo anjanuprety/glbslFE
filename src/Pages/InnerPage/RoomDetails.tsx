@@ -253,80 +253,27 @@ const RoomDetails: React.FC = () => {
                   Booking
                 </h4>
                 <div
-                  className="grid items-center gap-[18px] "
+                  className="grid items-center gap-[18px]"
                   data-aos="zoom-in-up"
                   data-aos-duration="1000"
                 >
-                  <div className="bg-white dark:bg-lightBlack h-10 lg:h-[50px] 2xl:h-[56px] grid items-center justify-start px-3 sm:px-5 2xl:px-6 ">
-                    <p className="text-sm md:text-[15px] leading-[26px] font-Lora font-medium text-lightBlack dark:text-white">
-                      Check In -{" "}
-                      <span className="text-khaki">
-                        {bookingsData && bookingsData.selectedInDate
-                          ? new Date(bookingsData.selectedInDate)
-                              .toDateString()
-                              .slice(4)
-                          : new Date().toDateString().slice(4)}
-                      </span>
-                    </p>
-                  </div>
-                  <div className="bg-white dark:bg-lightBlack h-10 lg:h-[50px] 2xl:h-[56px] grid items-center justify-start px-3 sm:px-5 2xl:px-6">
-                    <p className="text-sm md:text-[15px] leading-[26px] font-Lora font-medium text-lightBlack dark:text-white">
-                      Check Out -{" "}
-                      <span className="text-khaki">
-                        {bookingsData && bookingsData.selectedOutDate
-                          ? new Date(bookingsData.selectedOutDate)
-                              .toDateString()
-                              .slice(4)
-                          : new Date(
-                              new Date().setDate(new Date().getDate() + 3)
-                            )
-                              .toDateString()
-                              .slice(4)}
-                      </span>{" "}
-                    </p>
-                  </div>
-                  <div className="bg-white dark:bg-lightBlack h-10 lg:h-[50px] 2xl:h-[56px] grid items-center justify-start px-3 sm:px-5 2xl:px-6">
-                    <p className="text-sm md:text-[15px] leading-[26px] font-Lora font-medium text-lightBlack dark:text-white">
-                      Adult -{" "}
-                      <span className="text-khaki">
-                        0
-                        {bookingsData && bookingsData.adult
-                          ? bookingsData.adult
-                          : "2"}
-                      </span>{" "}
-                    </p>
-                  </div>
-                  <div className="bg-white dark:bg-lightBlack h-10 lg:h-[50px] 2xl:h-[56px] grid items-center justify-start px-3 sm:px-5 2xl:px-6">
-                    <p className="text-sm md:text-[15px] leading-[26px] font-Lora font-medium text-lightBlack dark:text-white">
-                      Children -{" "}
-                      <span className="text-khaki">
-                        0
-                        {bookingsData && bookingsData.children
-                          ? bookingsData.children
-                          : "1"}
-                      </span>{" "}
-                    </p>
-                  </div>
-                  <div className="bg-white dark:bg-lightBlack h-10 lg:h-[50px] 2xl:h-[56px] grid items-center justify-start px-3 sm:px-5 2xl:px-6">
-                    <p className="text-sm md:text-[15px] leading-[26px] font-Lora font-medium text-lightBlack dark:text-white">
-                      Rooms -{" "}
-                      <span className="text-khaki">
-                        0
-                        {bookingsData && bookingsData.room
-                          ? bookingsData.room
-                          : "1"}
-                      </span>{" "}
-                    </p>
-                  </div>
+                  <div className="text-center">
+                      <p className="text-lightBlack dark:text-white font-Garamond font-bold" style={{ fontSize: "150%" }}>
+                        GURANS LAGHUBITTA BITTIYA SANSTHA LIMITED
+                      </p>
+                      <p className="text-gray dark:text-lightGray font-bold mt-2" style={{ fontSize: "150%" }}>
+                        गरिबको मित्र गुराँस लघुवीत्त
+                      </p>
+                    </div>
                 </div>
               </div>
 
               <div className="py-5">
                 <button
                   className="bg-khaki w-full h-10 2xl:h-[50px] text-white font-Lora font-semibold px-5 hover-animBg after:rounded-none after:bg-normalBlack"
-                  onClick={() => setAlert()}
+                  onClick={() => navigate('/about')}
                 >
-                  Confirm Booking
+                  Learn more
                 </button>
               </div>
             </div>
