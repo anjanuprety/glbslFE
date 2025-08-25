@@ -142,13 +142,13 @@ const MemberWelfareServicesPage: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a 
                   href="/contact" 
-                  className="btn-secondary inline-block"
+                  className="inline-block bg-khaki text-white px-8 py-3 rounded hover:bg-opacity-90 transition-all duration-300 font-medium uppercase font-Garamond text-center"
                 >
                   Contact Welfare Team
                 </a>
                 <a 
                   href="/branches" 
-                  className="btn-items inline-block"
+                  className="inline-block border border-khaki text-khaki hover:bg-khaki hover:text-white px-8 py-3 rounded transition-all duration-300 font-medium uppercase font-Garamond text-center"
                 >
                   Visit Branch
                 </a>
