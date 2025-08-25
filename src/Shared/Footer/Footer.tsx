@@ -35,7 +35,18 @@ const Footer: React.FC = () => {
                       className="flex items-center text-lightGray font-Lora font-normal text-sm sm:text-base leading-[26px] mt-2 hover:text-white"
                     >
                       <IoIosCall className="text-khaki w-5 h-5 mr-3 2xl:mr-4" size={14} />
-                      <span>021-464453</span>
+                      <span>021-464453
+                        <br />
+                        (Corporate Office)
+                      </span>
+                    </a>
+
+                    <a
+                      href="tel:18105000049"
+                      className="flex items-center text-lightGray font-Lora font-normal text-sm sm:text-base leading-[26px] hover:text-white"
+                    >
+                      <IoIosCall className="text-khaki w-5 h-5 mr-3 2xl:mr-4" size={14} />
+                      <span>Toll Free No. 18105000049 (NTC) <br /> पैसा नलाग्ने न‌ं. (नमस्ते)</span>
                     </a>
 
                     <a
@@ -120,7 +131,7 @@ const Footer: React.FC = () => {
               <h1 className="text-lg sm:text-xl md:text-[22px] leading-[38px] font-medium text-white relative font-Garamond before:w-7 before:h-[1px] before:bg-khaki before:absolute before:left-0 before:top-10 uppercase ">
                 LOCATE US:
               </h1>
-              <div className="space-y-4 py-[36px]">
+              <div className="space-y-4 py-[44px]">
                 {/* <p className="text-lightGray font-Lora font-normal text-sm sm:text-base leading-[26px]">Open with google maps</p> */}
 
                 {/* Map preview (approx 300x200) — opens maps.app link when clicked */}
@@ -130,7 +141,7 @@ const Footer: React.FC = () => {
                       title="GLBSL Location"
                       src="https://www.google.com/maps?q=Buddhiganga-1%20PuspalalChowk%20Morang%20Nepal&output=embed"
                       width="100%"
-                      height="200"
+                      height="193"
                       style={{ border: 0, display: "block" }}
                       loading="lazy"
                     />
@@ -150,7 +161,16 @@ const Footer: React.FC = () => {
           </div>
 
           <div className="text-center py-5 2xl:py-7 bg-[#161616] text-sm md:text-base text-lightGray font-Lora font-normal">
-            {` © ${new Date().getFullYear()} , Royella. All Rights Reserved.`}
+            {` © All Rights Reserved. Gurans Laghubitta Bittiya Sanstha Limited. ${new Date().getFullYear()} `}
+            <br />
+            <a
+              href="https://rootalpine.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-xs md:text-sm text-lightGray opacity-60 font-Lora font-normal hover:underline"
+            >
+              Crafted by Alpine Root Technologies Pvt. Ltd.
+            </a>
           </div>
         </div>
       </footer>
