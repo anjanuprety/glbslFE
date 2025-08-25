@@ -10,6 +10,12 @@ import { AboutUs, BoardOfDirectors, ManagementTeam, CorporateTeam, Committee, Or
 // Branches page
 import BranchesPage from "../Pages/Branches/BranchesPage";
 
+// Service pages
+import LoanServicesPage from "../Pages/Services/services/LoanServices/LoanServicesPage";
+import SavingsServicesPage from "../Pages/Services/services/SavingsServices/SavingsServicesPage";
+import RemittanceServicesPage from "../Pages/Services/services/RemittanceServices/RemittanceServicesPage";
+import MemberWelfareServicesPage from "../Pages/Services/services/MemberWelfare/MemberWelfareServicesPage";
+
 // Inner pages
 import Room from "../Pages/InnerPage/Room";
 import FindRoom from "../Pages/InnerPage/FindRoom";
@@ -77,6 +83,22 @@ const router = createBrowserRouter([
       {
         path: "/services",
         element: <Services />,
+      },
+      {
+        path: "/services/loan",
+        element: <LoanServicesPage />,
+      },
+      {
+        path: "/services/savings",
+        element: <SavingsServicesPage />,
+      },
+      {
+        path: "/services/remittance",
+        element: <RemittanceServicesPage />,
+      },
+      {
+        path: "/services/member-welfare",
+        element: <MemberWelfareServicesPage />,
       },
       {
         path: "/service_details",

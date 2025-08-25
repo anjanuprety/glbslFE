@@ -186,6 +186,7 @@ Update `src/Router/Router.tsx` to include:
 - Follow the project's color scheme and typography
 - Maintain consistent spacing and layout patterns
 - Use existing component patterns (similar to PersonTile, BranchTile)
+ - Ensure individual service detail pages follow the overall website theme: reuse the global header/footer and shared layout components, adhere to the project's color palette and typography, and match spacing and interaction patterns so service pages feel consistent with the rest of the site.
 
 ### 7. Component Development Standards
 
