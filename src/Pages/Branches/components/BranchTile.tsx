@@ -71,14 +71,14 @@ const BranchTile: React.FC<BranchTileProps> = ({
             {displayName}
           </h3>
           {/* Manager name - visible normally, hidden on hover like PersonTile */}
-          <p className="text-sm md:text-base leading-[26px] text-Gray dark:text-lightGray font-normal font-Lora text-center group-hover:text-white dark:hover:text-white hover:opacity-0">
+          <p className="text-base md:text-lg leading-[26px] text-Gray dark:text-lightGray font-normal font-Lora text-center group-hover:text-white dark:hover:text-white hover:opacity-0">
             {managerName}
           </p>
         </div>
 
         {/* Hover reveal panel - follows PersonTile pattern exactly */}
         {/* Uses bg-normalBlack (green) and proper positioning like PersonTile */}
-        <div className="p-[30px] bg-normalBlack grid items-center justify-center absolute bottom-[-150px] sm:bottom-[-170px] md:bottom-[-150px] group-hover:bottom-[-38px] lg:group-hover:bottom-[-30px] transition-all duration-500 left-0 right-0">
+        <div className="p-[30px] bg-normalBlack grid items-center justify-center absolute bottom-[-200px] sm:bottom-[-220px] md:bottom-[-200px] group-hover:bottom-[-38px] lg:group-hover:bottom-[-30px] transition-all duration-500 left-0 right-0">
           
           {/* Contact information and map in grid layout */}
           <div className="grid grid-cols-3 gap-4 w-full items-center">
