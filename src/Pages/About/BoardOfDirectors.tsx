@@ -16,11 +16,11 @@ const BoardOfDirectors: React.FC = () => {
         setMembers(
           data.map((d: any) => ({
             id: d.id,
-            name: d.attributes.name,
-            position: d.attributes.position,
-            email: d.attributes.email,
-            phone: d.attributes.phone,
-            image: getStrapiMediaUrl(d.attributes.image?.data?.attributes?.url || ""),
+            name: d.name,
+            position: d.position,
+            email: d.email,
+            phone: d.phone,
+            image: getStrapiMediaUrl(d.image?.url || ""),
           }))
         );
       } catch (err) {

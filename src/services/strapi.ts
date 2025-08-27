@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_STRAPI_API_URL || 'http://localhost:1337';
+const API_URL = (import.meta as any).env.VITE_STRAPI_API_URL || 'http://localhost:1337';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -20,7 +20,7 @@ export const aboutService = {
   getAboutUs: async () => {
     const locale = getLocale();
     const res = await api.get(`/api/about-us-setting?locale=${locale}&populate=*`);
-    return res.data.data?.attributes || null;
+    return res.data.data || null;
   },
   getBoardMembers: async () => {
     const locale = getLocale();

@@ -44,7 +44,10 @@ const AboutUs: React.FC = () => {
               ABOUT US
             </h1>
             <p className="font-Lora leading-7 lg:leading-[26px] text-lightGray font-normal text-sm sm:text-base">
-              {loading ? 'Loading...' : error ? error : content?.aboutUsDescription || 'Discover our story, vision, and commitment to excellence in hospitality'}
+              {loading ? 'Loading...' : error ? error : (
+                content?.AboutUsDescription?.[0]?.children?.[0]?.text || 
+                'Discover our story, vision, and commitment to excellence in financial services'
+              )}
             </p>
           </div>
 
@@ -56,7 +59,7 @@ const AboutUs: React.FC = () => {
                   Our Vision
                 </h2>
                 <p className="text-base sm:text-lg leading-7 lg:leading-8 text-lightGray dark:text-lightGray font-Lora">
-                  {content?.vision || 'To be the premier destination for luxury hospitality, setting new standards in comfort, service excellence, and memorable experiences.'}
+                  {content?.Vision?.[0]?.children?.[0]?.text || 'To be the premier destination for luxury hospitality, setting new standards in comfort, service excellence, and memorable experiences.'}
                 </p>
               </div>
 
@@ -66,10 +69,10 @@ const AboutUs: React.FC = () => {
                   Our Mission
                 </h2>
                 <p className="text-base sm:text-lg leading-7 lg:leading-8 text-lightGray dark:text-lightGray font-Lora mb-4">
-                  {content?.mission || 'We are committed to providing exceptional hospitality services through personalized attention, world-class amenities, and sustainable practices.'}
+                  {content?.Mission?.[0]?.children?.[0]?.text || 'We are committed to providing exceptional hospitality services through personalized attention, world-class amenities, and sustainable practices.'}
                 </p>
                 <p className="text-base sm:text-lg leading-7 lg:leading-8 text-lightGray dark:text-lightGray font-Lora">
-                  {content?.missionSecond || 'Our dedicated team strives to exceed expectations while fostering meaningful connections and contributing positively to our local community.'}
+                  {content?.Goal?.[0]?.children?.[0]?.text || 'Our dedicated team strives to exceed expectations while fostering meaningful connections and contributing positively to our local community.'}
                 </p>
               </div>
 
@@ -123,7 +126,7 @@ const AboutUs: React.FC = () => {
             {/* Image Section */}
             <div className="lg:order-last">
               <img 
-                src={content?.aboutUsImage ? getStrapiMediaUrl(content.aboutUsImage.data.attributes.url) : '/images/inner/about-thumb.png'} 
+                src={content?.AboutUsImage ? getStrapiMediaUrl(content.AboutUsImage.url) : '/images/inner/about-thumb.png'} 
                 alt="About Us" 
                 className="w-full rounded-lg shadow-lg"
               />
