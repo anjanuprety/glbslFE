@@ -13,21 +13,18 @@ const Action: React.FC = () => {
             data-aos="fade-up"
             data-aos-duration="1000"
           >
-            <h5 className="text-base text-khaki leading-[26px] font-semibold">
-              MANAGER
+            <h5 className="text-[32px] text-khaki leading-[26px] font-semibold">
+              MESSAGE FROM THE CEO
             </h5>
             <h1 className="text-[22px] sm:text-2xl md:text-[28px] xl:text-[32px] 2xl:text-[38px] leading-[38px] lg:leading-[44px] text-lightBlack dark:text-white font-semibold">
-              LUXURY BEST HOTEL IN CITY CALIFORNIA, USA
+              Serving marginalized communities with microcredit, savings, and financial literacy
             </h1>
             <p className="text-sm sm:text-base font-Lora text-gray dark:text-lightGray font-normal leading-[26px]">
-              Rapidiously myocardinate cross-platform intellectual capital after
-              model. Appropriately create interactive infrastructures after main
-              Holisticly facilitate stand-alone inframe
+              The microfinance sector in Nepal provides crucial financial access in remote, underserved areas. GLBSL, a province-level institution supported by 24 promoters, serves marginalized communities in Province-1 with microcredit, savings, microinsurance, remittances, and financial literacy programs. It is expanding outreach, emphasizes client protection, and continually refines products and delivery to better meet clients' needs.
             </p>
-            <p className="text-sm sm:text-base font-Lora italic leading-[26px] underline  text-gray dark:text-lightGray font-normal ">
-              “ Model. Appropriately create interactive infrastructures after
-              main Holisticly facilitate stand-alone inframe of the world ”
-            </p>
+            {/* <p className="text-sm sm:text-base font-Lora italic leading-[26px] underline  text-gray dark:text-lightGray font-normal ">
+              “Future link to the YouTube Video ”
+            </p> */}
             <div className="flex items-center space-x-6 pt-5">
               <img
                 src="/images/home-1/call-do-action-img.png"
@@ -37,11 +34,11 @@ const Action: React.FC = () => {
 
               <div className="">
                 <h4 className="text-lg sm:text-[22px] leading-[26px] text-lightBlack dark:text-white font-semibold font-Garamond">
-                  John D. Alexon
+                  Bishnu Prasad Upadhayay
                 </h4>
                 <p className="pt-1 text-base leading-[26px] font-normal text-gray dark:text-lightGray flex items-center font-Lora">
                   <span className="w-5 h-[1px] inline-block text-khaki bg-khaki mr-2"></span>
-                  Manger
+                  CEO, Gurans Laghubitta Bittiya Sanstha Ltd.
                 </p>
               </div>
             </div>

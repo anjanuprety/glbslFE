@@ -48,7 +48,7 @@ const BranchTile: React.FC<BranchTileProps> = ({
   return (
     // Main container with member class for consistent styling with PersonTile
     // Uses same hover animation patterns but adapted for branch information
-    <div className={`member group ${className}`} data-id={id}>
+    <div className={`member group hover:scale-105 transition-all duration-500 ${className}`} data-id={id}>
       
       {/* Manager image - similar to PersonTile image display */}
       <img 
@@ -67,11 +67,11 @@ const BranchTile: React.FC<BranchTileProps> = ({
         {/* Visible content - branch name and manager name */}
         <div className="px-4 lg:px-[30px] pt-5">
           {/* Combined branch name */}
-          <h3 className="text-xl sm:text-2xl lg:text-2xl xl:text-[28px] leading-7 md:leading-8 lg:leading-10 text-lightBlack dark:text-white font-semibold font-Garamond text-center hover:opacity-0">
+          <h3 className="text-xl sm:text-2xl lg:text-2xl xl:text-[28px] leading-7 md:leading-8 lg:leading-10 text-lightBlack dark:text-white font-semibold font-Garamond text-center group-hover:text-white transition-all duration-500">
             {displayName}
           </h3>
-          {/* Manager name - visible normally, hidden on hover like PersonTile */}
-          <p className="text-base md:text-lg leading-[26px] text-Gray dark:text-lightGray font-normal font-Lora text-center group-hover:text-white dark:hover:text-white hover:opacity-0">
+          {/* Manager name - visible normally, transitions to white on hover like PersonTile */}
+          <p className="text-base md:text-lg leading-[26px] text-Gray dark:text-lightGray font-normal font-Lora text-center group-hover:text-white transition-all duration-500">
             {managerName}
           </p>
         </div>

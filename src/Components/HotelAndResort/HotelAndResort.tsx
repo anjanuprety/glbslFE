@@ -56,10 +56,10 @@ const HotelAndResort: React.FC = () => {
           {/* text */}
           <div className="flex-1 font-Garamond  mt-5 md:mt-0 md:pl-8 p-5  lg:pl-10 2xl:pl-14">
             <h5 className="text-base text-khaki leading-[26px] font-medium">
-              LUXURY HOTEL AND RESORT
+              SERVING THE NATION
             </h5>
             <h1 className="text-[22px] sm:text-2xl md:text-[21px]  xl:text-3xl 2xl:text-[38px] leading-6 md:leading-7 lg:leading-[30px] 2xl:leading-[44px] text-lightBlack dark:text-white font-semibold my-4">
-              LUXURY BEST HOTEL IN CITY CALIFORNIA, USA
+              YOUR TRUSTED MICROFINANCE IN NEPAL
             </h1>
             <p className="text-sm xl:text-base md:text-sm lg:text-base font-Lora text-gray dark:text-lightGray font-normal leading-[26px]">
               Rapidiously myocardinate cross-platform intellectual capital after
@@ -70,18 +70,34 @@ const HotelAndResort: React.FC = () => {
             <div className="flex items-center mt-4 md:mt-3 lg:mt-4">
               <div>
                 <h1 className="text-4xl md:text-4xl lg:text-5xl xl:text-6xl  3xl:text-[70px] leading-[42px] text-khaki font-medium ">
-                  250 +
+                  23400+
                 </h1>
                 <p className="text-sm sm:text-base md:text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray font-normal font-Lora pt-5 xl:pt-7 md:w-[94px] lg:w-full">
-                  Luxury Rooms
+                  MEMBERS
                 </p>
               </div>
               <div className="ml-10 xl:ml-[60px] 2xl:ml-20 3xl:ml-[100px]">
                 <h1 className="text-4xl md:text-4xl lg:text-5xl xl:text-6xl  3xl:text-[70px] leading-[42px] text-khaki font-medium ">
-                  4.9
+                  36+
                 </h1>
                 <p className="text-sm sm:text-base md:text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray font-normal font-Lora pt-5 xl:pt-7 md:w-[134px] lg:w-full">
-                  Customer Ratings
+                  BRANCHES
+                </p>
+              </div>
+              <div className="ml-10 xl:ml-[60px] 2xl:ml-20 3xl:ml-[100px]">
+                <h1 className="text-4xl md:text-4xl lg:text-5xl xl:text-6xl  3xl:text-[70px] leading-[42px] text-khaki font-medium ">
+                  13+
+                </h1>
+                <p className="text-sm sm:text-base md:text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray font-normal font-Lora pt-5 xl:pt-7 md:w-[134px] lg:w-full">
+                  DISTRICTS
+                </p>
+              </div>
+              <div className="ml-10 xl:ml-[60px] 2xl:ml-20 3xl:ml-[100px]">
+                <h1 className="text-4xl md:text-4xl lg:text-5xl xl:text-6xl  3xl:text-[70px] leading-[42px] text-khaki font-medium ">
+                  120+
+                </h1>
+                <p className="text-sm sm:text-base md:text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray font-normal font-Lora pt-5 xl:pt-7 md:w-[134px] lg:w-full">
+                  EMPLOYEES
                 </p>
               </div>
             </div>

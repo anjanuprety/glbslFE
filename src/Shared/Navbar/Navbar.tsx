@@ -3,17 +3,15 @@ import { Link, NavLink } from "react-router-dom";
 import useScrollPosition from "./useScrollPosition";
 import { FaBars } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
-import { BiChevronDown, BiSun } from "react-icons/bi";
-import { IoMoonSharp } from "react-icons/io5";
-import { useEffect, useState } from "react";
+import { BiChevronDown } from "react-icons/bi";
+import { useState } from "react";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 const Navbar: React.FC = () => {
   // modal openar
   const [isOpen, setIsOpen] = useState(false);
-  // dark mode toggle bar
-  const [isDarkMode, setIsDarkMode] = useState(
-    localStorage.getItem("darkMode") === "true"
-  );
+  // language context
+  const { language, setLanguage, t } = useLanguage();
   // scrolling tracker
   const scrollPosition = useScrollPosition();
   // background color add and remover
@@ -24,19 +22,10 @@ const Navbar: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleClick = (): void => {
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    localStorage.setItem("darkMode", String(newMode));
+  const toggleLanguage = (): void => {
+    const newLanguage = language === 'en' ? 'ne' : 'en';
+    setLanguage(newLanguage);
   };
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isDarkMode]);
 
   return (
     <nav
@@ -45,10 +34,10 @@ const Navbar: React.FC = () => {
       <div className="lg:px-10">
         <div className="flex flex-col lg:flex-row items-center justify-between">
           {/* website Logo */}
-          <div className=" w-48 lg:w-52 lg:p-4 ">
+          <div className=" w-64 lg:w-52 lg:p-4 ">
             <Link to="/">
               <img
-                src="/images/home-3/logo.png"
+                src="/images/home-1/logo-1.png"
                 className="hidden lg:block w-full"
                 alt="website_logo"
               />
@@ -66,22 +55,15 @@ const Navbar: React.FC = () => {
               </Link>
             </div>
 
-            {/* toggle bar and dark and light mode. */}
+            {/* toggle bar and language toggle. */}
             <div className="flex items-center ">
-              <span onClick={handleClick} className="mr-3 cursor-pointer">
-                {isDarkMode ? (
-                  <BiSun
-                    className="text-white"
-                    title="Apply Light Mode"
-                    size={20}
-                  />
-                ) : (
-                  <IoMoonSharp
-                    size={20}
-                    className="text-white"
-                    title="Apply Dark Mode"
-                  />
-                )}
+              <span onClick={toggleLanguage} className="mr-3 cursor-pointer">
+                <span 
+                  className="text-white text-sm font-medium px-2 py-1 rounded border border-white"
+                  title={language === 'en' ? 'Switch to Nepali' : 'Switch to English'}
+                >
+                  {language === 'en' ? 'NE' : 'EN'}
+                </span>
               </span>
               <button
                 className="lg:hidden block focus:outline-none "
@@ -108,59 +90,14 @@ const Navbar: React.FC = () => {
                   ? "pending"
                   : isActive
                   ? "active"
-                  : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative`}
+                  : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300`}
               to="/"
             >
-              <span className="flex items-center">
-                Home
-                <BiChevronDown className="ml-1" />
-              </span>
-              <div className="absolute pt-5 lg:pt-8 z-20">
-                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
-                  <div className=" px-5 group hover:bg-khaki hover:text-white">
-                    <li className="hover:ml-3 duration-300  ">
-                      <NavLink to="/" className="py-2 block">
-                        Hotel Booking
-                      </NavLink>
-                    </li>
-                  </div>
-                  <div className=" px-5 group hover:bg-khaki hover:text-white">
-                    <li className="hover:ml-3 duration-300  ">
-                      <NavLink to="/home2" className="py-2 block">
-                        Resort
-                      </NavLink>
-                    </li>
-                  </div>
-
-                  <div className=" px-5 group hover:bg-khaki hover:text-white">
-                    <li className="hover:ml-3 duration-300  ">
-                      <NavLink to="/home3" className="py-2 block">
-                        Hostel
-                      </NavLink>
-                    </li>
-                  </div>
-
-                  <div className=" px-5 group hover:bg-khaki hover:text-white">
-                    <li className="hover:ml-3 duration-300  ">
-                      <NavLink to="/home4" className="py-2 block">
-                        City Hotel
-                      </NavLink>
-                    </li>
-                  </div>
-
-                  <div className=" px-5 group hover:bg-khaki hover:text-white">
-                    <li className="hover:ml-3 duration-300  ">
-                      <NavLink to="/home5" className="py-2 block">
-                        Apartment
-                      </NavLink>
-                    </li>
-                  </div>
-                </ul>
-              </div>
+              {t('nav.home')}
             </NavLink>
             <NavLink
-              className={({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
-                `${isPending
+              className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
+                isPending
                   ? "pending"
                   : isActive
                   ? "active"
@@ -168,7 +105,7 @@ const Navbar: React.FC = () => {
               to="#"
             >
               <span className="flex items-center">
-                About
+                {t('nav.about')}
                 <BiChevronDown className="ml-1" />
               </span>
               <div className="absolute pt-5 lg:pt-8 z-20">
@@ -176,42 +113,42 @@ const Navbar: React.FC = () => {
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/about" className="py-2 block">
-                        About Us
+                        {t('submenu.about_us')}
                       </NavLink>
                     </li>
                   </div>
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/board-of-directors" className="py-2 block">
-                        Board of Directors
+                        {t('submenu.board_directors')}
                       </NavLink>
                     </li>
                   </div>
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/management-team" className="py-2 block">
-                        Management Team
+                        {t('submenu.management_team')}
                       </NavLink>
                     </li>
                   </div>
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/corporate-team" className="py-2 block">
-                        Corporate Team
+                        {t('submenu.corporate_team')}
                       </NavLink>
                     </li>
                   </div>
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/committee" className="py-2 block">
-                        Committee
+                        {t('submenu.committee')}
                       </NavLink>
                     </li>
                   </div>
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/organization-structure" className="py-2 block">
-                        Organization Structure
+                        {t('submenu.organization_structure')}
                       </NavLink>
                     </li>
                   </div>
@@ -228,7 +165,71 @@ const Navbar: React.FC = () => {
               to="#"
             >
               <span className="flex items-center">
-                Rooms
+                {t('nav.services')}
+                <BiChevronDown className="ml-1" />
+              </span>
+              <div className="absolute pt-5 lg:pt-8 z-20">
+                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
+                  <div className=" px-5 group hover:bg-khaki hover:text-white">
+                    <li className="hover:ml-3 duration-300  ">
+                      <NavLink to="/services" className="py-2 block">
+                        {t('submenu.all_services')}
+                      </NavLink>
+                    </li>
+                  </div>
+                  <div className=" px-5 group hover:bg-khaki hover:text-white">
+                    <li className="hover:ml-3 duration-300  ">
+                      <NavLink to="/services/loan" className="py-2 block">
+                        {t('submenu.loan_services')}
+                      </NavLink>
+                    </li>
+                  </div>
+                  <div className=" px-5 group hover:bg-khaki hover:text-white">
+                    <li className="hover:ml-3 duration-300  ">
+                      <NavLink to="/services/savings" className="py-2 block">
+                        {t('submenu.savings_services')}
+                      </NavLink>
+                    </li>
+                  </div>
+                  <div className=" px-5 group hover:bg-khaki hover:text-white">
+                    <li className="hover:ml-3 duration-300  ">
+                      <NavLink to="/services/remittance" className="py-2 block">
+                        {t('submenu.remittance_services')}
+                      </NavLink>
+                    </li>
+                  </div>
+                  <div className=" px-5 group hover:bg-khaki hover:text-white">
+                    <li className="hover:ml-3 duration-300  ">
+                      <NavLink to="/services/member-welfare" className="py-2 block">
+                        {t('submenu.member_welfare')}
+                      </NavLink>
+                    </li>
+                  </div>
+                </ul>
+              </div>
+            </NavLink>
+            <NavLink
+              className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
+                isPending
+                  ? "pending"
+                  : isActive
+                  ? "active"
+                  : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300`}
+              to="/branches"
+            >
+              {t('nav.branches')}
+            </NavLink>
+            <NavLink
+              className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
+                isPending
+                  ? "pending"
+                  : isActive
+                  ? "active"
+                  : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
+              to="#"
+            >
+              <span className="flex items-center">
+                {t('nav.rooms')}
                 <BiChevronDown className="ml-1" />
               </span>
               <div className="absolute pt-5 lg:pt-8 z-20">
@@ -236,21 +237,21 @@ const Navbar: React.FC = () => {
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/room" className="block py-2">
-                        Room
+                        {t('submenu.room')}
                       </NavLink>
                     </li>
                   </div>
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/find_room" className="block py-2">
-                        Find Room
+                        {t('submenu.find_room')}
                       </NavLink>
                     </li>
                   </div>
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/room_details" className="block py-2">
-                        Room Details
+                        {t('submenu.room_details')}
                       </NavLink>
                     </li>
                   </div>
@@ -267,7 +268,7 @@ const Navbar: React.FC = () => {
               to="#"
             >
               <span className="flex items-center">
-                Page
+                {t('nav.page')}
                 <BiChevronDown className="ml-1" />
               </span>
               <div className="absolute pt-5 lg:pt-8 z-20">
@@ -275,28 +276,35 @@ const Navbar: React.FC = () => {
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/about" className="py-2 block">
-                        ABOUT US
+                        {t('submenu.about_us')}
+                      </NavLink>
+                    </li>
+                  </div>
+                  <div className=" px-5 group hover:bg-khaki hover:text-white">
+                    <li className="hover:ml-3 duration-300  ">
+                      <NavLink to="/services" className="py-2 block">
+                        {t('submenu.services')}
                       </NavLink>
                     </li>
                   </div>
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/service_details" className="py-2 block">
-                        SERVICE DETAILS
+                        {t('submenu.service_details')}
                       </NavLink>
                     </li>
                   </div>
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/our_team" className="py-2 block">
-                        OUR TEAM
+                        {t('submenu.team')}
                       </NavLink>
                     </li>
                   </div>
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/pricing" className="py-2 block">
-                        PRICING
+                        {t('submenu.pricing')}
                       </NavLink>
                     </li>
                   </div>
@@ -314,7 +322,7 @@ const Navbar: React.FC = () => {
               to="#"
             >
               <span className="flex items-center">
-                BLOG
+                {t('nav.blog')}
                 <BiChevronDown className="ml-1" />
               </span>
               <div className="absolute pt-4 lg:pt-8 z-20">
@@ -322,14 +330,14 @@ const Navbar: React.FC = () => {
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300 ">
                       <NavLink to="/blog" className="py-2 block">
-                        BLOG
+                        {t('submenu.blog_list')}
                       </NavLink>
                     </li>
                   </div>
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300 ">
                       <NavLink to="/blog_details" className="py-2 block">
-                        BLOG DETAILS
+                        {t('submenu.blog_details')}
                       </NavLink>
                     </li>
                   </div>
@@ -343,54 +351,22 @@ const Navbar: React.FC = () => {
                   : isActive
                   ? "active"
                   : ""} text-lightBlack lg:text-white dark:text-white lg:border-b-0 px-3 py-2 w-full block transition-all duration-300`}
-              to="/branches"
-            >
-              Branches
-            </NavLink>
-            <NavLink
-              className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
-                isPending
-                  ? "pending"
-                  : isActive
-                  ? "active"
-                  : ""} text-lightBlack lg:text-white dark:text-white lg:border-b-0 px-3 py-2 w-full block transition-all duration-300`}
-              to="/services"
-            >
-              Services
-            </NavLink>
-            <NavLink
-              className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
-                isPending
-                  ? "pending"
-                  : isActive
-                  ? "active"
-                  : ""} text-lightBlack lg:text-white dark:text-white lg:border-b-0 px-3 py-2 w-full block transition-all duration-300`}
               to="/contact"
             >
-              Contact
+              {t('nav.contact')}
             </NavLink>
           </ul>
 
           {/* large device visible button and search icon */}
           <div className="hidden lg:flex items-center">
-            <span onClick={handleClick} className="mr-3 cursor-pointer group ">
-              {isDarkMode ? (
-                <BiSun
-                  className="text-white group-hover:rotate-90 rotate transition-all duration-300"
-                  title="Apply Light Mode"
-                  size={35}
-                />
-              ) : (
-                <IoMoonSharp
-                  className="text-white group-hover:rotate-[360deg] transition-all duration-300"
-                  title="Apply Dark Mode"
-                  size={35}
-                />
-              )}
+            <span onClick={toggleLanguage} className="mr-3 cursor-pointer group">
+              <span 
+                className="text-white text-lg font-medium px-3 py-2 rounded border border-white hover:bg-white hover:text-lightBlack transition-all duration-300"
+                title={language === 'en' ? 'Switch to Nepali' : 'Switch to English'}
+              >
+                {language === 'en' ? 'NE' : 'EN'}
+              </span>
             </span>
-            <Link to="/find_room">
-              <button className="btn-secondary ">Booking Online</button>
-            </Link>
           </div>
         </div>
       </div>
