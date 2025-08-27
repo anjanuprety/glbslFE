@@ -1,13 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BreadCrumb from "../../../../BreadCrumb/BreadCrumb";
 import SavingsTable from "./components/SavingsTable";
-import { savingsProductsData } from "./data/savingsData";
+import { servicesService } from "../../../../services/strapi";
+
+interface SavingsItem {
+  id: number | string;
+  attributes: {
+    name: string;
+    interestRate: string;
+  };
+}
 
 // SavingsServicesPage component for displaying savings products
 // Follows website theme and design patterns
 // Compatible with Strapi CMS for future data integration
 const SavingsServicesPage: React.FC = () => {
   
+  const [items, setItems] = useState<SavingsItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        setLoading(true);
+        const data = await servicesService.getSavingsProducts();
+        setItems(data);
+      } catch (err) {
+        console.error(err);
+        setError('Failed to load savings products');
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, []);
+
   return (
     <section className="">
       {/* Breadcrumb navigation */}
@@ -44,10 +72,19 @@ const SavingsServicesPage: React.FC = () => {
             data-aos-duration="1000"
             data-aos-delay="200"
           >
-            <SavingsTable 
-              savingsProducts={savingsProductsData}
-              className="shadow-lg"
-            />
+            {loading && <p>Loading savings products...</p>}
+            {error && <p className="text-red-500">{error}</p>}
+            {!loading && !error && (
+              <SavingsTable 
+                savingsProducts={items.map((it, idx) => ({
+                  id: String(it.id),
+                  serialNumber: idx + 1,
+                  savingProductName: it.attributes.name,
+                  interestRate: it.attributes.interestRate,
+                }))}
+                className="shadow-lg"
+              />
+            )}
           </div>
 
           {/* Benefits section */}

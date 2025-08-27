@@ -1,13 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BreadCrumb from "../../../../BreadCrumb/BreadCrumb";
 import WelfareServicesList from "./components/WelfareServicesList";
-import { welfareServicesData } from "./data/welfareData";
+import { servicesService } from "../../../../services/strapi";
+
+interface WelfareItem {
+  id: number | string;
+  attributes: {
+    title: string;
+    description: string;
+    order?: number;
+  };
+}
 
 // MemberWelfareServicesPage component for displaying member welfare services
 // Follows website theme and design patterns
 // Compatible with Strapi CMS for future data integration
 const MemberWelfareServicesPage: React.FC = () => {
   
+  const [items, setItems] = useState<WelfareItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        setLoading(true);
+        const data = await servicesService.getMemberWelfareService();
+        // data.welfareServices is expected to be an array of components
+        setItems((data?.welfareServices || []).map((w: any, idx: number) => ({ id: idx, attributes: { title: w.title, description: w.description, order: w.order } })));
+      } catch (err) {
+        console.error(err);
+        setError('Failed to load welfare services');
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, []);
+
   return (
     <section className="">
       {/* Breadcrumb navigation */}
@@ -68,10 +98,14 @@ const MemberWelfareServicesPage: React.FC = () => {
               Our Welfare Services
             </h2>
             
-            <WelfareServicesList 
-              welfareServices={welfareServicesData}
-              className="max-w-4xl mx-auto"
-            />
+            {loading && <p>Loading welfare services...</p>}
+            {error && <p className="text-red-500">{error}</p>}
+            {!loading && !error && (
+              <WelfareServicesList 
+                welfareServices={items.map((it) => ({ id: String(it.id), serviceName: it.attributes.title, description: it.attributes.description }))}
+                className="max-w-4xl mx-auto"
+              />
+            )}
           </div>
 
           {/* Additional support info */}

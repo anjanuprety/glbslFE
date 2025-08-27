@@ -1,11 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BreadCrumb from "../../../../BreadCrumb/BreadCrumb";
+import { servicesService } from "../../../../services/strapi";
+import { getStrapiMediaUrl } from "../../../../services/strapi";
 
 // RemittanceServicesPage component for displaying remittance service information
 // Follows website theme and design patterns
 // Compatible with Strapi CMS for future content integration
 const RemittanceServicesPage: React.FC = () => {
-  
+  const [content, setContent] = useState<any | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        setLoading(true);
+        const data = await servicesService.getRemittanceService();
+        setContent(data);
+      } catch (err) {
+        console.error(err);
+        setError('Failed to load remittance content');
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, []);
+
   return (
     <section className="">
       {/* Breadcrumb navigation */}
@@ -82,18 +103,50 @@ const RemittanceServicesPage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               
               {/* Fast Processing */}
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-                <div className="bg-khaki text-white rounded-full w-12 h-12 flex items-center justify-center mb-4">
-                  <span className="text-xl font-bold">F</span>
-                </div>
-                <h3 className="text-lg font-semibold text-lightBlack dark:text-white mb-3 font-Garamond">
-                  Fast Processing
-                </h3>
-                <p className="text-sm text-gray dark:text-lightGray font-Lora leading-[24px]">
-                  Quick processing times ensure your money reaches its destination within hours, 
-                  not days.
-                </p>
-              </div>
+              {/* If features exist in Strapi, render them; otherwise fallback to static cards */}
+              {content?.features?.length ? (
+                content.features.map((f: any, idx: number) => (
+                  <div key={idx} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <div className="bg-khaki text-white rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                      <span className="text-xl font-bold">{String.fromCharCode(65 + idx)}</span>
+                    </div>
+                    <h3 className="text-lg font-semibold text-lightBlack dark:text-white mb-3 font-Garamond">
+                      {f.title}
+                    </h3>
+                    <p className="text-sm text-gray dark:text-lightGray font-Lora leading-[24px]">
+                      {f.description}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                // static fallback cards
+                <>
+                  <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <div className="bg-khaki text-white rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                      <span className="text-xl font-bold">F</span>
+                    </div>
+                    <h3 className="text-lg font-semibold text-lightBlack dark:text-white mb-3 font-Garamond">
+                      Fast Processing
+                    </h3>
+                    <p className="text-sm text-gray dark:text-lightGray font-Lora leading-[24px]">
+                      Quick processing times ensure your money reaches its destination within hours, 
+                      not days.
+                    </p>
+                  </div>
+                  <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                    <div className="bg-khaki text-white rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                      <span className="text-xl font-bold">C</span>
+                    </div>
+                    <h3 className="text-lg font-semibold text-lightBlack dark:text-white mb-3 font-Garamond">
+                      Competitive Exchange Rates
+                    </h3>
+                    <p className="text-sm text-gray dark:text-lightGray font-Lora leading-[24px]">
+                      Get the best value for your money with our competitive exchange rates and 
+                      transparent pricing.
+                    </p>
+                  </div>
+                </>
+              )}
 
               {/* Competitive Rates */}
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">

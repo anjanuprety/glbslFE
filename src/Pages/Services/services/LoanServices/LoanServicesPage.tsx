@@ -1,13 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BreadCrumb from "../../../../BreadCrumb/BreadCrumb";
 import LoanTable from "./components/LoanTable";
-import { loanProductsData } from "./data/loanData";
+import { servicesService } from "../../../../services/strapi";
+
+interface LoanProductItem {
+  id: number | string;
+  attributes: {
+    loanProductName: string;
+    loanVolume: string;
+    interestRate: string;
+    serviceCharge: string;
+    loanTerm: string;
+  };
+}
 
 // LoanServicesPage component for displaying loan products
 // Follows website theme and design patterns
 // Compatible with Strapi CMS for future data integration
 const LoanServicesPage: React.FC = () => {
-  
+  const [loanProducts, setLoanProducts] = useState<LoanProductItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        setLoading(true);
+        const data = await servicesService.getLoanProducts();
+        setLoanProducts(data);
+      } catch (err) {
+        console.error(err);
+        setError('Failed to load loan products');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetch();
+  }, []);
+
   return (
     <section className="">
       {/* Breadcrumb navigation */}
@@ -45,10 +75,22 @@ const LoanServicesPage: React.FC = () => {
             data-aos-duration="1000"
             data-aos-delay="200"
           >
-            <LoanTable 
-              loanProducts={loanProductsData}
-              className="shadow-lg"
-            />
+            {loading && <p>Loading loan products...</p>}
+            {error && <p className="text-red-500">{error}</p>}
+            {!loading && !error && (
+              <LoanTable 
+                loanProducts={loanProducts.map((lp, idx) => ({
+                  id: String(lp.id),
+                  serialNumber: idx + 1,
+                  loanProductName: lp.attributes.loanProductName,
+                  loanVolume: lp.attributes.loanVolume,
+                  interestRate: lp.attributes.interestRate,
+                  serviceCharge: lp.attributes.serviceCharge,
+                  loanTerm: lp.attributes.loanTerm,
+                }))}
+                className="shadow-lg"
+              />
+            )}
           </div>
 
           {/* Additional information section */}

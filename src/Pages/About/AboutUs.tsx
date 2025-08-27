@@ -1,11 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BreadCrumb from "../../BreadCrumb/BreadCrumb";
+import { aboutService, getStrapiMediaUrl } from "../../services/strapi";
 
 const AboutUs: React.FC = () => {
+  const [content, setContent] = useState<any | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        setLoading(true);
+        const data = await aboutService.getAboutUs();
+        setContent(data);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load about us content");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetch();
+  }, []);
+
   return (
     <div>
       <BreadCrumb title="About Us" home="/" />
-      
       {/* About Us Content */}
       <div className="dark:bg-normalBlack py-20 2xl:py-[120px]">
         <div className="Container">
@@ -24,7 +44,7 @@ const AboutUs: React.FC = () => {
               ABOUT US
             </h1>
             <p className="font-Lora leading-7 lg:leading-[26px] text-lightGray font-normal text-sm sm:text-base">
-              Discover our story, vision, and commitment to excellence in hospitality
+              {loading ? 'Loading...' : error ? error : content?.aboutUsDescription || 'Discover our story, vision, and commitment to excellence in hospitality'}
             </p>
           </div>
 
@@ -36,9 +56,7 @@ const AboutUs: React.FC = () => {
                   Our Vision
                 </h2>
                 <p className="text-base sm:text-lg leading-7 lg:leading-8 text-lightGray dark:text-lightGray font-Lora">
-                  To be the premier destination for luxury hospitality, setting new standards in comfort, 
-                  service excellence, and memorable experiences that inspire guests from around the world 
-                  to return time and again.
+                  {content?.vision || 'To be the premier destination for luxury hospitality, setting new standards in comfort, service excellence, and memorable experiences.'}
                 </p>
               </div>
 
@@ -48,12 +66,10 @@ const AboutUs: React.FC = () => {
                   Our Mission
                 </h2>
                 <p className="text-base sm:text-lg leading-7 lg:leading-8 text-lightGray dark:text-lightGray font-Lora mb-4">
-                  We are committed to providing exceptional hospitality services through personalized attention, 
-                  world-class amenities, and sustainable practices that create unforgettable experiences for our guests.
+                  {content?.mission || 'We are committed to providing exceptional hospitality services through personalized attention, world-class amenities, and sustainable practices.'}
                 </p>
                 <p className="text-base sm:text-lg leading-7 lg:leading-8 text-lightGray dark:text-lightGray font-Lora">
-                  Our dedicated team strives to exceed expectations while fostering meaningful connections and 
-                  contributing positively to our local community.
+                  {content?.missionSecond || 'Our dedicated team strives to exceed expectations while fostering meaningful connections and contributing positively to our local community.'}
                 </p>
               </div>
 
@@ -63,6 +79,7 @@ const AboutUs: React.FC = () => {
                   Our Core Values
                 </h2>
                 <ul className="space-y-3">
+                  {/* Keep static fallback values for now */}
                   <li className="flex items-start space-x-3">
                     <div className="w-2 h-2 bg-khaki rounded-full mt-3 flex-shrink-0"></div>
                     <div>
@@ -106,7 +123,7 @@ const AboutUs: React.FC = () => {
             {/* Image Section */}
             <div className="lg:order-last">
               <img 
-                src="/images/inner/about-thumb.png" 
+                src={content?.aboutUsImage ? getStrapiMediaUrl(content.aboutUsImage.data.attributes.url) : '/images/inner/about-thumb.png'} 
                 alt="About Us" 
                 className="w-full rounded-lg shadow-lg"
               />
