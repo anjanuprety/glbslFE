@@ -30,6 +30,10 @@ export const translations: Translations = {
     en: 'Services',
     ne: 'सेवाहरू'
   },
+  'nav.branches': {
+    en: 'Branches',
+    ne: 'शाखाहरू'
+  },
   'nav.booking_online': {
     en: 'Booking Online',
     ne: 'अनलाइन बुकिङ'

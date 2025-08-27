@@ -1,4 +1,4 @@
-// Branch data management for Global IME Bank
+// Branch data management for Gurans Laghubitta Bittiya Sanstha Limited (GLBSL)
 // This file contains static branch data that matches the expected Strapi API structure
 // In production, this will be replaced with API calls to fetch data from Strapi CMS
 
@@ -35,7 +35,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-1.jpg",
       phone: "+977-1-4000001",
-      email: "rajesh.sharma@globalimebank.com"
+      email: "rajesh.sharma@glbsl.com.np"
     },
     coordinates: {
       latitude: 27.7172,
@@ -53,7 +53,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-2.jpg",
       phone: "+977-61-400002",
-      email: "sita.gurung@globalimebank.com"
+      email: "sita.gurung@glbsl.com.np"
     },
     coordinates: {
       latitude: 28.2096,
@@ -71,7 +71,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-3.jpg",
       phone: "+977-56-400003",
-      email: "ram.thapa@globalimebank.com"
+      email: "ram.thapa@glbsl.com.np"
     },
     coordinates: {
       latitude: 27.6936,
@@ -89,7 +89,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-1.jpg",
       phone: "+977-1-4000004",
-      email: "maya.shrestha@globalimebank.com"
+      email: "maya.shrestha@glbsl.com.np"
     },
     coordinates: {
       latitude: 27.6683,
@@ -107,7 +107,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-2.jpg",
       phone: "+977-1-4000005",
-      email: "gopal.maharjan@globalimebank.com"
+      email: "gopal.maharjan@glbsl.com.np"
     },
     coordinates: {
       latitude: 27.6710,
@@ -125,7 +125,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-3.jpg",
       phone: "+977-21-400006",
-      email: "surya.limbu@globalimebank.com"
+      email: "surya.limbu@glbsl.com.np"
     },
     coordinates: {
       latitude: 26.4521,
@@ -143,7 +143,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-1.jpg",
       phone: "+977-51-400007",
-      email: "anita.yadav@globalimebank.com"
+      email: "anita.yadav@glbsl.com.np"
     },
     coordinates: {
       latitude: 27.0104,
@@ -161,7 +161,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-2.jpg",
       phone: "+977-71-400008",
-      email: "krishna.oli@globalimebank.com"
+      email: "krishna.oli@glbsl.com.np"
     },
     coordinates: {
       latitude: 27.7009,
@@ -179,7 +179,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-3.jpg",
       phone: "+977-25-400009",
-      email: "bishnu.rai@globalimebank.com"
+      email: "bishnu.rai@glbsl.com.np"
     },
     coordinates: {
       latitude: 26.8149,
@@ -197,7 +197,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-1.jpg",
       phone: "+977-57-400010",
-      email: "laxmi.tamang@globalimebank.com"
+      email: "laxmi.tamang@glbsl.com.np"
     },
     coordinates: {
       latitude: 27.4287,
@@ -215,7 +215,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-2.jpg",
       phone: "+977-25-400011",
-      email: "deepak.khadka@globalimebank.com"
+      email: "deepak.khadka@glbsl.com.np"
     },
     coordinates: {
       latitude: 26.6647,
@@ -233,7 +233,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-3.jpg",
       phone: "+977-41-400012",
-      email: "radha.jha@globalimebank.com"
+      email: "radha.jha@glbsl.com.np"
     },
     coordinates: {
       latitude: 26.7271,
@@ -251,7 +251,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-1.jpg",
       phone: "+977-81-400013",
-      email: "abdul.rahman@globalimebank.com"
+      email: "abdul.rahman@glbsl.com.np"
     },
     coordinates: {
       latitude: 28.0505,
@@ -269,7 +269,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-2.jpg",
       phone: "+977-99-400014",
-      email: "prem.singh@globalimebank.com"
+      email: "prem.singh@glbsl.com.np"
     },
     coordinates: {
       latitude: 28.9641,
@@ -287,7 +287,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-3.jpg",
       phone: "+977-91-400015",
-      email: "kamala.chaudhary@globalimebank.com"
+      email: "kamala.chaudhary@glbsl.com.np"
     },
     coordinates: {
       latitude: 28.6958,
@@ -305,7 +305,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-1.jpg",
       phone: "+977-82-400016",
-      email: "rajan.pun@globalimebank.com"
+      email: "rajan.pun@glbsl.com.np"
     },
     coordinates: {
       latitude: 28.0271,
@@ -323,7 +323,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-2.jpg",
       phone: "+977-82-400017",
-      email: "sabita.sharma@globalimebank.com"
+      email: "sabita.sharma@glbsl.com.np"
     },
     coordinates: {
       latitude: 28.1362,
@@ -341,7 +341,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-3.jpg",
       phone: "+977-75-400018",
-      email: "narayan.paudel@globalimebank.com"
+      email: "narayan.paudel@glbsl.com.np"
     },
     coordinates: {
       latitude: 27.8741,
@@ -359,7 +359,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-1.jpg",
       phone: "+977-68-400019",
-      email: "devi.pun@globalimebank.com"
+      email: "devi.pun@glbsl.com.np"
     },
     coordinates: {
       latitude: 28.2707,
@@ -377,7 +377,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-2.jpg",
       phone: "+977-64-400020",
-      email: "hari.gurung@globalimebank.com"
+      email: "hari.gurung@glbsl.com.np"
     },
     coordinates: {
       latitude: 28.0000,
@@ -395,7 +395,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-3.jpg",
       phone: "+977-63-400021",
-      email: "sushila.thapa@globalimebank.com"
+      email: "sushila.thapa@glbsl.com.np"
     },
     coordinates: {
       latitude: 28.0889,
@@ -413,7 +413,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-1.jpg",
       phone: "+977-49-400022",
-      email: "tek.tamang@globalimebank.com"
+      email: "tek.tamang@glbsl.com.np"
     },
     coordinates: {
       latitude: 27.6719,
@@ -431,7 +431,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-2.jpg",
       phone: "+977-11-400023",
-      email: "kamala.sherpa@globalimebank.com"
+      email: "kamala.sherpa@glbsl.com.np"
     },
     coordinates: {
       latitude: 27.6167,
@@ -449,7 +449,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-3.jpg",
       phone: "+977-48-400024",
-      email: "birendra.rai@globalimebank.com"
+      email: "birendra.rai@glbsl.com.np"
     },
     coordinates: {
       latitude: 27.4000,
@@ -467,7 +467,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-1.jpg",
       phone: "+977-35-400025",
-      email: "ganga.rai@globalimebank.com"
+      email: "ganga.rai@glbsl.com.np"
     },
     coordinates: {
       latitude: 27.3167,
@@ -485,7 +485,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-2.jpg",
       phone: "+977-38-400026",
-      email: "pasang.sherpa@globalimebank.com"
+      email: "pasang.sherpa@glbsl.com.np"
     },
     coordinates: {
       latitude: 27.5167,
@@ -503,7 +503,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-3.jpg",
       phone: "+977-27-400027",
-      email: "dil.limbu@globalimebank.com"
+      email: "dil.limbu@glbsl.com.np"
     },
     coordinates: {
       latitude: 27.3500,
@@ -521,7 +521,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-1.jpg",
       phone: "+977-23-400028",
-      email: "indira.limbu@globalimebank.com"
+      email: "indira.limbu@glbsl.com.np"
     },
     coordinates: {
       latitude: 27.1500,
@@ -539,7 +539,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-2.jpg",
       phone: "+977-27-400029",
-      email: "chitra.rai@globalimebank.com"
+      email: "chitra.rai@glbsl.com.np"
     },
     coordinates: {
       latitude: 26.9089,
@@ -557,7 +557,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-3.jpg",
       phone: "+977-23-400030",
-      email: "santosh.thapa@globalimebank.com"
+      email: "santosh.thapa@glbsl.com.np"
     },
     coordinates: {
       latitude: 26.6583,
@@ -575,7 +575,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-1.jpg",
       phone: "+977-21-400031",
-      email: "shanti.koirala@globalimebank.com"
+      email: "shanti.koirala@glbsl.com.np"
     },
     coordinates: {
       latitude: 26.5431,
@@ -593,7 +593,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-2.jpg",
       phone: "+977-25-400032",
-      email: "bikash.yadav@globalimebank.com"
+      email: "bikash.yadav@glbsl.com.np"
     },
     coordinates: {
       latitude: 26.5183,
@@ -611,7 +611,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-3.jpg",
       phone: "+977-31-400033",
-      email: "durga.mandal@globalimebank.com"
+      email: "durga.mandal@glbsl.com.np"
     },
     coordinates: {
       latitude: 26.5397,
@@ -629,7 +629,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-1.jpg",
       phone: "+977-33-400034",
-      email: "jagat.sah@globalimebank.com"
+      email: "jagat.sah@glbsl.com.np"
     },
     coordinates: {
       latitude: 26.7175,
@@ -647,7 +647,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-2.jpg",
       phone: "+977-41-400035",
-      email: "sunita.singh@globalimebank.com"
+      email: "sunita.singh@glbsl.com.np"
     },
     coordinates: {
       latitude: 26.7289,
@@ -665,7 +665,7 @@ const staticBranchData: BranchData[] = [
       position: "Branch Manager",
       image: "/images/inner/member-3.jpg",
       phone: "+977-44-400036",
-      email: "ramesh.yadav@globalimebank.com"
+      email: "ramesh.yadav@glbsl.com.np"
     },
     coordinates: {
       latitude: 26.6472,
