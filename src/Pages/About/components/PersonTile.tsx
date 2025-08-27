@@ -24,10 +24,10 @@ const PersonTile: React.FC<PersonProps> = ({
       <img src={image} className="w-full" alt={name} />
       <div className="relative">
         <div className="px-4 lg:px-[30px] pt-5">
-          <h3 className="text-xl sm:text-2xl lg:text-2xl xl:text-[28px] leading-7 md:leading-8 lg:leading-10 text-lightBlack dark:text-white font-semibold font-Garamond text-center hover:opacity-0">
+          <h3 className="text-xl sm:text-2xl lg:text-2xl xl:text-[28px] leading-7 md:leading-8 lg:leading-10 text-lightBlack dark:text-white font-semibold font-Garamond text-center group-hover:text-white transition-all duration-500">
             {name}
           </h3>
-          <p className="text-sm md:text-base leading-[26px] text-Gray dark:text-lightGray font-normal font-Lora text-center group-hover:text-white dark:hover:text-white hover:opacity-0">
+          <p className="text-sm md:text-base leading-[26px] text-Gray dark:text-lightGray font-normal font-Lora text-center group-hover:text-white transition-all duration-500">
             {position}
           </p>
         </div>

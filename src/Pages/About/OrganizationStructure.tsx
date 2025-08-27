@@ -6,7 +6,7 @@ const OrgNode: React.FC<{ node: any; level?: number }> = ({ node, level = 0 }) =
   const [open, setOpen] = useState(level < 1);
   return (
     <div className={`pl-${level * 4} mb-4`}>
-      <div className="p-4 bg-white dark:bg-normalBlack shadow rounded">
+      <div className="p-4 bg-white dark:bg-normalBlack shadow rounded hover:shadow-xl hover:scale-105 transition-all duration-300 border border-lightGray dark:border-gray">
         <div className="flex items-center justify-between">
           <div>
             <div className="font-Garamond font-semibold">{node.title}</div>
