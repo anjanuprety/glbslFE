@@ -20,27 +20,27 @@ const PersonTile: React.FC<PersonProps> = ({
   className = "",
 }) => {
   return (
-    <div className={`member group ${className}`} data-id={id}>
-      <img src={image} className="w-full" alt={name} />
-      <div className="relative">
-        <div className="px-4 lg:px-[30px] pt-5">
-          <h3 className="text-xl sm:text-2xl lg:text-2xl xl:text-[28px] leading-7 md:leading-8 lg:leading-10 text-lightBlack dark:text-white font-semibold font-Garamond text-center group-hover:text-white transition-all duration-500">
-            {name}
-          </h3>
-          <p className="text-sm md:text-base leading-[26px] text-Gray dark:text-lightGray font-normal font-Lora text-center group-hover:text-white transition-all duration-500">
-            {position}
-          </p>
-        </div>
+    <div className={`member group overflow-hidden relative ${className}`} data-id={id}>
+      <img src={image} className="w-full object-cover" alt={name} />
 
-        <div className="p-[30px] bg-normalBlack grid items-center justify-center absolute bottom-[-150px] sm:bottom-[-170px] md:bottom-[-150px] group-hover:bottom-[-38px] lg:group-hover:bottom-[-30px] transition-all duration-500 left-0 right-0">
-          <div className="text-center text-white space-y-1">
-            <p className="text-white font-medium leading-6 text-lg lg:text-xl font-Garamond">
-              {phone || "+977-1-234567"}
-            </p>
-            <p className="text-white font-medium leading-6 text-lg lg:text-xl font-Garamond">
-              {email || "example@gmail.com"}
-            </p>
-          </div>
+      <div className="px-4 lg:px-8 pt-5">
+        <h3 className="text-lg sm:text-xl lg:text-[20px] leading-6 md:leading-7 text-lightBlack dark:text-white font-semibold font-Garamond text-center break-words whitespace-normal group-hover:text-white transition-all duration-300">
+          {name}
+        </h3>
+        <p className="text-sm md:text-sm leading-[22px] text-Gray dark:text-lightGray font-normal font-Lora text-center group-hover:text-white transition-all duration-300">
+          {position}
+        </p>
+      </div>
+
+      {/* Overlay: hidden by translateY (120%), slides up on hover. pointer-events disabled when hidden. */}
+      <div className="p-6 bg-normalBlack grid items-center justify-center absolute bottom-0 left-0 right-0 transform translate-y-[120%] group-hover:translate-y-0 group-hover:pointer-events-auto pointer-events-none transition-transform duration-500 z-10">
+        <div className="text-center text-white space-y-1">
+          <p className="text-white font-medium leading-6 text-base lg:text-lg font-Garamond">
+            {phone || "+977-1-234567"}
+          </p>
+          <p className="text-white font-medium leading-6 text-base lg:text-lg font-Garamond">
+            {email || "example@gmail.com"}
+          </p>
         </div>
       </div>
     </div>
