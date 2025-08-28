@@ -8,6 +8,7 @@ import "keen-slider/keen-slider.min.css";
 import { IoIosCall } from "react-icons/io";
 import { MdEmail, MdOutlineShareLocation } from "react-icons/md";
 import Swal from "sweetalert2";
+import PDFPreview from "../../Components/Reports/PDFPreview";
 
 const ReportsPage: React.FC = () => {
   // facilities slider breakpoints
@@ -47,29 +48,36 @@ const ReportsPage: React.FC = () => {
             data-aos="fade-up"
             data-aos-duration="1000"
           >
-            <h1 className="text-[22px] sm:text-2xl md:text-3xl 2xl:text-[38px] leading-7 sm:leading-8 md:leading-9 lg:leading-[42px] 2xl:leading-[52px] text-lightBlack dark:text-white mt-[30px] mb-[24px] font-Garamond font-semibold uppercase">
-              Reports & Documents
-            </h1>
+            <div className="text-center">
+              <h1 className="text-xl sm:text-2xl md:text-3xl 2xl:text-[38px] leading-7 sm:leading-8 md:leading-9 lg:leading-[42px] 2xl:leading-[52px] text-lightBlack dark:text-white font-Garamond font-semibold capitalize">
+                GLBSL Reports & Documents
+              </h1>
+              <div className="flex items-center justify-center text-center mx-auto mt-2 lg:mt-[6px]">
+                <div className="w-[100px] h-[1px] bg-[#ccc] dark:bg-[#3b3b3b] mr-5 "></div>
+                <img
+                  src="/images/home-1/section-shape1.png"
+                  className="w-[30px] h-[30px]"
+                  alt=""
+                />
+                <div className="w-[100px] h-[1px] bg-[#ccc] dark:bg-[#3b3b3b] ml-5"></div>
+              </div>
+              <p className="text-center text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray font-Lora font-normal mt-[10px]">
+                Access our comprehensive financial reports and institutional documents
+              </p>
+            </div>
           </div>
-          {/* Reports Grid Container */}
 
-          <div className="mt-14 2xl:mt-[60px] grid items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-[30px]">
+          {/* Reports Grid */}
+          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 pt-16 2xl:pt-20">
             {/* Report - 1 */}
             <div
               className="overflow-x-hidden 3xl:w-[410px] group"
               data-aos="fade-up"
-              data-aos-duration="1000"
+              data-aos-duration="800"
             >
               <div className="relative">
                 <div className="overflow-hidden">
-                  <div className="w-full h-[250px] bg-gray-100 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
-                    <div className="text-center">
-                      <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                      <p className="text-gray-500 text-sm">PDF Preview</p>
-                    </div>
-                  </div>
+                  <PDFPreview title="Quarterly Report" description="Q4 2023 Financial Summary" />
                 </div>
 
                 <Link to={"/reports/quarterly-report"}>
@@ -108,14 +116,7 @@ const ReportsPage: React.FC = () => {
             >
               <div className="relative">
                 <div className="overflow-hidden">
-                  <div className="w-full h-[250px] bg-gray-100 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
-                    <div className="text-center">
-                      <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                      <p className="text-gray-500 text-sm">PDF Preview</p>
-                    </div>
-                  </div>
+                  <PDFPreview title="Annual Report" description="Comprehensive 2023 Report" />
                 </div>
 
                 <Link to={"/reports/annual-report"}>
@@ -150,18 +151,11 @@ const ReportsPage: React.FC = () => {
             <div
               className="overflow-x-hidden 3xl:w-[410px] group"
               data-aos="fade-up"
-              data-aos-duration="1000"
+              data-aos-duration="1200"
             >
               <div className="relative">
                 <div className="overflow-hidden">
-                  <div className="w-full h-[250px] bg-gray-100 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
-                    <div className="text-center">
-                      <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                      <p className="text-gray-500 text-sm">PDF Preview</p>
-                    </div>
-                  </div>
+                  <PDFPreview title="AGM Minutes" description="Board Meeting Minutes" />
                 </div>
 
                 <Link to={"/reports/agm-minutes"}>
@@ -196,18 +190,11 @@ const ReportsPage: React.FC = () => {
             <div
               className="overflow-x-hidden 3xl:w-[410px] group"
               data-aos="fade-up"
-              data-aos-duration="1000"
+              data-aos-duration="800"
             >
               <div className="relative">
                 <div className="overflow-hidden">
-                  <div className="w-full h-[250px] bg-gray-100 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
-                    <div className="text-center">
-                      <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                      <p className="text-gray-500 text-sm">PDF Preview</p>
-                    </div>
-                  </div>
+                  <PDFPreview title="Base Rate Report" description="Interest Rate Analysis" />
                 </div>
 
                 <Link to={"/reports/base-rate"}>
@@ -246,14 +233,7 @@ const ReportsPage: React.FC = () => {
             >
               <div className="relative">
                 <div className="overflow-hidden">
-                  <div className="w-full h-[250px] bg-gray-100 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
-                    <div className="text-center">
-                      <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                      <p className="text-gray-500 text-sm">PDF Preview</p>
-                    </div>
-                  </div>
+                  <PDFPreview title="Staff Training Report" description="Capacity Building Programs" />
                 </div>
 
                 <Link to={"/reports/staff-training"}>
@@ -288,18 +268,11 @@ const ReportsPage: React.FC = () => {
             <div
               className="overflow-x-hidden 3xl:w-[410px] group"
               data-aos="fade-up"
-              data-aos-duration="1000"
+              data-aos-duration="1200"
             >
               <div className="relative">
                 <div className="overflow-hidden">
-                  <div className="w-full h-[250px] bg-gray-100 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
-                    <div className="text-center">
-                      <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                      <p className="text-gray-500 text-sm">PDF Preview</p>
-                    </div>
-                  </div>
+                  <PDFPreview title="Governance Report" description="Corporate Governance Practices" />
                 </div>
 
                 <Link to={"/reports/governance-report"}>
@@ -369,46 +342,51 @@ const ReportsPage: React.FC = () => {
             data-aos="zoom-in-up"
             data-aos-duration="1000"
           >
-            <div className="flex items-center ">
-              <IoIosCall
-                size={50}
-                className="text-lightGray hover:text-khaki mr-4 transition-all duration-300"
-              />
-              <div className="">
-                <h4 className="text-sm leading-[26px] font-Garamond font-semibold text-khaki uppercase">
-                  Phone Number
-                </h4>
-                <p className="text-base leading-[26px] font-Lora font-normal text-lightGray">
-                  +977-1-XXXXXXX
-                </p>
+            <div className="">
+              <div className="flex items-center justify-center lg:justify-start">
+                <div className="w-[50px] h-[50px] lg:w-[60px] lg:h-[60px] rounded-[50%] bg-khaki bg-opacity-[8%] flex items-center justify-center mr-4">
+                  <IoIosCall className="w-5 h-5 lg:w-6 lg:h-6 text-khaki" />
+                </div>
+                <div className="">
+                  <h4 className="text-base lg:text-lg leading-[26px] text-white font-Garamond font-medium">
+                    Phone Number
+                  </h4>
+                  <p className="text-sm text-lightGray font-Lora font-normal">
+                    +1-202-555-0174
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="flex items-center">
-              <MdEmail
-                size={50}
-                className="text-lightGray hover:text-khaki mr-4 transition-all duration-300"
-              />
-              <div className="">
-                <h4 className="text-sm leading-[26px] font-Garamond font-semibold text-khaki uppercase">
-                  Email Address
-                </h4>
-                <p className="text-base leading-[26px] font-Lora font-normal text-lightGray">
-                  info@guranslaghubitta.com
-                </p>
+
+            <div className="">
+              <div className="flex items-center justify-center lg:justify-start">
+                <div className="w-[50px] h-[50px] lg:w-[60px] lg:h-[60px] rounded-[50%] bg-khaki bg-opacity-[8%] flex items-center justify-center mr-4">
+                  <MdEmail className="w-5 h-5 lg:w-6 lg:h-6 text-khaki" />
+                </div>
+                <div className="">
+                  <h4 className="text-base lg:text-lg leading-[26px] text-white font-Garamond font-medium">
+                    Email Address
+                  </h4>
+                  <p className="text-sm text-lightGray font-Lora font-normal">
+                    info@glbsl.com.np
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="flex items-center">
-              <MdOutlineShareLocation
-                size={50}
-                className="text-lightGray hover:text-khaki mr-4 transition-all duration-300"
-              />
-              <div className="">
-                <h4 className="text-sm leading-[26px] font-Garamond font-semibold text-khaki uppercase">
-                  Head Office
-                </h4>
-                <p className="text-base leading-[26px] font-Lora font-normal text-lightGray">
-                  Kathmandu, Nepal
-                </p>
+
+            <div className="">
+              <div className="flex items-center justify-center lg:justify-start">
+                <div className="w-[50px] h-[50px] lg:w-[60px] lg:h-[60px] rounded-[50%] bg-khaki bg-opacity-[8%] flex items-center justify-center mr-4">
+                  <MdOutlineShareLocation className="w-5 h-5 lg:w-6 lg:h-6 text-khaki" />
+                </div>
+                <div className="">
+                  <h4 className="text-base lg:text-lg leading-[26px] text-white font-Garamond font-medium">
+                    Office Address
+                  </h4>
+                  <p className="text-sm text-lightGray font-Lora font-normal">
+                    Kathmandu, Nepal
+                  </p>
+                </div>
               </div>
             </div>
           </div>

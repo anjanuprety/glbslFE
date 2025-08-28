@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import { useState } from "react";
+import PDFPreview from "./PDFPreview";
 
 const Reports: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [loaded] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   const [sliderRef, instanceRef] = useKeenSlider({
     breakpoints: {
@@ -27,7 +28,7 @@ const Reports: React.FC = () => {
       setCurrentSlide(slider.track.details.rel);
     },
     created() {
-      // setLoaded(true);
+      setLoaded(true);
     },
   });
 
@@ -97,14 +98,7 @@ const Reports: React.FC = () => {
                   <div className="overflow-x-hidden 3xl:w-[410px] group relative">
                     <div className="relative">
                       <div className="overflow-hidden">
-                        <div className="w-full h-[250px] bg-gray-100 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
-                          <div className="text-center">
-                            <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            <p className="text-gray-500 text-sm">PDF Preview</p>
-                          </div>
-                        </div>
+                        <PDFPreview title="Quarterly Report" description="Financial performance Q1 2024" />
                       </div>
                       <div className="">
                         <Link to={"/reports/quarterly-report"}>
@@ -141,14 +135,7 @@ const Reports: React.FC = () => {
                   <div className=" 3xl:w-[410px] group relative">
                     <div className="relative">
                       <div className="overflow-hidden">
-                        <div className="w-full h-[250px] bg-gray-100 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
-                          <div className="text-center">
-                            <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            <p className="text-gray-500 text-sm">PDF Preview</p>
-                          </div>
-                        </div>
+                        <PDFPreview title="Annual Report" description="Comprehensive yearly report" />
                       </div>
                       <div className="">
                         <Link to={"/reports/annual-report"}>
@@ -185,14 +172,7 @@ const Reports: React.FC = () => {
                   <div className=" 3xl:w-[410px] group relative">
                     <div className="relative">
                       <div className="overflow-hidden">
-                        <div className="w-full h-[250px] bg-gray-100 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
-                          <div className="text-center">
-                            <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            <p className="text-gray-500 text-sm">PDF Preview</p>
-                          </div>
-                        </div>
+                        <PDFPreview title="AGM Minutes" description="Meeting documentation" />
                       </div>
                       <div className="">
                         <Link to={"/reports/agm-minutes"}>

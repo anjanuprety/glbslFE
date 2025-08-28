@@ -5,19 +5,20 @@ import { HiArrowLongLeft } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 
 const QuarterlyReportPage: React.FC = () => {
-  const [pdfUrl] = useState("/documents/quarterly-report-sample.pdf"); // This would be the actual PDF URL
+  const [pdfUrl] = useState(""); // In real implementation, this would be the actual PDF URL
 
   const handleDownload = () => {
-    // Create a download link
-    const link = document.createElement('a');
-    link.href = pdfUrl;
-    link.download = 'Quarterly-Report-Q1-2024.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // Demo implementation - in real app, this would download the actual PDF
+    alert('Demo: In a real implementation, this would download the Quarterly Report PDF file.');
+  };
+
+  const handleView = () => {
+    // Demo implementation - in real app, this would open PDF in new tab
+    alert('Demo: In a real implementation, this would open the PDF in a new tab for viewing.');
   };
 
   const handleShare = async () => {
+    // Demo implementation
     if (navigator.share) {
       try {
         await navigator.share({
@@ -27,11 +28,15 @@ const QuarterlyReportPage: React.FC = () => {
         });
       } catch (error) {
         console.log('Error sharing:', error);
+        alert('Demo: Report link copied to clipboard!');
       }
     } else {
       // Fallback: copy to clipboard
-      navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('Demo: Report link copied to clipboard!');
+      }).catch(() => {
+        alert('Demo: In a real implementation, this would share the report link.');
+      });
     }
   };
 
@@ -49,17 +54,52 @@ const QuarterlyReportPage: React.FC = () => {
               data-aos-duration="1000"
             >
               {/* PDF Preview */}
-              <div className="w-full h-[600px] border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden">
-                <iframe
-                  src={`${pdfUrl}#toolbar=1&navpanes=1&scrollbar=1`}
-                  className="w-full h-full"
-                  title="Quarterly Report PDF"
-                  style={{ border: 'none' }}
-                />
+              <div className="w-full h-[600px] border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-900">
+                {/* PDF Preview Placeholder */}
+                <div className="w-full h-full flex flex-col items-center justify-center">
+                  <div className="text-center p-8">
+                    <svg className="w-24 h-24 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <h3 className="text-xl font-Garamond font-semibold text-gray-600 dark:text-gray-300 mb-2">
+                      Quarterly Report Q1 2024
+                    </h3>
+                    <p className="text-gray-500 dark:text-gray-400 mb-4">
+                      PDF Document Preview
+                    </p>
+                    <p className="text-sm text-gray-400 dark:text-gray-500 mb-6">
+                      In a real implementation, the actual PDF would be displayed here using PDF.js or similar technology.
+                    </p>
+                    <div className="flex space-x-3">
+                      <button
+                        onClick={handleView}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md transition-all duration-300 flex items-center space-x-2"
+                      >
+                        <BsEye size={16} />
+                        <span>View PDF</span>
+                      </button>
+                      <button
+                        onClick={handleDownload}
+                        className="bg-khaki hover:bg-lightBlack text-white px-6 py-3 rounded-md transition-all duration-300 flex items-center space-x-2"
+                      >
+                        <BsDownload size={16} />
+                        <span>Download PDF</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
               
               {/* Action buttons overlay */}
               <div className="absolute top-4 right-4 flex space-x-2">
+                <button
+                  onClick={handleView}
+                  className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-md transition-all duration-300 flex items-center space-x-1"
+                  title="View PDF"
+                >
+                  <BsEye size={16} />
+                  <span className="hidden sm:inline text-sm">View</span>
+                </button>
                 <button
                   onClick={handleDownload}
                   className="bg-khaki hover:bg-lightBlack text-white p-2 rounded-md transition-all duration-300 flex items-center space-x-1"
