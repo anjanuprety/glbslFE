@@ -68,31 +68,25 @@ const About: React.FC = () => {
               data-aos-duration="1000"
             >
               <h5 className="text-base text-khaki leading-[26px] font-medium">
-                LUXURY HOTEL AND RESORT
+                TRUSTED MICROFINANCE INSTITUTION
               </h5>
               <h1 className="text-[22px] sm:text-2xl md:text-[21px]  xl:text-3xl 2xl:text-[38px] leading-6 md:leading-7 lg:leading-[30px] 2xl:leading-[44px] text-lightBlack dark:text-white font-semibold my-4">
-                LUXURY BEST HOTEL IN CITY CALIFORNIA, USA
+                GURANS LAGHUBITTA BITTIYA SANSTHA LIMITED (GLBSL)
               </h1>
               <p className="text-sm xl:text-base md:text-sm lg:text-base font-Lora text-gray dark:text-lightGray font-normal leading-[26px]">
-                Rapidiously myocardinate cross-platform intellectual capital
-                after marketing model. Appropriately create interactive
-                infrastructures after maintainable are Holisticly facilitate
-                stand-alone inframe Compellingly create premier open data
-                through economically.
+                Established as a leading microfinance institution, GLBSL is dedicated to providing accessible financial services to empower communities and promote financial inclusion. We specialize in microfinance, savings, and remittance services designed to support economic growth and financial literacy.
               </p>
 
               <p className="text-sm sm:text-base font-Lora text-gray dark:text-lightGray font-normal leading-[26px] mt-5">
-                Rapidiously myocardinate cross-platform intellectual capital
-                after marketing model. Appropriately create interactive
-                infrastructures after
+                Our commitment extends beyond traditional banking to creating meaningful impact through innovative financial solutions that serve the underbanked and promote sustainable development.
               </p>
 
               <div className="bg-whiteSmoke dark:bg-lightBlack px-[30px] py-5">
                 <p className="text-sm sm:text-base leading-10 3xl:leading-[50px] text-lightBlack dark:text-white font-medium font-Lora ">
-                  102/B, Dream Street, New Elephant Road, Resort.
+                  Head Office: Kathmandu, Nepal
                 </p>
                 <p className="text-sm sm:text-base leading-10  text-lightBlack dark:text-white font-medium font-Lora ">
-                  Dhanmondi Dhaka - 1212
+                  Serving Communities Across Nepal
                 </p>
               </div>
               <button className="btn-primary mt-[30px]">MORE ABOUT</button>
@@ -140,19 +134,16 @@ const About: React.FC = () => {
               data-aos-duration="1000"
             >
               <h5 className="text-base text-khaki leading-[26px] font-semibold">
-                MANAGER
+                LEADERSHIP
               </h5>
               <h1 className="text-[22px] sm:text-2xl md:text-[28px] xl:text-[32px] 2xl:text-[38px] leading-[38px] lg:leading-[44px] text-lightBlack dark:text-white font-semibold">
-                LUXURY BEST HOTEL IN CITY CALIFORNIA, USA
+                DEDICATED TO FINANCIAL INCLUSION AND COMMUNITY DEVELOPMENT
               </h1>
               <p className="text-sm sm:text-base font-Lora text-gray dark:text-lightGray font-normal leading-[26px]">
-                Rapidiously myocardinate cross-platform intellectual capital
-                after model. Appropriately create interactive infrastructures
-                after main Holisticly facilitate stand-alone inframe
+                Our experienced leadership team is committed to advancing microfinance services and creating sustainable economic opportunities for underserved communities across Nepal.
               </p>
               <p className="text-sm sm:text-base font-Lora italic leading-[26px] underline  text-gray dark:text-lightGray font-normal ">
-                “ Model. Appropriately create interactive infrastructures after
-                main Holisticly facilitate stand-alone inframe of the world ”
+                “ Empowering communities through accessible financial services and fostering economic growth for a financially inclusive Nepal ”
               </p>
               <div className="flex items-center space-x-6 pt-5">
                 <img
@@ -163,11 +154,11 @@ const About: React.FC = () => {
 
                 <div className="">
                   <h4 className="text-lg sm:text-[22px] leading-[26px] text-lightBlack dark:text-white font-semibold font-Garamond">
-                    John D. Alexon
+                    Chief Executive Officer
                   </h4>
                   <p className="pt-1 text-base leading-[26px] font-normal text-gray dark:text-lightGray flex items-center font-Lora">
                     <span className="w-5 h-[1px] inline-block text-khaki bg-khaki mr-2"></span>
-                    Manger
+                    GLBSL Management
                   </p>
                 </div>
               </div>
@@ -196,12 +187,10 @@ const About: React.FC = () => {
               <hr className="w-[100px] h-[1px] bg-lightGray dark:bg-gray text-lightGray dark:text-gray" />
             </div>
             <h1 className="text-xl sm:text-2xl md:text-3xl 2xl:text-[38px] leading-[42px] 2xl:leading-[52px] text-lightBlack dark:text-white mt-[10px] mb-[14px] font-Garamond font-semibold uppercase">
-              MEET THE EXPER MEMBERS
+              MEET OUR DEDICATED TEAM
             </h1>
             <p className="font-Lora leading-7 lg:leading-[26px] text-lightGray font-normal text-sm sm:text-base">
-              Proactively morph optimal infomediaries rather than accurate
-              expertise. Intrinsicly progressive resources rather than
-              resource-leveling
+              Committed professionals dedicated to providing exceptional microfinance services and fostering financial inclusion across communities throughout Nepal.
             </p>
           </div>
 
@@ -217,10 +206,10 @@ const About: React.FC = () => {
               <div className="relative">
                 <div className="px-4  lg:px-[30px] pt-5 ">
                   <h3 className="text-xl sm:text-2xl lg:text-2xl xl:text-[28px] leading-7 md:leading-8 lg:leading-10 text-lightBlack dark:text-white font-semibold font-Garamond text-center hover:opacity-0">
-                    Valentina Kerry
+                    Sita Sharma
                   </h3>
                   <p className="text-sm md:text-base leading-[26px] text-Gray dark:text-lightGray font-normal font-Lora text-center group-hover:text-white dark:hover:text-white hover:opacity-0">
-                    General Manager
+                    Branch Manager
                   </p>
                 </div>
                 <div
@@ -249,10 +238,10 @@ const About: React.FC = () => {
               <div className="relative">
                 <div className="px-4  lg:px-[30px] pt-5 ">
                   <h3 className="text-xl sm:text-2xl lg:text-2xl xl:text-[28px] leading-7 md:leading-8 lg:leading-10 text-lightBlack dark:text-white font-semibold font-Garamond text-center hover:opacity-0">
-                    Leary Mart
+                    Ram Bahadur
                   </h3>
                   <p className="text-sm md:text-base leading-[26px] text-Gray dark:text-lightGray font-normal font-Lora text-center group-hover:text-white dark:hover:text-white hover:opacity-0">
-                    Product Manager
+                    Loan Officer
                   </p>
                 </div>
                 <div
@@ -281,10 +270,10 @@ const About: React.FC = () => {
               <div className="relative">
                 <div className="px-4  lg:px-[30px] pt-5 ">
                   <h3 className="text-xl sm:text-2xl lg:text-2xl xl:text-[28px] leading-7 md:leading-8 lg:leading-10 text-lightBlack dark:text-white font-semibold font-Garamond text-center hover:opacity-0">
-                    Samantha Shen
+                    Maya Thapa
                   </h3>
                   <p className="text-sm md:text-base leading-[26px] text-Gray dark:text-lightGray font-normal font-Lora text-center group-hover:text-white dark:hover:text-white hover:opacity-0">
-                    General Manager
+                    Credit Analyst
                   </p>
                 </div>
                 <div
@@ -318,10 +307,10 @@ const About: React.FC = () => {
           >
             <div className="space-y-3 md:w-[450px] xl:w-[550px] font-Garamond">
               <h5 className="text-base text-khaki leading-[26px] font-medium">
-                LUXURY FEEDBACK
+                CLIENT FEEDBACK
               </h5>
               <h1 className="text-[22px] sm:text-3xl 2xl:text-[38px] leading-6 md:leading-[38px] lg:leading-[44px] text-lightBlack dark:text-white font-semibold uppercase">
-                resote clients feedback about services
+                client testimonials about our microfinance services
               </h1>
             </div>
             <div className="hidden sm:flex items-center lg:space-x-5  space-x-3 ">
@@ -371,18 +360,17 @@ const About: React.FC = () => {
                     />
                   </span>
                   <p className="font-Lora text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray group-hover:text-white  font-normal mt-7 ">
-                    The owner and staff were extremely helpful and kind and took
-                    time to ensure that we had extra and places to visit.
+                    GLBSL has helped me expand my small business with their flexible loan services and excellent customer support.
                   </p>
                 </div>
                 <div className="flex items-center mt-10 lg:mt-[51px]">
                   <img src="/images/home-4/testi-1.jpg" alt="" />
                   <div className="ml-5 md:ml-6">
                     <h4 className="text-lg sm:text-xl md:text-2xl leading-[28px] text-[#041341] dark:text-white font-medium font-Garamond ">
-                      Marii Brown
+                      Kamala Devi
                     </h4>
                     <p className="text-sm sm:text-base leading-7 font-Lora font-normal text-gray dark:text-lightGray ">
-                      Rome, Italy
+                      Kathmandu, Nepal
                     </p>
                   </div>
                 </div>
@@ -413,18 +401,17 @@ const About: React.FC = () => {
                     />
                   </span>
                   <p className="font-Lora text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray group-hover:text-white  font-normal mt-7 ">
-                    The owner and staff were extremely helpful and kind and took
-                    time to ensure that we had extra and places to visit.
+                    The savings account features and remittance services have made managing my finances much easier and more secure.
                   </p>
                 </div>
                 <div className="flex items-center mt-10 lg:mt-[51px]">
                   <img src="/images/home-4/testi-2.jpg" alt="" />
                   <div className="ml-5 md:ml-6">
                     <h4 className="text-lg sm:text-xl md:text-2xl leading-[28px] text-[#041341] dark:text-white font-medium font-Garamond ">
-                      John Doe
+                      Rajesh Shrestha
                     </h4>
                     <p className="text-sm sm:text-base leading-7 font-Lora font-normal text-gray dark:text-lightGray ">
-                      Rome, Italy
+                      Pokhara, Nepal
                     </p>
                   </div>
                 </div>
@@ -455,18 +442,17 @@ const About: React.FC = () => {
                     />
                   </span>
                   <p className="font-Lora text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray group-hover:text-white  font-normal mt-7 ">
-                    The owner and staff were extremely helpful and kind and took
-                    time to ensure that we had extra and places to visit.
+                    Their microfinance programs have empowered women in our community to start their own businesses and achieve financial independence.
                   </p>
                 </div>
                 <div className="flex items-center mt-10 lg:mt-[51px]">
                   <img src="/images/home-4/testi-3.jpg" alt="" />
                   <div className="ml-5 md:ml-6">
                     <h4 className="text-lg sm:text-xl md:text-2xl leading-[28px] text-[#041341] dark:text-white font-medium font-Garamond ">
-                      Ina Aldrich
+                      Sunita Lama
                     </h4>
                     <p className="text-sm sm:text-base leading-7 font-Lora font-normal text-gray dark:text-lightGray ">
-                      Rome, Italy
+                      Lalitpur, Nepal
                     </p>
                   </div>
                 </div>
@@ -475,194 +461,6 @@ const About: React.FC = () => {
           </div>
         </div>
       </section>
-      {/* Latest Blog */}
-
-      <div className=" dark:bg-normalBlack">
-        <section className="Container py-20 lg:py-[120px]">
-          {/* Section Header */}
-          <div
-            className=" text-center mx-auto  px-5 sm:px-8 md:px-[80px] lg:px-[120px] xl:px-[200px] 2xl:px-[335px]"
-            data-aos="fade-up"
-            data-aos-duration="1000"
-          >
-            {/* Section logo */}
-            <div className="flex items-center justify-center space-x-2 mb-4  ">
-              <hr className="w-[100px] h-[1px] text-[#dedbd4] dark:text-[#3b3b3b] " />
-              <img
-                src="/images/home-1/section-shape1.png"
-                alt="room_section_logo"
-                className="w-[50px] h-[50px]"
-              />
-              <hr className="w-[100px] h-[1px] text-[#dedbd4] dark:text-[#3b3b3b] " />
-            </div>
-
-            <h1 className="text-xl sm:text-2xl md:text-3xl 2xl:text-[38px] leading-[44px] lg:leading-[52px] text-lightBlack dark:text-white  font-Garamond font-semibold uppercase mb-[8px]">
-              LATEST POST FROM BLOG
-            </h1>
-            <p className="font-Lora leading-[26px] text-gray dark:text-lightGray font-normal text-sm sm:text-base">
-              Proactively morph optimal infomediaries rather than accurate
-              expertise. Intrinsicly progressive resources rather than
-              resource-leveling
-            </p>
-          </div>
-          {/* all blogs are here */}
-          <div className="relative">
-            <div className="mt-14 2xl:mt-[60px] keen-slider" ref={sliderRef}>
-              {/* slide - 1 */}
-              <div className="keen-slider__slide number-slide1 ">
-                {/* card one */}
-                <div
-                  className="overflow-hidden 3xl:w-[410px] group"
-                  data-aos="fade-up"
-                  data-aos-duration="1000"
-                >
-                  <div className="relative">
-                    <img
-                      src="/images/home-1/blog-1.jpg "
-                      className="w-full h-full object-cover"
-                      alt=""
-                    />
-                  </div>
-                  <div className="font-Garamond border border-[#e8e8e8] dark:border-[#424242] border-t-0">
-                    <div className="py-6 px-[30px] lg:px-5 xl:px-[25px] ">
-                      <div className="flex items-center space-x-6">
-                        <p className="text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray font-normal uppercase mr-7 ml-3 relative before:absolute before:w-[7px] before:h-[7px] before:left-[-13px] before:bg-[#d1d1d1] dark:before:bg-khaki before:top-[9px]">
-                          August 10, 2023
-                        </p>
-                        <p className="text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray font-normal uppercase mr-7 ml-3 relative before:absolute before:w-[7px] before:h-[7px] before:left-[-13px] before:bg-[#d1d1d1] dark:before:bg-khaki before:top-[9px]">
-                          Interior
-                        </p>
-                      </div>
-                      <Link to="/blog">
-                        <h2 className="text-xl sm:text-[22px] xl:text-2xl 2xl:text-[26px] leading-[34px] font-semibold text-lightBlack dark:text-white py-2 sm:py-3 md:py-4 hover:underline underline-offset-2">
-                          Luxury Hotel for Traveling Spot USA, California
-                        </h2>
-                      </Link>
-                    </div>
-                    <div className="  border-t-[1px] border-[#e8e8e8] dark:border-[#424242]  py-2 lg:py-3">
-                      <div className="px-[30px] flex items-center justify-between ">
-                        <div className="">
-                          <span className=" text-sm sm:text-base flex items-center ">
-                            <span className="ml-[10px] leading-[38px] uppercase text-lightBlack dark:text-white font-medium group-hover:text-khaki hover:underline  underline-offset-1">
-                              Read More
-                            </span>
-                          </span>
-                        </div>
-                        <span className="">
-                          <BsArrowRight
-                            className="text-gray dark:text-lightGray group-hover:text-khaki"
-                            size={"24px"}
-                          />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* slide - 2 */}
-              <div className="keen-slider__slide number-slide1 ">
-                <div
-                  className="overflow-hidden 3xl:w-[410px] group"
-                  data-aos="fade-down"
-                  data-aos-duration="1000"
-                >
-                  <div className="relative">
-                    <img
-                      src="/images/home-1/blog-2.jpg "
-                      className="w-full h-full object-cover"
-                      alt=""
-                    />
-                  </div>
-                  <div className="font-Garamond border border-[#e8e8e8] dark:border-[#424242] border-t-0">
-                    <div className="py-6 px-[30px] lg:px-5 xl:px-[25px] ">
-                      <div className="flex items-center space-x-6">
-                        <p className="text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray font-normal uppercase mr-7 ml-3 relative before:absolute before:w-[7px] before:h-[7px] before:left-[-13px] before:bg-[#d1d1d1] dark:before:bg-khaki before:top-[9px]">
-                          August 10, 2023
-                        </p>
-                        <p className="text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray font-normal uppercase mr-7 ml-3 relative before:absolute before:w-[7px] before:h-[7px] before:left-[-13px] before:bg-[#d1d1d1] dark:before:bg-khaki before:top-[9px]">
-                          Interior
-                        </p>
-                      </div>
-                      <Link to="/blog">
-                        <h2 className="text-xl sm:text-[22px] xl:text-2xl 2xl:text-[26px] leading-[34px] font-semibold text-lightBlack dark:text-white py-2 sm:py-3 md:py-4 hover:underline underline-offset-2">
-                          Luxury Hotel for Traveling Spot USA, California
-                        </h2>
-                      </Link>
-                    </div>
-                    <div className="  border-t-[1px] border-[#e8e8e8] dark:border-[#424242]  py-2 lg:py-3">
-                      <div className="px-[30px] flex items-center justify-between ">
-                        <div className="">
-                          <span className=" text-sm sm:text-base flex items-center ">
-                            <span className="ml-[10px] leading-[38px] uppercase text-lightBlack dark:text-white font-medium group-hover:text-khaki hover:underline  underline-offset-1">
-                              Read More
-                            </span>
-                          </span>
-                        </div>
-                        <span className="">
-                          <BsArrowRight
-                            className="text-gray dark:text-lightGray group-hover:text-khaki"
-                            size={"24px"}
-                          />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* slide - 3 */}
-              <div className="keen-slider__slide number-slide1 ">
-                <div
-                  className="overflow-hidden 3xl:w-[410px] group"
-                  data-aos="fade-up"
-                  data-aos-duration="1000"
-                >
-                  <div className="relative">
-                    <img
-                      src="/images/home-1/blog-3.jpg "
-                      className="w-full h-full object-cover"
-                      alt=""
-                    />
-                  </div>
-                  <div className="font-Garamond border border-[#e8e8e8] dark:border-[#424242] border-t-0">
-                    <div className="py-6 px-[30px] lg:px-5 xl:px-[25px] ">
-                      <div className="flex items-center space-x-6">
-                        <p className="text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray font-normal uppercase mr-7 ml-3 relative before:absolute before:w-[7px] before:h-[7px] before:left-[-13px] before:bg-[#d1d1d1] dark:before:bg-khaki before:top-[9px]">
-                          August 10, 2023
-                        </p>
-                        <p className="text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray font-normal uppercase mr-7 ml-3 relative before:absolute before:w-[7px] before:h-[7px] before:left-[-13px] before:bg-[#d1d1d1] dark:before:bg-khaki before:top-[9px]">
-                          Interior
-                        </p>
-                      </div>
-                      <Link to="/blog">
-                        <h2 className="text-xl sm:text-[22px] xl:text-2xl 2xl:text-[26px] leading-[34px] font-semibold text-lightBlack dark:text-white py-2 sm:py-3 md:py-4 hover:underline underline-offset-2">
-                          Luxury Hotel for Traveling Spot USA, California
-                        </h2>
-                      </Link>
-                    </div>
-                    <div className="  border-t-[1px] border-[#e8e8e8] dark:border-[#424242]  py-2 lg:py-3">
-                      <div className="px-[30px] flex items-center justify-between ">
-                        <div className="">
-                          <span className=" text-sm sm:text-base flex items-center ">
-                            <span className="ml-[10px] leading-[38px] uppercase text-lightBlack dark:text-white font-medium group-hover:text-khaki hover:underline  underline-offset-1">
-                              Read More
-                            </span>
-                          </span>
-                        </div>
-                        <span className="">
-                          <BsArrowRight
-                            className="text-gray dark:text-lightGray group-hover:text-khaki"
-                            size={"24px"}
-                          />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
     </section>
   );
 };
