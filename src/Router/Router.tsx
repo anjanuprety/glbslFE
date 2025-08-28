@@ -17,16 +17,10 @@ import RemittanceServicesPage from "../Pages/Services/services/RemittanceService
 import MemberWelfareServicesPage from "../Pages/Services/services/MemberWelfare/MemberWelfareServicesPage";
 
 // Inner pages
-import Room from "../Pages/InnerPage/Room";
-import FindRoom from "../Pages/InnerPage/FindRoom";
-import RoomDetails from "../Pages/InnerPage/RoomDetails";
 import ReportsPage from "../Pages/InnerPage/ReportsPage";
 import Services from "../Pages/InnerPage/Services";
 import ServiceDetails from "../Pages/InnerPage/ServiceDetails";
 import Team from "../Pages/InnerPage/Team";
-import Pricing from "../Pages/InnerPage/Pricing";
-import Blog from "../Pages/InnerPage/Blog";
-import BlogDetails from "../Pages/InnerPage/BlogDetails";
 import Contact from "../Pages/InnerPage/Contact";
 import ErrorPage from "../Shared/ErrorPage/ErrorPage";
 
@@ -79,18 +73,6 @@ const router = createBrowserRouter([
       {
         path: "/branches",
         element: <BranchesPage />,
-      },
-      {
-        path: "/room",
-        element: <Room />,
-      },
-      {
-        path: "/find_room",
-        element: <FindRoom />,
-      },
-      {
-        path: "/room_details",
-        element: <RoomDetails />,
       },
       {
         path: "/reports",
@@ -151,18 +133,6 @@ const router = createBrowserRouter([
       {
         path: "/our_team",
         element: <Team />,
-      },
-      {
-        path: "/pricing",
-        element: <Pricing />,
-      },
-      {
-        path: "/blog",
-        element: <Blog />,
-      },
-      {
-        path: "/blog_details",
-        element: <BlogDetails />,
       },
       {
         path: "/contact",
