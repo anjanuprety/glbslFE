@@ -37,7 +37,8 @@ import {
   AGMMinutesPage, 
   BaseRatePage, 
   StaffTrainingPage, 
-  GovernanceReportPage 
+  GovernanceReportPage,
+  NoticePage 
 } from "../Pages/InnerPage/Reports";
 
 // Only the primary route is kept (Home1). Extra homepage routes removed.
@@ -118,6 +119,10 @@ const router = createBrowserRouter([
       {
         path: "/reports/governance-report",
         element: <GovernanceReportPage />,
+      },
+      {
+        path: "/reports/notices",
+        element: <NoticePage />,
       },
       {
         path: "/services",

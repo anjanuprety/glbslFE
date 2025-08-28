@@ -292,6 +292,17 @@ const Navbar: React.FC = () => {
                   ? "pending"
                   : isActive
                   ? "active"
+                  : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300`}
+              to="/reports/notices"
+            >
+              {t('nav.notices')}
+            </NavLink>
+            <NavLink
+              className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
+                isPending
+                  ? "pending"
+                  : isActive
+                  ? "active"
                   : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
               to="#"
             >

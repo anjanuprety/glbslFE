@@ -18,6 +18,10 @@ export const translations: Translations = {
     en: 'Reports',
     ne: 'प्रतिवेदनहरू'
   },
+  'nav.notices': {
+    en: 'Notices',
+    ne: 'सूचनाहरू'
+  },
   'nav.page': {
     en: 'Page',
     ne: 'पृष्ठ'
@@ -108,8 +112,6 @@ export const translations: Translations = {
     en: 'Governance Report',
     ne: 'शासन प्रतिवेदन'
   },
-  
-  // Page submenu
   'submenu.about_us': {
     en: 'About Us',
     ne: 'हाम्रो बारेमा'

@@ -7,18 +7,20 @@ import HotelAndResort from "../../Components/HotelAndResort/HotelAndResort";
 // import LatestBlog from "../../Components/LatestBlog/LatestBlog";
 import Offers from "../../Components/Offers/Offers";
 import Reports from "../../Components/Reports/Reports";
+import Rooms from "../../Components/Rooms/Rooms";
 import Testimonial from "../../Components/Testimonial/Testimonial";
 
 const Home1: React.FC = () => {
   return (
     <>
       <HeroSection />
-      <Reports />
+      <Rooms />
       <HotelAndResort />
       {/* <HotelAndFacilities /> */}
       <Action />
       <Facilities />
       <Offers />
+      <Reports />
       <Testimonial />
       {/* <LatestBlog /> */}
     </>
