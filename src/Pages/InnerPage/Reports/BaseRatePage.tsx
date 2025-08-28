@@ -1,267 +1,256 @@
 import React from "react";
 import BreadCrumb from "../../../BreadCrumb/BreadCrumb";
+import { BsDownload, BsEye, BsShare } from "react-icons/bs";
 import { HiArrowLongLeft } from "react-icons/hi2";
 import { Link } from "react-router-dom";
+import PDFPreview from "../../../Components/Reports/PDFPreview";
 
 const BaseRatePage: React.FC = () => {
+  // Sample base rate documents data - in real implementation, this would come from Strapi CMS
+  const rateDocuments = [
+    {
+      id: 1,
+      title: "Interest Rate Schedule January 2025",
+      description: "Updated interest rates for all loan and deposit products",
+      effectiveDate: "January 1, 2025",
+      publishDate: "December 2024",
+      fileSize: "0.8 MB",
+      pdfUrl: "/reports/rates-jan-2025.pdf", // This would be the actual file URL from Strapi/Google Drive
+      baseRate: "12.5%",
+      category: "Current Rates"
+    },
+    {
+      id: 2,
+      title: "Base Rate Revision Notice December 2024", 
+      description: "Quarterly base rate revision and announcement",
+      effectiveDate: "December 15, 2024",
+      publishDate: "December 2024",
+      fileSize: "0.5 MB",
+      pdfUrl: "/reports/base-rate-dec-2024.pdf",
+      baseRate: "12.0%",
+      category: "Rate Revision"
+    },
+    {
+      id: 3,
+      title: "Interest Rate Schedule October 2024",
+      description: "Revised interest rates following NRB directives", 
+      effectiveDate: "October 1, 2024",
+      publishDate: "September 2024",
+      fileSize: "0.9 MB",
+      pdfUrl: "/reports/rates-oct-2024.pdf",
+      baseRate: "11.8%",
+      category: "Historical Rates"
+    },
+    {
+      id: 4,
+      title: "Special Rate Notification July 2024",
+      description: "Special interest rates for agricultural loans",
+      effectiveDate: "July 15, 2024", 
+      publishDate: "July 2024",
+      fileSize: "0.6 MB",
+      pdfUrl: "/reports/special-rates-jul-2024.pdf",
+      baseRate: "11.5%",
+      category: "Special Rates"
+    },
+    {
+      id: 5,
+      title: "Interest Rate Schedule April 2024",
+      description: "Quarterly interest rate update and changes",
+      effectiveDate: "April 1, 2024",
+      publishDate: "March 2024",
+      fileSize: "0.8 MB", 
+      pdfUrl: "/reports/rates-apr-2024.pdf",
+      baseRate: "11.2%",
+      category: "Historical Rates"
+    },
+    {
+      id: 6,
+      title: "Base Rate Policy Document 2024",
+      description: "Annual base rate methodology and policy framework",
+      effectiveDate: "January 1, 2024",
+      publishDate: "December 2023",
+      fileSize: "1.2 MB",
+      pdfUrl: "/reports/base-rate-policy-2024.pdf",
+      baseRate: "11.0%",
+      category: "Policy Document"
+    }
+  ];
+
+  const handleDownload = (document: typeof rateDocuments[0]) => {
+    // Demo implementation - in real app, this would download from Strapi/Google Drive
+    alert(`Demo: Downloading ${document.title}`);
+  };
+
+  const handleView = (document: typeof rateDocuments[0]) => {
+    // Demo implementation - in real app, this would open PDF in new tab
+    alert(`Demo: Opening ${document.title} for viewing`);
+  };
+
+  const handleShare = async (document: typeof rateDocuments[0]) => {
+    // Demo implementation for sharing specific document
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `${document.title} - GLBSL`,
+          text: `Check out our ${document.title}`,
+          url: `${window.location.origin}/reports/base-rate/${document.id}`,
+        });
+      } catch (error) {
+        console.log('Error sharing:', error);
+        alert(`Demo: ${document.title} link copied to clipboard!`);
+      }
+    } else {
+      alert(`Demo: ${document.title} link copied to clipboard!`);
+    }
+  };
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case "Current Rates": return "bg-green-600";
+      case "Rate Revision": return "bg-blue-600";
+      case "Special Rates": return "bg-purple-600";
+      case "Policy Document": return "bg-orange-600";
+      default: return "bg-gray-600";
+    }
+  };
+
   return (
     <section className="">
-      <BreadCrumb title="BASE RATE" home={"/"} />
+      <BreadCrumb title="BASE RATES & INTEREST RATES" home={"/"} />
 
       <div className="bg-whiteSmoke dark:bg-lightBlack py-20 2xl:py-[120px]">
         <div className="Container">
-          <div className="max-w-4xl mx-auto">
-            {/* Header */}
-            <div
-              className="text-center mb-12"
-              data-aos="fade-up"
-              data-aos-duration="1000"
-            >
-              <h1 className="text-[22px] sm:text-2xl md:text-3xl 2xl:text-[38px] leading-7 sm:leading-8 md:leading-9 lg:leading-[42px] 2xl:leading-[52px] text-lightBlack dark:text-white mb-4 font-Garamond font-semibold uppercase">
-                Base Rate & Interest Rates
+          {/* Section heading */}
+          <div
+            className="flex justify-center"
+            data-aos="fade-up"
+            data-aos-duration="1000"
+          >
+            <div className="text-center">
+              <h1 className="text-xl sm:text-2xl md:text-3xl 2xl:text-[38px] leading-7 sm:leading-8 md:leading-9 lg:leading-[42px] 2xl:leading-[52px] text-lightBlack dark:text-white font-Garamond font-semibold capitalize">
+                Interest Rates & Base Rate Information
               </h1>
-              <p className="text-gray dark:text-lightGray font-Lora">
-                Current interest rates and base rate information for all our financial products
+              <div className="flex items-center justify-center text-center mx-auto mt-2 lg:mt-[6px]">
+                <div className="w-[100px] h-[1px] bg-[#ccc] dark:bg-[#3b3b3b] mr-5 "></div>
+                <img
+                  src="/images/home-1/section-shape1.png"
+                  className="w-[30px] h-[30px]"
+                  alt=""
+                />
+                <div className="w-[100px] h-[1px] bg-[#ccc] dark:bg-[#3b3b3b] ml-5"></div>
+              </div>
+              <p className="text-center text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray font-Lora font-normal mt-[10px]">
+                Access current and historical interest rates, base rate revisions, and policy documents
               </p>
             </div>
+          </div>
 
-            {/* Base Rate Section */}
-            <div
-              className="bg-white dark:bg-normalBlack p-6 lg:p-8 rounded-lg mb-8"
-              data-aos="zoom-in-up"
-              data-aos-duration="1000"
-            >
-              <h2 className="text-2xl font-Garamond font-semibold text-lightBlack dark:text-white mb-6">
-                Current Base Rate
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-khaki/10 p-6 rounded-lg text-center">
-                  <h3 className="text-lg font-Garamond font-semibold text-lightBlack dark:text-white mb-2">
-                    Base Rate
-                  </h3>
-                  <p className="text-3xl font-bold text-khaki">8.50%</p>
-                  <p className="text-sm text-gray dark:text-lightGray mt-2">
-                    Effective from: March 1, 2024
-                  </p>
-                </div>
-                <div className="bg-gray/10 p-6 rounded-lg text-center">
-                  <h3 className="text-lg font-Garamond font-semibold text-lightBlack dark:text-white mb-2">
-                    Previous Rate
-                  </h3>
-                  <p className="text-3xl font-bold text-gray dark:text-lightGray">8.25%</p>
-                  <p className="text-sm text-gray dark:text-lightGray mt-2">
-                    Valid until: February 29, 2024
-                  </p>
-                </div>
-              </div>
+          {/* Current Base Rate Highlight */}
+          <div className="max-w-md mx-auto mb-16 mt-12" data-aos="zoom-in-up" data-aos-duration="1000">
+            <div className="bg-khaki p-6 rounded-lg text-center text-white">
+              <h3 className="text-lg font-Garamond font-semibold mb-2">Current Base Rate</h3>
+              <div className="text-3xl font-bold mb-2">12.5%</div>
+              <p className="text-sm opacity-90">Effective from January 1, 2025</p>
             </div>
+          </div>
 
-            {/* Loan Interest Rates */}
-            <div
-              className="bg-white dark:bg-normalBlack p-6 lg:p-8 rounded-lg mb-8"
-              data-aos="zoom-in-up"
-              data-aos-duration="1000"
-            >
-              <h2 className="text-2xl font-Garamond font-semibold text-lightBlack dark:text-white mb-6">
-                Loan Interest Rates
-              </h2>
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse border border-gray-300 dark:border-gray-600">
-                  <thead>
-                    <tr className="bg-khaki/10">
-                      <th className="border border-gray-300 dark:border-gray-600 p-3 text-left font-Garamond font-semibold text-lightBlack dark:text-white">
-                        Loan Type
-                      </th>
-                      <th className="border border-gray-300 dark:border-gray-600 p-3 text-left font-Garamond font-semibold text-lightBlack dark:text-white">
-                        Interest Rate
-                      </th>
-                      <th className="border border-gray-300 dark:border-gray-600 p-3 text-left font-Garamond font-semibold text-lightBlack dark:text-white">
-                        Processing Fee
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        Micro Credit (Group)
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-khaki font-semibold">
-                        15.00% - 18.00%
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        1.50%
-                      </td>
-                    </tr>
-                    <tr className="bg-gray/5">
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        Small Business Loan
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-khaki font-semibold">
-                        12.00% - 16.00%
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        2.00%
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        Agriculture Loan
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-khaki font-semibold">
-                        10.00% - 14.00%
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        1.00%
-                      </td>
-                    </tr>
-                    <tr className="bg-gray/5">
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        Individual Loan
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-khaki font-semibold">
-                        14.00% - 20.00%
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        2.50%
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        Emergency Loan
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-khaki font-semibold">
-                        18.00% - 22.00%
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        3.00%
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Deposit Interest Rates */}
-            <div
-              className="bg-white dark:bg-normalBlack p-6 lg:p-8 rounded-lg mb-8"
-              data-aos="zoom-in-up"
-              data-aos-duration="1000"
-            >
-              <h2 className="text-2xl font-Garamond font-semibold text-lightBlack dark:text-white mb-6">
-                Deposit Interest Rates
-              </h2>
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse border border-gray-300 dark:border-gray-600">
-                  <thead>
-                    <tr className="bg-khaki/10">
-                      <th className="border border-gray-300 dark:border-gray-600 p-3 text-left font-Garamond font-semibold text-lightBlack dark:text-white">
-                        Deposit Type
-                      </th>
-                      <th className="border border-gray-300 dark:border-gray-600 p-3 text-left font-Garamond font-semibold text-lightBlack dark:text-white">
-                        Interest Rate
-                      </th>
-                      <th className="border border-gray-300 dark:border-gray-600 p-3 text-left font-Garamond font-semibold text-lightBlack dark:text-white">
-                        Minimum Amount
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        Savings Account
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-khaki font-semibold">
-                        6.00%
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        NPR 1,000
-                      </td>
-                    </tr>
-                    <tr className="bg-gray/5">
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        Fixed Deposit (1 Year)
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-khaki font-semibold">
-                        8.50%
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        NPR 10,000
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        Fixed Deposit (2 Years)
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-khaki font-semibold">
-                        9.00%
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        NPR 10,000
-                      </td>
-                    </tr>
-                    <tr className="bg-gray/5">
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        Recurring Deposit
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-khaki font-semibold">
-                        7.50%
-                      </td>
-                      <td className="border border-gray-300 dark:border-gray-600 p-3 text-gray dark:text-lightGray font-Lora">
-                        NPR 500/month
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Important Notes */}
-            <div
-              className="bg-white dark:bg-normalBlack p-6 lg:p-8 rounded-lg mb-8"
-              data-aos="zoom-in-up"
-              data-aos-duration="1000"
-            >
-              <h2 className="text-2xl font-Garamond font-semibold text-lightBlack dark:text-white mb-6">
-                Important Notes
-              </h2>
-              <ul className="space-y-3">
-                <li className="flex items-start">
-                  <span className="w-2 h-2 bg-khaki rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                  <span className="text-sm lg:text-base leading-6 text-gray dark:text-lightGray font-Lora">
-                    Interest rates are subject to change based on Nepal Rastra Bank guidelines and market conditions.
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <span className="w-2 h-2 bg-khaki rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                  <span className="text-sm lg:text-base leading-6 text-gray dark:text-lightGray font-Lora">
-                    Actual interest rates may vary based on loan amount, tenure, and borrower profile.
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <span className="w-2 h-2 bg-khaki rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                  <span className="text-sm lg:text-base leading-6 text-gray dark:text-lightGray font-Lora">
-                    Processing fees and other charges are as per prevailing policies.
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <span className="w-2 h-2 bg-khaki rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                  <span className="text-sm lg:text-base leading-6 text-gray dark:text-lightGray font-Lora">
-                    For detailed terms and conditions, please contact our nearest branch.
-                  </span>
-                </li>
-              </ul>
-            </div>
-
-            {/* Back to reports */}
-            <div className="text-center">
-              <Link 
-                to="/reports"
-                className="inline-flex items-center text-khaki hover:text-lightBlack dark:hover:text-white transition-all duration-300"
+          {/* Documents Grid */}
+          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 pt-8">
+            {rateDocuments.map((document, index) => (
+              <div
+                key={document.id}
+                className="overflow-x-hidden 3xl:w-[410px] group"
+                data-aos="fade-up"
+                data-aos-duration={800 + (index * 200)}
               >
-                <HiArrowLongLeft className="w-5 h-5 mr-2" />
-                <span className="text-sm font-Garamond font-semibold">Back to Reports</span>
-              </Link>
-            </div>
+                <div className="relative">
+                  <div className="overflow-hidden">
+                    <PDFPreview title={document.title} description={document.description} />
+                  </div>
+
+                  {/* Category Badge */}
+                  <div className={`absolute top-3 right-3 ${getCategoryColor(document.category)} text-white px-2 py-1 rounded-md text-xs font-medium`}>
+                    {document.category}
+                  </div>
+
+                  <div className="flex space-x-2 absolute bottom-2 -left-52 group-hover:left-2 transition-all duration-300">
+                    <button
+                      onClick={() => handleView(document)}
+                      className="flex items-center justify-center text-[13px] leading-[32px] bg-khaki px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
+                      title="View PDF"
+                    >
+                      <BsEye className="w-3 h-3 mr-1" />
+                      View
+                    </button>
+                    <button
+                      onClick={() => handleDownload(document)}
+                      className="flex items-center justify-center text-[13px] leading-[32px] bg-green-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
+                      title="Download PDF"
+                    >
+                      <BsDownload className="w-3 h-3 mr-1" />
+                      Download
+                    </button>
+                    <button
+                      onClick={() => handleShare(document)}
+                      className="flex items-center justify-center text-[13px] leading-[32px] bg-blue-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
+                      title="Share Document"
+                    >
+                      <BsShare className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
+                <div className="font-Garamond">
+                  <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242]  border-t-0">
+                    <div className="py-6 px-[30px]">
+                      <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
+                        Effective: {document.effectiveDate}
+                      </h4>
+                      <h2 className="text-lg lg:text-[20px] xl:text-[22px] leading-[24px] font-semibold text-lightBlack dark:text-white py-3">
+                        {document.title}
+                      </h2>
+                      <p className="text-sm font-normal text-gray dark:text-lightGray font-Lora mb-3">
+                        {document.description}
+                      </p>
+                      <div className="bg-orange-50 dark:bg-orange-900/20 p-3 rounded-md mb-3 text-center">
+                        <p className="text-xs text-orange-600 dark:text-orange-300 font-medium">Base Rate</p>
+                        <p className="text-lg font-bold text-orange-800 dark:text-orange-200">{document.baseRate}</p>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          File Size: {document.fileSize}
+                        </span>
+                        <div className="flex space-x-2">
+                          <button
+                            onClick={() => handleView(document)}
+                            className="text-xs text-khaki hover:text-opacity-80 transition-colors duration-300"
+                          >
+                            Quick View
+                          </button>
+                          <span className="text-xs text-gray-300">|</span>
+                          <button
+                            onClick={() => handleDownload(document)}
+                            className="text-xs text-green-600 hover:text-opacity-80 transition-colors duration-300"
+                          >
+                            Download
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Back to Reports Navigation */}
+          <div className="flex justify-center mt-16">
+            <Link
+              to="/reports"
+              className="flex items-center text-khaki hover:text-opacity-80 transition-colors duration-300"
+            >
+              <HiArrowLongLeft className="w-5 h-5 mr-2" />
+              Back to All Reports
+            </Link>
           </div>
         </div>
       </div>
