@@ -85,19 +85,16 @@ const Footer: React.FC = () => {
               <div className="pt-[30px] pb-0 lg:py-[30px]">
                 <ul className="text-lightGray font-Lora font-normal text-sm sm:text-base leading-[26px] list-none hover:list-disc">
                   <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[44px]">
-                    <Link to="#">About Hotel</Link>
+                    <Link to="/about">About</Link>
                   </li>
                   <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[44px]">
-                    <Link to="#">Rooms & Suites</Link>
+                    <Link to="/services">Services</Link>
                   </li>
                   <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[44px]">
-                    <Link to="#">Reservations</Link>
+                    <Link to="/branches">Branches</Link>
                   </li>
                   <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[44px]">
-                    <Link to="#">News & Blogs</Link>
-                  </li>
-                  <li className="hover:ml-[17px] md:hover:ml-[18px] transition-all duration-500 hover:text-khaki leading-[44px]">
-                    <Link to="#">Contact Us</Link>
+                    <Link to="/contact">Contact</Link>
                   </li>
                 </ul>
               </div>
