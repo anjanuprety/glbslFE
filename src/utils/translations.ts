@@ -14,6 +14,10 @@ export const translations: Translations = {
     en: 'Rooms',
     ne: 'कोठाहरू'
   },
+  'nav.reports': {
+    en: 'Reports',
+    ne: 'प्रतिवेदनहरू'
+  },
   'nav.page': {
     en: 'Page',
     ne: 'पृष्ठ'
@@ -73,6 +77,36 @@ export const translations: Translations = {
   'submenu.room_details': {
     en: 'Room Details',
     ne: 'कोठाको विवरण'
+  },
+  
+  // Reports submenu
+  'submenu.all_reports': {
+    en: 'All Reports',
+    ne: 'सबै प्रतिवेदनहरू'
+  },
+  'submenu.quarterly_report': {
+    en: 'Quarterly Report',
+    ne: 'त्रैमासिक प्रतिवेदन'
+  },
+  'submenu.annual_report': {
+    en: 'Annual Report',
+    ne: 'वार्षिक प्रतिवेदन'
+  },
+  'submenu.agm_minutes': {
+    en: 'AGM Minutes',
+    ne: 'साधारण सभाको मिनेट'
+  },
+  'submenu.base_rate': {
+    en: 'Base Rate',
+    ne: 'आधार दर'
+  },
+  'submenu.staff_training': {
+    en: 'Staff Training',
+    ne: 'कर्मचारी तालिम'
+  },
+  'submenu.governance_report': {
+    en: 'Governance Report',
+    ne: 'शासन प्रतिवेदन'
   },
   
   // Page submenu

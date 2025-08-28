@@ -20,6 +20,7 @@ import MemberWelfareServicesPage from "../Pages/Services/services/MemberWelfare/
 import Room from "../Pages/InnerPage/Room";
 import FindRoom from "../Pages/InnerPage/FindRoom";
 import RoomDetails from "../Pages/InnerPage/RoomDetails";
+import ReportsPage from "../Pages/InnerPage/ReportsPage";
 import Services from "../Pages/InnerPage/Services";
 import ServiceDetails from "../Pages/InnerPage/ServiceDetails";
 import Team from "../Pages/InnerPage/Team";
@@ -28,6 +29,16 @@ import Blog from "../Pages/InnerPage/Blog";
 import BlogDetails from "../Pages/InnerPage/BlogDetails";
 import Contact from "../Pages/InnerPage/Contact";
 import ErrorPage from "../Shared/ErrorPage/ErrorPage";
+
+// Report pages
+import { 
+  QuarterlyReportPage, 
+  AnnualReportPage, 
+  AGMMinutesPage, 
+  BaseRatePage, 
+  StaffTrainingPage, 
+  GovernanceReportPage 
+} from "../Pages/InnerPage/Reports";
 
 // Only the primary route is kept (Home1). Extra homepage routes removed.
 const router = createBrowserRouter([
@@ -79,6 +90,34 @@ const router = createBrowserRouter([
       {
         path: "/room_details",
         element: <RoomDetails />,
+      },
+      {
+        path: "/reports",
+        element: <ReportsPage />,
+      },
+      {
+        path: "/reports/quarterly-report",
+        element: <QuarterlyReportPage />,
+      },
+      {
+        path: "/reports/annual-report",
+        element: <AnnualReportPage />,
+      },
+      {
+        path: "/reports/agm-minutes",
+        element: <AGMMinutesPage />,
+      },
+      {
+        path: "/reports/base-rate",
+        element: <BaseRatePage />,
+      },
+      {
+        path: "/reports/staff-training",
+        element: <StaffTrainingPage />,
+      },
+      {
+        path: "/reports/governance-report",
+        element: <GovernanceReportPage />,
       },
       {
         path: "/services",
