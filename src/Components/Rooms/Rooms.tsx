@@ -113,7 +113,7 @@ const Rooms: React.FC = () => {
                         />
                       </div>
                       <div className="">
-                        <Link to={"/room_details"}>
+                        <Link to="/services/loan-services">
                           <button className="flex items-center justify-center text-[15px] leading-[38px] bg-lightBlack absolute bottom-0 -left-40 px-5 text-white  group-hover:left-0 transition-all duration-300 hover:bg-khaki">
                             View Details{" "}
                             <BsArrowRight className="w-4 h-4 ml-2  text-white" />{" "}
@@ -129,7 +129,7 @@ const Rooms: React.FC = () => {
                           <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
                             Loan Services
                           </h4>
-                          <Link to="/room">
+                          <Link to="/services/loan-services">
                             <h2 className="text-2xl lg:text-[28px] leading-[26px] font-semibold text-lightBlack dark:text-white py-4">
                               Loan Services
                             </h2>
@@ -156,7 +156,7 @@ const Rooms: React.FC = () => {
                         />
                       </div>
                       <div className="">
-                        <Link to={"/room_details"}>
+                        <Link to="/services/savings-services">
                           <button className="flex items-center justify-center text-[15px] leading-[38px] bg-lightBlack absolute bottom-0 -left-40 px-5 text-white  group-hover:left-0 transition-all duration-300 hover:bg-khaki">
                             View Details{" "}
                             <BsArrowRight className="w-4 h-4 ml-2  text-white" />{" "}
@@ -172,7 +172,7 @@ const Rooms: React.FC = () => {
                           <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
                             Saving Accounts
                           </h4>
-                          <Link to="/room">
+                          <Link to="/services/savings-services">
                             <h2 className="text-2xl lg:text-[28px] leading-[26px] font-semibold text-lightBlack dark:text-white py-4">
                               Saving Accounts
                             </h2>
@@ -199,7 +199,7 @@ const Rooms: React.FC = () => {
                         />
                       </div>
                       <div className="">
-                        <Link to={"/room_details"}>
+                        <Link to="/services/remittance-services">
                           <button className="flex items-center justify-center text-[15px] leading-[38px] bg-lightBlack absolute bottom-0 -left-40 px-5 text-white  group-hover:left-0 transition-all duration-300 hover:bg-khaki">
                             View Details{" "}
                             <BsArrowRight className="w-4 h-4 ml-2  text-white" />{" "}
@@ -215,7 +215,7 @@ const Rooms: React.FC = () => {
                           <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
                             Remittance
                           </h4>
-                          <Link to="/room">
+                          <Link to="/services/remittance-services">
                             <h2 className="text-2xl lg:text-[28px] leading-[26px] font-semibold text-lightBlack dark:text-white py-4">
                               Remittance
                             </h2>
