@@ -1,15 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BreadCrumb from "../../BreadCrumb/BreadCrumb";
 import PersonTile from "./components/PersonTile";
-
-const committees = [
-  { name: "Audit Committee", members: 3 },
-  { name: "Risk Committee", members: 3 },
-  { name: "Remuneration Committee", members: 4 },
-  { name: "Social Responsibility Committee", members: 5 },
-];
+import { aboutService, getStrapiMediaUrl } from "../../services/strapi";
+import { renderStrapiBlocks, mapStrapiPersonData } from "../../utils/strapiHelpers";
 
 const Committee: React.FC = () => {
+  const [committees, setCommittees] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        setLoading(true);
+        const data = await aboutService.getCommittees();
+        setCommittees(data);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load committees");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetch();
+  }, []);
+
   return (
     <div>
       <BreadCrumb title="Committee" home="/" />
@@ -37,20 +52,33 @@ const Committee: React.FC = () => {
 
           {/* Section Content */}
           <div className="mt-[60px] space-y-12">
-            {committees.map((c, idx) => (
-              <div key={idx}>
-                <h3 className="font-Garamond text-2xl font-semibold mb-6 text-center text-lightBlack dark:text-white">{c.name}</h3>
+            {loading && <p>Loading...</p>}
+            {error && <p className="text-red-500">{error}</p>}
+            {!loading && !error && committees.map((committee) => (
+              <div key={committee.id}>
+                <h3 className="font-Garamond text-2xl font-semibold mb-6 text-center text-lightBlack dark:text-white">
+                  {committee.name}
+                </h3>
+                {committee.description && (
+                  <p className="text-center text-lightGray mb-6 max-w-2xl mx-auto">
+                    {renderStrapiBlocks(committee.description)}
+                  </p>
+                )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-[30px]">
-                  {new Array(c.members).fill(0).map((_, i) => (
-                    <PersonTile
-                      key={`${idx}-${i}`}
-                      id={`${idx}-${i}`}
-                      name={`${c.name} Member ${i + 1}`}
-                      position={c.name}
-                      email={`${c.name.replace(/\s+/g, "").toLowerCase()}${i + 1}@example.com`}
-                      phone={`+977-1-${(7000000 + idx * 1000 + i + 1).toString()}`}
-                    />
-                  ))}
+                  {committee.people?.data?.map((person: any) => {
+                    const mappedPerson = mapStrapiPersonData(person);
+                    return (
+                      <PersonTile
+                        key={mappedPerson.id}
+                        id={mappedPerson.id}
+                        name={mappedPerson.name}
+                        position={mappedPerson.position}
+                        email={mappedPerson.email}
+                        phone={mappedPerson.phone}
+                        image={getStrapiMediaUrl(mappedPerson.image)}
+                      />
+                    );
+                  }) || <p className="text-center text-lightGray col-span-full">No members assigned to this committee yet.</p>}
                 </div>
               </div>
             ))}

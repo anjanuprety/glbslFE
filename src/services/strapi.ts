@@ -27,6 +27,31 @@ export const aboutService = {
     const res = await api.get(`/api/people?filters[personType][$eq]=boardMember&locale=${locale}&populate=*&sort=order:asc`);
     return res.data.data || [];
   },
+  getManagementTeam: async () => {
+    const locale = getLocale();
+    const res = await api.get(`/api/people?filters[personType][$eq]=managementTeam&locale=${locale}&populate=*&sort=order:asc`);
+    return res.data.data || [];
+  },
+  getCorporateTeam: async () => {
+    const locale = getLocale();
+    const res = await api.get(`/api/people?filters[personType][$eq]=corporateTeam&locale=${locale}&populate=*&sort=order:asc`);
+    return res.data.data || [];
+  },
+  getCommitteeMembers: async () => {
+    const locale = getLocale();
+    const res = await api.get(`/api/people?filters[personType][$eq]=committeeMember&locale=${locale}&populate=*&sort=order:asc`);
+    return res.data.data || [];
+  },
+  getCommittees: async () => {
+    const locale = getLocale();
+    const res = await api.get(`/api/committees?locale=${locale}&populate=*`);
+    return res.data.data || [];
+  },
+  getOrganizationStructure: async () => {
+    const locale = getLocale();
+    const res = await api.get(`/api/organization-structure?locale=${locale}&populate=*`);
+    return res.data.data || null;
+  },
 };
 
 export const servicesService = {

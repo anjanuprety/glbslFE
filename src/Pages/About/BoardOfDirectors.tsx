@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import BreadCrumb from "../../BreadCrumb/BreadCrumb";
 import PersonTile from "./components/PersonTile";
 import { aboutService, getStrapiMediaUrl } from "../../services/strapi";
+import { mapStrapiPersonData } from "../../utils/strapiHelpers";
 
 const BoardOfDirectors: React.FC = () => {
   const [members, setMembers] = useState<any[]>([]);
@@ -14,14 +15,13 @@ const BoardOfDirectors: React.FC = () => {
         setLoading(true);
         const data = await aboutService.getBoardMembers();
         setMembers(
-          data.map((d: any) => ({
-            id: d.id,
-            name: d.name,
-            position: d.position,
-            email: d.email,
-            phone: d.phone,
-            image: getStrapiMediaUrl(d.image?.url || ""),
-          }))
+          data.map((d: any) => {
+            const mapped = mapStrapiPersonData(d);
+            return {
+              ...mapped,
+              image: getStrapiMediaUrl(mapped.image),
+            };
+          })
         );
       } catch (err) {
         console.error(err);

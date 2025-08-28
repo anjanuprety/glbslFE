@@ -1,17 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BreadCrumb from "../../BreadCrumb/BreadCrumb";
 import PersonTile from "./components/PersonTile";
-
-const members = new Array(14).fill(0).map((_, i) => ({
-  id: i + 1,
-  name: `Corporate ${i + 1}`,
-  position: i >= 10 && i < 14 ? "Monitoring" : "Corporate",
-  email: `corp${i + 1}@example.com`,
-  phone: `+977-1-${(6000000 + i + 1).toString()}`,
-  image: `/images/inner/member-${(i % 6) + 1}.jpg`,
-}));
+import { aboutService, getStrapiMediaUrl } from "../../services/strapi";
+import { mapStrapiPersonData } from "../../utils/strapiHelpers";
 
 const CorporateTeam: React.FC = () => {
+  const [members, setMembers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        setLoading(true);
+        const data = await aboutService.getCorporateTeam();
+        setMembers(
+          data.map((d: any) => {
+            const mapped = mapStrapiPersonData(d);
+            return {
+              ...mapped,
+              image: getStrapiMediaUrl(mapped.image),
+            };
+          })
+        );
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load corporate team");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetch();
+  }, []);
+
   return (
     <div>
       <BreadCrumb title="Corporate Team" home="/" />
@@ -39,7 +60,9 @@ const CorporateTeam: React.FC = () => {
 
           {/* Section Content */}
           <div className="mt-[60px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-[30px]">
-            {members.map((m) => (
+            {loading && <p>Loading...</p>}
+            {error && <p className="text-red-500">{error}</p>}
+            {!loading && !error && members.map((m) => (
               <PersonTile key={m.id} id={m.id} name={m.name} position={m.position} email={m.email} phone={m.phone} image={m.image} />
             ))}
           </div>
