@@ -4,14 +4,15 @@ import LoanTable from "./components/LoanTable";
 import { servicesService } from "../../../../services/strapi";
 
 interface LoanProductItem {
-  id: number | string;
-  attributes: {
-    loanProductName: string;
-    loanVolume: string;
-    interestRate: string;
-    serviceCharge: string;
-    loanTerm: string;
-  };
+  id: number;
+  documentId: string;
+  name: string;
+  volume: string;
+  rate: string;
+  serviceCharge: string;
+  term: string;
+  order: number;
+  locale: string;
 }
 
 // LoanServicesPage component for displaying loan products
@@ -82,11 +83,11 @@ const LoanServicesPage: React.FC = () => {
                 loanProducts={loanProducts.map((lp, idx) => ({
                   id: String(lp.id),
                   serialNumber: idx + 1,
-                  loanProductName: lp.attributes.loanProductName,
-                  loanVolume: lp.attributes.loanVolume,
-                  interestRate: lp.attributes.interestRate,
-                  serviceCharge: lp.attributes.serviceCharge,
-                  loanTerm: lp.attributes.loanTerm,
+                  loanProductName: lp.name,
+                  loanVolume: lp.volume,
+                  interestRate: lp.rate,
+                  serviceCharge: lp.serviceCharge,
+                  loanTerm: lp.term,
                 }))}
                 className="shadow-lg"
               />

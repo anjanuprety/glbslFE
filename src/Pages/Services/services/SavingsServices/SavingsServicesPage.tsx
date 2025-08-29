@@ -4,11 +4,12 @@ import SavingsTable from "./components/SavingsTable";
 import { servicesService } from "../../../../services/strapi";
 
 interface SavingsItem {
-  id: number | string;
-  attributes: {
-    name: string;
-    interestRate: string;
-  };
+  id: number;
+  documentId: string;
+  name: string;
+  interestRate: string;
+  order: number;
+  locale: string;
 }
 
 // SavingsServicesPage component for displaying savings products
@@ -79,8 +80,8 @@ const SavingsServicesPage: React.FC = () => {
                 savingsProducts={items.map((it, idx) => ({
                   id: String(it.id),
                   serialNumber: idx + 1,
-                  savingProductName: it.attributes.name,
-                  interestRate: it.attributes.interestRate,
+                  savingProductName: it.name,
+                  interestRate: it.interestRate,
                 }))}
                 className="shadow-lg"
               />

@@ -68,12 +68,12 @@ export const servicesService = {
   getRemittanceService: async () => {
     const locale = getLocale();
     const res = await api.get(`/api/remittance-service?locale=${locale}&populate=*`);
-    return res.data.data?.attributes || null;
+    return res.data.data || null;
   },
   getMemberWelfareService: async () => {
     const locale = getLocale();
-    const res = await api.get(`/api/member-welfare-service?locale=${locale}&populate=*`);
-    return res.data.data?.attributes || null;
+    const res = await api.get(`/api/member-welfare-servicee?locale=${locale}&populate=*`);
+    return res.data.data || null;
   },
   getServiceCategories: async () => {
     const locale = getLocale();
