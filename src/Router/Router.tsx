@@ -35,6 +35,13 @@ import {
   NoticePage 
 } from "../Pages/InnerPage/Reports";
 
+// Career pages
+import { 
+  CareerNoticesPage, 
+  ApplyForJobPage, 
+  ApplicationFormPage 
+} from "../Pages/InnerPage/Career";
+
 // Only the primary route is kept (Home1). Extra homepage routes removed.
 const router = createBrowserRouter([
   {
@@ -105,6 +112,18 @@ const router = createBrowserRouter([
       {
         path: "/reports/notices",
         element: <NoticePage />,
+      },
+      {
+        path: "/career/notices",
+        element: <CareerNoticesPage />,
+      },
+      {
+        path: "/career/apply",
+        element: <ApplyForJobPage />,
+      },
+      {
+        path: "/career/application-form",
+        element: <ApplicationFormPage />,
       },
       {
         path: "/services",

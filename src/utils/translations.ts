@@ -22,6 +22,10 @@ export const translations: Translations = {
     en: 'Notices',
     ne: 'सूचनाहरू'
   },
+  'nav.career': {
+    en: 'Career',
+    ne: 'करियर'
+  },
   'nav.page': {
     en: 'Page',
     ne: 'पृष्ठ'
@@ -155,6 +159,18 @@ export const translations: Translations = {
   'submenu.member_welfare': {
     en: 'Member Welfare',
     ne: 'सदस्य कल्याण'
+  },
+  'submenu.career_notices': {
+    en: 'Career Notices',
+    ne: 'करियर सूचनाहरू'
+  },
+  'submenu.apply_for_job': {
+    en: 'Apply for Job',
+    ne: 'जागिरको लागि आवेदन'
+  },
+  'submenu.application_form': {
+    en: 'Application Form',
+    ne: 'आवेदन फारम'
   },
   'submenu.services': {
     en: 'Services',
