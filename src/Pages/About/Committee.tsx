@@ -65,20 +65,28 @@ const Committee: React.FC = () => {
                   </p>
                 )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-[30px]">
-                  {committee.people?.length > 0 ? committee.people.map((person: any) => {
-                    const mappedPerson = mapStrapiPersonData(person);
-                    return (
-                      <PersonTile
-                        key={mappedPerson.id}
-                        id={mappedPerson.id}
-                        name={mappedPerson.name}
-                        position={mappedPerson.position}
-                        email={mappedPerson.email}
-                        phone={mappedPerson.phone}
-                        image={getStrapiMediaUrl(mappedPerson.image)}
-                      />
-                    );
-                  }) : <p className="text-center text-lightGray col-span-full">No members assigned to this committee yet.</p>}
+                  {committee.members && committee.members.length > 0 ? committee.members
+                    .sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
+                    .map((member: any) => {
+                      const person = member.person;
+                      return (
+                        <div key={`${committee.id}-${person.id}`}>
+                          <PersonTile
+                            id={person.id}
+                            name={person.name}
+                            position={member.committeePosition} // Use committee-specific position
+                            email={person.email || ""}
+                            phone={person.phone || ""}
+                            image={getStrapiMediaUrl(person.image?.url)}
+                          />
+                          {member.roleDescription && (
+                            <p className="text-sm text-lightGray mt-2 text-center px-4">
+                              {member.roleDescription}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    }) : <p className="text-center text-lightGray col-span-full">No members assigned to this committee yet.</p>}
                 </div>
               </div>
             ))}

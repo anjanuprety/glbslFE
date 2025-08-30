@@ -44,7 +44,12 @@ export const aboutService = {
   },
   getCommittees: async () => {
     const locale = getLocale();
-    const res = await api.get(`/api/committees?locale=${locale}&populate=people.image`);
+    const res = await api.get(`/api/committees?locale=${locale}&populate[members][populate][person][populate]=image`);
+    return res.data.data || [];
+  },
+  getMonitoringSupervision: async () => {
+    const locale = getLocale();
+    const res = await api.get(`/api/people?filters[personType][$eq]=monitoringSupervision&locale=${locale}&populate=*&sort=order:asc`);
     return res.data.data || [];
   },
   getOrganizationStructure: async () => {
