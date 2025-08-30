@@ -44,7 +44,7 @@ export const aboutService = {
   },
   getCommittees: async () => {
     const locale = getLocale();
-    const res = await api.get(`/api/committees?locale=${locale}&populate=*`);
+    const res = await api.get(`/api/committees?locale=${locale}&populate=people.image`);
     return res.data.data || [];
   },
   getOrganizationStructure: async () => {

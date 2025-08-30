@@ -65,7 +65,7 @@ const Committee: React.FC = () => {
                   </p>
                 )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-[30px]">
-                  {committee.people?.data?.map((person: any) => {
+                  {committee.people?.length > 0 ? committee.people.map((person: any) => {
                     const mappedPerson = mapStrapiPersonData(person);
                     return (
                       <PersonTile
@@ -78,7 +78,7 @@ const Committee: React.FC = () => {
                         image={getStrapiMediaUrl(mappedPerson.image)}
                       />
                     );
-                  }) || <p className="text-center text-lightGray col-span-full">No members assigned to this committee yet.</p>}
+                  }) : <p className="text-center text-lightGray col-span-full">No members assigned to this committee yet.</p>}
                 </div>
               </div>
             ))}
