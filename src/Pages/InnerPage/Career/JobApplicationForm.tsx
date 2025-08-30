@@ -1,0 +1,1044 @@
+import React, { useState } from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+
+// Validation schema for the job application form
+const validationSchema = Yup.object({
+  // Personal Information
+  fullName: Yup.string().required('Full Name is required'),
+  fullNameNepali: Yup.string().required('नाम थर (देवनागरीमा) is required'),
+  fatherName: Yup.string().required('Father\'s Name is required'),
+  motherName: Yup.string().required('Mother\'s Name is required'),
+  grandfatherName: Yup.string().required('Grandfather\'s Name is required'),
+  dateOfBirth: Yup.date().required('Date of Birth is required'),
+  age: Yup.number().required('Age is required').min(18, 'Must be at least 18 years old'),
+  gender: Yup.string().required('Gender is required'),
+  maritalStatus: Yup.string().required('Marital Status is required'),
+  nationality: Yup.string().required('Nationality is required'),
+  religion: Yup.string().required('Religion is required'),
+  
+  // Address Information
+  permanentAddress: Yup.string().required('Permanent Address is required'),
+  temporaryAddress: Yup.string().required('Temporary Address is required'),
+  contactNumber: Yup.string().required('Contact Number is required'),
+  alternateNumber: Yup.string(),
+  email: Yup.string().email('Invalid email').required('Email is required'),
+  
+  // Citizenship Information
+  citizenshipNumber: Yup.string().required('Citizenship Number is required'),
+  citizenshipIssueDate: Yup.date().required('Citizenship Issue Date is required'),
+  citizenshipIssuePlace: Yup.string().required('Citizenship Issue Place is required'),
+  
+  // Educational Qualifications
+  slcYear: Yup.number().required('SLC/SEE Year is required'),
+  slcGrade: Yup.string().required('SLC/SEE Grade is required'),
+  slcBoard: Yup.string().required('SLC/SEE Board is required'),
+  
+  plusTwoYear: Yup.number(),
+  plusTwoGrade: Yup.string(),
+  plusTwoBoard: Yup.string(),
+  
+  bachelorYear: Yup.number(),
+  bachelorGrade: Yup.string(),
+  bachelorUniversity: Yup.string(),
+  bachelorSubject: Yup.string(),
+  
+  masterYear: Yup.number(),
+  masterGrade: Yup.string(),
+  masterUniversity: Yup.string(),
+  masterSubject: Yup.string(),
+  
+  // Work Experience
+  hasWorkExperience: Yup.boolean(),
+  workExperience: Yup.string(),
+  
+  // Position Applied For
+  positionAppliedFor: Yup.string().required('Position Applied For is required'),
+  expectedSalary: Yup.string(),
+  availableStartDate: Yup.date().required('Available Start Date is required'),
+  
+  // References
+  reference1Name: Yup.string(),
+  reference1Position: Yup.string(),
+  reference1Contact: Yup.string(),
+  reference1Address: Yup.string(),
+  
+  reference2Name: Yup.string(),
+  reference2Position: Yup.string(),
+  reference2Contact: Yup.string(),
+  reference2Address: Yup.string(),
+});
+
+// Initial form values
+const initialValues = {
+  // Personal Information
+  fullName: '',
+  fullNameNepali: '',
+  fatherName: '',
+  motherName: '',
+  grandfatherName: '',
+  dateOfBirth: '',
+  age: '',
+  gender: '',
+  maritalStatus: '',
+  nationality: 'Nepali',
+  religion: '',
+  
+  // Address Information
+  permanentAddress: '',
+  temporaryAddress: '',
+  contactNumber: '',
+  alternateNumber: '',
+  email: '',
+  
+  // Citizenship Information
+  citizenshipNumber: '',
+  citizenshipIssueDate: '',
+  citizenshipIssuePlace: '',
+  
+  // Educational Qualifications
+  slcYear: '',
+  slcGrade: '',
+  slcBoard: '',
+  
+  plusTwoYear: '',
+  plusTwoGrade: '',
+  plusTwoBoard: '',
+  
+  bachelorYear: '',
+  bachelorGrade: '',
+  bachelorUniversity: '',
+  bachelorSubject: '',
+  
+  masterYear: '',
+  masterGrade: '',
+  masterUniversity: '',
+  masterSubject: '',
+  
+  // Work Experience
+  hasWorkExperience: false,
+  workExperience: '',
+  
+  // Position Applied For
+  positionAppliedFor: '',
+  expectedSalary: '',
+  availableStartDate: '',
+  
+  // References
+  reference1Name: '',
+  reference1Position: '',
+  reference1Contact: '',
+  reference1Address: '',
+  
+  reference2Name: '',
+  reference2Position: '',
+  reference2Contact: '',
+  reference2Address: '',
+};
+
+interface JobApplicationFormProps {
+  onSubmit: (values: any, photo: File | null) => void;
+}
+
+const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [uploadedPhoto, setUploadedPhoto] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [photoError, setPhotoError] = useState<string>('');
+
+  const totalSteps = 6;
+
+  const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    setPhotoError('');
+
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        setPhotoError('Please select an image file (JPEG, PNG, etc.)');
+        return;
+      }
+
+      // Validate file size (300KB = 307200 bytes)
+      if (file.size > 307200) {
+        setPhotoError('Photo size must be less than 300KB');
+        return;
+      }
+
+      setUploadedPhoto(file);
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPhotoPreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentStep < totalSteps) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleSubmit = (values: any) => {
+    onSubmit(values, uploadedPhoto);
+  };
+
+  const renderProgressBar = () => (
+    <div className="mb-8">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          Step {currentStep} of {totalSteps}
+        </span>
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          {Math.round((currentStep / totalSteps) * 100)}% Complete
+        </span>
+      </div>
+      <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+        <div 
+          className="bg-khaki h-2 rounded-full transition-all duration-300" 
+          style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+        ></div>
+      </div>
+    </div>
+  );
+
+  const renderStepContent = (values: any, setFieldValue: any) => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-lightBlack dark:text-white font-Garamond mb-4">
+              Personal Information / व्यक्तिगत विवरण
+            </h3>
+            
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Full Name (English) / पूरा नाम (अंग्रेजीमा) *
+                </label>
+                <Field
+                  name="fullName"
+                  type="text"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                />
+                <ErrorMessage name="fullName" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Full Name (Nepali) / नाम थर (देवनागरीमा) *
+                </label>
+                <Field
+                  name="fullNameNepali"
+                  type="text"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                />
+                <ErrorMessage name="fullNameNepali" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Father's Name / बुबाको नाम *
+                </label>
+                <Field
+                  name="fatherName"
+                  type="text"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                />
+                <ErrorMessage name="fatherName" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Mother's Name / आमाको नाम *
+                </label>
+                <Field
+                  name="motherName"
+                  type="text"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                />
+                <ErrorMessage name="motherName" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Grandfather's Name / हजुरबुबाको नाम *
+                </label>
+                <Field
+                  name="grandfatherName"
+                  type="text"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                />
+                <ErrorMessage name="grandfatherName" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Date of Birth / जन्म मिति *
+                </label>
+                <Field
+                  name="dateOfBirth"
+                  type="date"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                />
+                <ErrorMessage name="dateOfBirth" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Age / उमेर *
+                </label>
+                <Field
+                  name="age"
+                  type="number"
+                  min="18"
+                  max="100"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                />
+                <ErrorMessage name="age" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Gender / लिङ्ग *
+                </label>
+                <Field
+                  as="select"
+                  name="gender"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                >
+                  <option value="">Select Gender / लिङ्ग छन्नुहोस्</option>
+                  <option value="male">Male / पुरुष</option>
+                  <option value="female">Female / महिला</option>
+                  <option value="other">Other / अन्य</option>
+                </Field>
+                <ErrorMessage name="gender" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Marital Status / वैवाहिक स्थिति *
+                </label>
+                <Field
+                  as="select"
+                  name="maritalStatus"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                >
+                  <option value="">Select Status / स्थिति छन्नुहोस्</option>
+                  <option value="single">Single / अविवाहित</option>
+                  <option value="married">Married / विवाहित</option>
+                  <option value="divorced">Divorced / सम्बन्ध विच्छेद</option>
+                  <option value="widowed">Widowed / विधवा/विधुर</option>
+                </Field>
+                <ErrorMessage name="maritalStatus" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Nationality / राष्ट्रियता *
+                </label>
+                <Field
+                  name="nationality"
+                  type="text"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                />
+                <ErrorMessage name="nationality" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Religion / धर्म *
+                </label>
+                <Field
+                  name="religion"
+                  type="text"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                />
+                <ErrorMessage name="religion" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+            </div>
+          </div>
+        );
+
+      case 2:
+        return (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-lightBlack dark:text-white font-Garamond mb-4">
+              Contact Information / सम्पर्क विवरण
+            </h3>
+            
+            <div className="grid md:grid-cols-1 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Permanent Address / स्थायी ठेगाना *
+                </label>
+                <Field
+                  as="textarea"
+                  name="permanentAddress"
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                />
+                <ErrorMessage name="permanentAddress" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Temporary Address / अस्थायी ठेगाना *
+                </label>
+                <Field
+                  as="textarea"
+                  name="temporaryAddress"
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                />
+                <ErrorMessage name="temporaryAddress" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Contact Number / सम्पर्क नम्बर *
+                  </label>
+                  <Field
+                    name="contactNumber"
+                    type="tel"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="contactNumber" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Alternate Number / वैकल्पिक नम्बर
+                  </label>
+                  <Field
+                    name="alternateNumber"
+                    type="tel"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="alternateNumber" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Email Address / इमेल ठेगाना *
+                </label>
+                <Field
+                  name="email"
+                  type="email"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                />
+                <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+            </div>
+
+            <h4 className="text-lg font-semibold text-lightBlack dark:text-white font-Garamond mt-8 mb-4">
+              Citizenship Information / नागरिकता विवरण
+            </h4>
+
+            <div className="grid md:grid-cols-1 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Citizenship Number / नागरिकता नम्बर *
+                </label>
+                <Field
+                  name="citizenshipNumber"
+                  type="text"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                />
+                <ErrorMessage name="citizenshipNumber" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Issue Date / जारी मिति *
+                  </label>
+                  <Field
+                    name="citizenshipIssueDate"
+                    type="date"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="citizenshipIssueDate" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Issue Place / जारी गर्ने ठाउँ *
+                  </label>
+                  <Field
+                    name="citizenshipIssuePlace"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="citizenshipIssuePlace" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 3:
+        return (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-lightBlack dark:text-white font-Garamond mb-4">
+              Educational Qualifications / शैक्षिक योग्यता
+            </h3>
+            
+            {/* SLC/SEE */}
+            <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+              <h4 className="text-lg font-medium text-lightBlack dark:text-white mb-4">
+                SLC/SEE
+              </h4>
+              <div className="grid md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Year / वर्ष *
+                  </label>
+                  <Field
+                    name="slcYear"
+                    type="number"
+                    min="1980"
+                    max="2030"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="slcYear" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Grade/Division / श्रेणी *
+                  </label>
+                  <Field
+                    name="slcGrade"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="slcGrade" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Board / बोर्ड *
+                  </label>
+                  <Field
+                    name="slcBoard"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="slcBoard" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+              </div>
+            </div>
+
+            {/* +2/Intermediate */}
+            <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+              <h4 className="text-lg font-medium text-lightBlack dark:text-white mb-4">
+                +2/Intermediate / उच्च माध्यमिक
+              </h4>
+              <div className="grid md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Year / वर्ष
+                  </label>
+                  <Field
+                    name="plusTwoYear"
+                    type="number"
+                    min="1980"
+                    max="2030"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="plusTwoYear" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Grade/Division / श्रेणी
+                  </label>
+                  <Field
+                    name="plusTwoGrade"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="plusTwoGrade" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Board / बोर्ड
+                  </label>
+                  <Field
+                    name="plusTwoBoard"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="plusTwoBoard" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+              </div>
+            </div>
+
+            {/* Bachelor */}
+            <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+              <h4 className="text-lg font-medium text-lightBlack dark:text-white mb-4">
+                Bachelor's Degree / स्नातक
+              </h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Year / वर्ष
+                  </label>
+                  <Field
+                    name="bachelorYear"
+                    type="number"
+                    min="1980"
+                    max="2030"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="bachelorYear" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Grade/Division / श्रेणी
+                  </label>
+                  <Field
+                    name="bachelorGrade"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="bachelorGrade" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    University / विश्वविद्यालय
+                  </label>
+                  <Field
+                    name="bachelorUniversity"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="bachelorUniversity" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Subject / विषय
+                  </label>
+                  <Field
+                    name="bachelorSubject"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="bachelorSubject" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+              </div>
+            </div>
+
+            {/* Master */}
+            <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+              <h4 className="text-lg font-medium text-lightBlack dark:text-white mb-4">
+                Master's Degree / स्नातकोत्तर
+              </h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Year / वर्ष
+                  </label>
+                  <Field
+                    name="masterYear"
+                    type="number"
+                    min="1980"
+                    max="2030"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="masterYear" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Grade/Division / श्रेणी
+                  </label>
+                  <Field
+                    name="masterGrade"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="masterGrade" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    University / विश्वविद्यालय
+                  </label>
+                  <Field
+                    name="masterUniversity"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="masterUniversity" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Subject / विषय
+                  </label>
+                  <Field
+                    name="masterSubject"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="masterSubject" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 4:
+        return (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-lightBlack dark:text-white font-Garamond mb-4">
+              Work Experience / कार्य अनुभव
+            </h3>
+            
+            <div>
+              <label className="flex items-center space-x-2">
+                <Field
+                  name="hasWorkExperience"
+                  type="checkbox"
+                  className="w-4 h-4 text-khaki bg-gray-100 border-gray-300 rounded focus:ring-khaki focus:ring-2"
+                />
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  I have work experience / मसँग कार्य अनुभव छ
+                </span>
+              </label>
+            </div>
+
+            {values.hasWorkExperience && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Work Experience Details / कार्य अनुभवको विवरण
+                </label>
+                <Field
+                  as="textarea"
+                  name="workExperience"
+                  rows={6}
+                  placeholder="Please provide details of your work experience including: Position, Company Name, Duration, Responsibilities, etc."
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                />
+                <ErrorMessage name="workExperience" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+            )}
+
+            <h4 className="text-lg font-semibold text-lightBlack dark:text-white font-Garamond mt-8 mb-4">
+              Position Applied For / आवेदन दिएको पद
+            </h4>
+
+            <div className="grid md:grid-cols-1 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Position Applied For / आवेदन दिएको पद *
+                </label>
+                <Field
+                  name="positionAppliedFor"
+                  type="text"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                />
+                <ErrorMessage name="positionAppliedFor" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Expected Salary / अपेक्षित तलब
+                  </label>
+                  <Field
+                    name="expectedSalary"
+                    type="text"
+                    placeholder="e.g., Rs. 50,000 per month"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="expectedSalary" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Available Start Date / सुरु गर्न सक्ने मिति *
+                  </label>
+                  <Field
+                    name="availableStartDate"
+                    type="date"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="availableStartDate" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 5:
+        return (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-lightBlack dark:text-white font-Garamond mb-4">
+              References / सिफारिसकर्ता
+            </h3>
+            
+            {/* Reference 1 */}
+            <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+              <h4 className="text-lg font-medium text-lightBlack dark:text-white mb-4">
+                Reference 1 / पहिलो सिफारिसकर्ता
+              </h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Full Name / पूरा नाम
+                  </label>
+                  <Field
+                    name="reference1Name"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="reference1Name" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Position / पद
+                  </label>
+                  <Field
+                    name="reference1Position"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="reference1Position" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Contact Number / सम्पर्क नम्बर
+                  </label>
+                  <Field
+                    name="reference1Contact"
+                    type="tel"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="reference1Contact" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Address / ठेगाना
+                  </label>
+                  <Field
+                    name="reference1Address"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="reference1Address" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+              </div>
+            </div>
+
+            {/* Reference 2 */}
+            <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+              <h4 className="text-lg font-medium text-lightBlack dark:text-white mb-4">
+                Reference 2 / दोस्रो सिफारिसकर्ता
+              </h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Full Name / पूरा नाम
+                  </label>
+                  <Field
+                    name="reference2Name"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="reference2Name" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Position / पद
+                  </label>
+                  <Field
+                    name="reference2Position"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="reference2Position" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Contact Number / सम्पर्क नम्बर
+                  </label>
+                  <Field
+                    name="reference2Contact"
+                    type="tel"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="reference2Contact" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Address / ठेगाना
+                  </label>
+                  <Field
+                    name="reference2Address"
+                    type="text"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  />
+                  <ErrorMessage name="reference2Address" component="div" className="text-red-500 text-sm mt-1" />
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 6:
+        return (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-lightBlack dark:text-white font-Garamond mb-4">
+              Photo Upload / तस्बिर अपलोड
+            </h3>
+            
+            <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6">
+              <div className="text-center">
+                <div className="mb-4">
+                  <svg
+                    className="mx-auto h-12 w-12 text-gray-400"
+                    stroke="currentColor"
+                    fill="none"
+                    viewBox="0 0 48 48"
+                  >
+                    <path
+                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+                
+                <div className="mb-4">
+                  <label
+                    htmlFor="photo-upload"
+                    className="cursor-pointer bg-khaki hover:bg-opacity-90 text-white px-4 py-2 rounded-md font-medium transition-colors duration-300"
+                  >
+                    Select Photo / तस्बिर छन्नुहोस्
+                  </label>
+                  <input
+                    id="photo-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoUpload}
+                    className="hidden"
+                  />
+                </div>
+                
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  PNG, JPG, JPEG files up to 300KB / PNG, JPG, JPEG फाइलहरू ३०० KB सम्म
+                </p>
+                
+                {photoError && (
+                  <p className="text-red-500 text-sm mt-2">{photoError}</p>
+                )}
+              </div>
+              
+              {photoPreview && (
+                <div className="mt-6 text-center">
+                  <img
+                    src={photoPreview}
+                    alt="Photo preview"
+                    className="mx-auto h-32 w-32 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                  />
+                  <p className="text-sm text-green-600 mt-2">
+                    Photo uploaded successfully / तस्बिर सफलतापूर्वक अपलोड भयो
+                  </p>
+                </div>
+              )}
+            </div>
+            
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4">
+              <h4 className="text-sm font-medium text-yellow-800 dark:text-yellow-200 mb-2">
+                Photo Requirements / तस्बिरका आवश्यकताहरू:
+              </h4>
+              <ul className="text-sm text-yellow-700 dark:text-yellow-300 space-y-1">
+                <li>• Passport size photo / राहदानी साइजको तस्बिर</li>
+                <li>• Clear and recent photo / स्पष्ट र हालको तस्बिर</li>
+                <li>• Maximum file size: 300KB / अधिकतम फाइल साइज: ३०० KB</li>
+                <li>• Supported formats: JPG, JPEG, PNG / समर्थित ढाँचा: JPG, JPEG, PNG</li>
+              </ul>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+    >
+      {({ values, setFieldValue }) => (
+        <Form className="max-w-4xl mx-auto bg-white dark:bg-normalBlack border border-gray-200 dark:border-gray-700 rounded-lg p-8 shadow-lg">
+          {renderProgressBar()}
+          
+          {renderStepContent(values, setFieldValue)}
+          
+          <div className="flex justify-between pt-8 border-t border-gray-200 dark:border-gray-600 mt-8">
+            <button
+              type="button"
+              onClick={handlePrevious}
+              disabled={currentStep === 1}
+              className={`px-6 py-2 rounded-md font-medium transition-colors duration-300 ${
+                currentStep === 1
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : 'bg-gray-600 text-white hover:bg-gray-700'
+              }`}
+            >
+              Previous / अघिल्लो
+            </button>
+            
+            {currentStep < totalSteps ? (
+              <button
+                type="button"
+                onClick={handleNext}
+                className="px-6 py-2 bg-khaki text-white rounded-md font-medium hover:bg-opacity-90 transition-colors duration-300"
+              >
+                Next / अर्को
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="px-6 py-2 bg-green-600 text-white rounded-md font-medium hover:bg-green-700 transition-colors duration-300"
+              >
+                Submit Application / आवेदन पेश गर्नुहोस्
+              </button>
+            )}
+          </div>
+        </Form>
+      )}
+    </Formik>
+  );
+};
+
+export default JobApplicationForm;
