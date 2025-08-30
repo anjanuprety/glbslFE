@@ -2,6 +2,28 @@ import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
+// Utility functions for date conversion between BS and AD
+const convertBStoAD = (bsDate: string): string => {
+  if (!bsDate) return '';
+  
+  // Basic conversion - in a real app, you'd use a proper conversion library
+  // This is a simplified conversion for demonstration
+  const bsYear = parseInt(bsDate.split('-')[0]);
+  const adYear = bsYear - 57; // Approximate conversion
+  
+  return bsDate.replace(bsYear.toString(), adYear.toString());
+};
+
+const convertADtoBS = (adDate: string): string => {
+  if (!adDate) return '';
+  
+  // Basic conversion - in a real app, you'd use a proper conversion library
+  const adYear = parseInt(adDate.split('-')[0]);
+  const bsYear = adYear + 57; // Approximate conversion
+  
+  return adDate.replace(adYear.toString(), bsYear.toString());
+};
+
 // Validation schema for the job application form
 const validationSchema = Yup.object({
   // Personal Information
@@ -15,11 +37,12 @@ const validationSchema = Yup.object({
   gender: Yup.string().required('Gender is required'),
   maritalStatus: Yup.string().required('Marital Status is required'),
   nationality: Yup.string().required('Nationality is required'),
-  religion: Yup.string().required('Religion is required'),
+  dateOfBirthAD: Yup.date().required('Date of Birth (AD) is required'),
   
   // Address Information
   permanentAddress: Yup.string().required('Permanent Address is required'),
   temporaryAddress: Yup.string().required('Temporary Address is required'),
+  sameAsPermAddress: Yup.boolean(),
   contactNumber: Yup.string().required('Contact Number is required'),
   alternateNumber: Yup.string(),
   email: Yup.string().email('Invalid email').required('Email is required'),
@@ -28,6 +51,11 @@ const validationSchema = Yup.object({
   citizenshipNumber: Yup.string().required('Citizenship Number is required'),
   citizenshipIssueDate: Yup.date().required('Citizenship Issue Date is required'),
   citizenshipIssuePlace: Yup.string().required('Citizenship Issue Place is required'),
+  
+  // Driving License Information
+  hasDrivingLicense: Yup.boolean(),
+  drivingLicenseCategory: Yup.string(),
+  drivingLicenseNumber: Yup.string(),
   
   // Educational Qualifications
   slcYear: Yup.number().required('SLC/SEE Year is required'),
@@ -50,23 +78,28 @@ const validationSchema = Yup.object({
   
   // Work Experience
   hasWorkExperience: Yup.boolean(),
-  workExperience: Yup.string(),
+  workExperiences: Yup.array().of(
+    Yup.object().shape({
+      position: Yup.string(),
+      company: Yup.string(),
+      duration: Yup.string(),
+      responsibilities: Yup.string(),
+    })
+  ),
+  
+  // Training and Certifications
+  hasTrainingCertifications: Yup.boolean(),
+  trainingCertifications: Yup.array().of(
+    Yup.object().shape({
+      title: Yup.string(),
+      institution: Yup.string(),
+      duration: Yup.string(),
+      description: Yup.string(),
+    })
+  ),
   
   // Position Applied For
   positionAppliedFor: Yup.string().required('Position Applied For is required'),
-  expectedSalary: Yup.string(),
-  availableStartDate: Yup.date().required('Available Start Date is required'),
-  
-  // References
-  reference1Name: Yup.string(),
-  reference1Position: Yup.string(),
-  reference1Contact: Yup.string(),
-  reference1Address: Yup.string(),
-  
-  reference2Name: Yup.string(),
-  reference2Position: Yup.string(),
-  reference2Contact: Yup.string(),
-  reference2Address: Yup.string(),
 });
 
 // Initial form values
@@ -82,11 +115,12 @@ const initialValues = {
   gender: '',
   maritalStatus: '',
   nationality: 'Nepali',
-  religion: '',
+  dateOfBirthAD: '',
   
   // Address Information
   permanentAddress: '',
   temporaryAddress: '',
+  sameAsPermAddress: false,
   contactNumber: '',
   alternateNumber: '',
   email: '',
@@ -95,6 +129,11 @@ const initialValues = {
   citizenshipNumber: '',
   citizenshipIssueDate: '',
   citizenshipIssuePlace: '',
+  
+  // Driving License Information
+  hasDrivingLicense: false,
+  drivingLicenseCategory: '',
+  drivingLicenseNumber: '',
   
   // Educational Qualifications
   slcYear: '',
@@ -117,23 +156,14 @@ const initialValues = {
   
   // Work Experience
   hasWorkExperience: false,
-  workExperience: '',
+  workExperiences: [{ position: '', company: '', duration: '', responsibilities: '' }],
+  
+  // Training and Certifications
+  hasTrainingCertifications: false,
+  trainingCertifications: [{ title: '', institution: '', duration: '', description: '' }],
   
   // Position Applied For
   positionAppliedFor: '',
-  expectedSalary: '',
-  availableStartDate: '',
-  
-  // References
-  reference1Name: '',
-  reference1Position: '',
-  reference1Contact: '',
-  reference1Address: '',
-  
-  reference2Name: '',
-  reference2Position: '',
-  reference2Contact: '',
-  reference2Address: '',
 };
 
 interface JobApplicationFormProps {
@@ -146,7 +176,7 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [photoError, setPhotoError] = useState<string>('');
 
-  const totalSteps = 6;
+  const totalSteps = 4;
 
   const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -295,6 +325,24 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Date of Birth (AD) / जन्म मिति (इ.सं.) *
+                </label>
+                <Field
+                  name="dateOfBirthAD"
+                  type="date"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setFieldValue('dateOfBirthAD', e.target.value);
+                    // Auto-convert to BS and update the BS field
+                    const bsDate = convertADtoBS(e.target.value);
+                    setFieldValue('dateOfBirth', bsDate);
+                  }}
+                />
+                <ErrorMessage name="dateOfBirthAD" component="div" className="text-red-500 text-sm mt-1" />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Age / उमेर *
                 </label>
                 <Field
@@ -353,18 +401,6 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
                 />
                 <ErrorMessage name="nationality" component="div" className="text-red-500 text-sm mt-1" />
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Religion / धर्म *
-                </label>
-                <Field
-                  name="religion"
-                  type="text"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
-                />
-                <ErrorMessage name="religion" component="div" className="text-red-500 text-sm mt-1" />
-              </div>
             </div>
           </div>
         );
@@ -394,11 +430,32 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Temporary Address / अस्थायी ठेगाना *
                 </label>
+                <div className="mb-2">
+                  <label className="flex items-center space-x-2">
+                    <Field
+                      name="sameAsPermAddress"
+                      type="checkbox"
+                      className="w-4 h-4 text-khaki bg-gray-100 border-gray-300 rounded focus:ring-khaki focus:ring-2"
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setFieldValue('sameAsPermAddress', e.target.checked);
+                        if (e.target.checked) {
+                          setFieldValue('temporaryAddress', values.permanentAddress);
+                        } else {
+                          setFieldValue('temporaryAddress', '');
+                        }
+                      }}
+                    />
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      Same as permanent address / स्थायी ठेगाना जस्तै
+                    </span>
+                  </label>
+                </div>
                 <Field
                   as="textarea"
                   name="temporaryAddress"
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  disabled={values.sameAsPermAddress}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white disabled:bg-gray-100 disabled:text-gray-500"
                 />
                 <ErrorMessage name="temporaryAddress" component="div" className="text-red-500 text-sm mt-1" />
               </div>
@@ -484,6 +541,59 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
                   <ErrorMessage name="citizenshipIssuePlace" component="div" className="text-red-500 text-sm mt-1" />
                 </div>
               </div>
+            </div>
+
+            <h4 className="text-lg font-semibold text-lightBlack dark:text-white font-Garamond mt-8 mb-4">
+              Driving License Information / सवारी चालक अनुमतिपत्र विवरण
+            </h4>
+
+            <div className="grid md:grid-cols-1 gap-4">
+              <div>
+                <label className="flex items-center space-x-2 mb-4">
+                  <Field
+                    name="hasDrivingLicense"
+                    type="checkbox"
+                    className="w-4 h-4 text-khaki bg-gray-100 border-gray-300 rounded focus:ring-khaki focus:ring-2"
+                  />
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    I have a driving license / मसँग सवारी चालक अनुमतिपत्र छ
+                  </span>
+                </label>
+              </div>
+
+              {values.hasDrivingLicense && (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      License Category / अनुमतिपत्र श्रेणी
+                    </label>
+                    <Field
+                      as="select"
+                      name="drivingLicenseCategory"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                    >
+                      <option value="">Select Category / श्रेणी छन्नुहोस्</option>
+                      <option value="bike">Bike / मोटरसाइकल</option>
+                      <option value="scooter">Scooter / स्कुटर</option>
+                      <option value="car_jeep">Car/Jeep / कार/जीप</option>
+                      <option value="multiple">Multiple Categories / धेरै श्रेणी</option>
+                    </Field>
+                    <ErrorMessage name="drivingLicenseCategory" component="div" className="text-red-500 text-sm mt-1" />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      License Number / अनुमतिपत्र नम्बर
+                    </label>
+                    <Field
+                      name="drivingLicenseNumber"
+                      type="text"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                    />
+                    <ErrorMessage name="drivingLicenseNumber" component="div" className="text-red-500 text-sm mt-1" />
+                  </div>
+                </>
+              )}
             </div>
           </div>
         );
@@ -709,7 +819,7 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
         return (
           <div className="space-y-6">
             <h3 className="text-xl font-semibold text-lightBlack dark:text-white font-Garamond mb-4">
-              Work Experience / कार्य अनुभव
+              Work Experience & Training / कार्य अनुभव र तालिम
             </h3>
             
             <div>
@@ -726,18 +836,171 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
             </div>
 
             {values.hasWorkExperience && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+                <h4 className="text-lg font-medium text-lightBlack dark:text-white mb-4">
                   Work Experience Details / कार्य अनुभवको विवरण
-                </label>
+                </h4>
+                {values.workExperiences.map((experience: any, index: number) => (
+                  <div key={index} className="border border-gray-100 dark:border-gray-700 rounded-lg p-4 mb-4">
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Position / पद
+                        </label>
+                        <Field
+                          name={`workExperiences.${index}.position`}
+                          type="text"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Company / कम्पनी
+                        </label>
+                        <Field
+                          name={`workExperiences.${index}.company`}
+                          type="text"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Duration / अवधि
+                        </label>
+                        <Field
+                          name={`workExperiences.${index}.duration`}
+                          type="text"
+                          placeholder="e.g., Jan 2020 - Dec 2022"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Key Responsibilities / मुख्य जिम्मेवारीहरू
+                        </label>
+                        <Field
+                          as="textarea"
+                          name={`workExperiences.${index}.responsibilities`}
+                          rows={2}
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                        />
+                      </div>
+                    </div>
+                    {values.workExperiences.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newExperiences = values.workExperiences.filter((_: any, i: number) => i !== index);
+                          setFieldValue('workExperiences', newExperiences);
+                        }}
+                        className="mt-2 text-red-600 hover:text-red-700 text-sm"
+                      >
+                        Remove Experience / अनुभव हटाउनुहोस्
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => {
+                    const newExperiences = [...values.workExperiences, { position: '', company: '', duration: '', responsibilities: '' }];
+                    setFieldValue('workExperiences', newExperiences);
+                  }}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700 transition-colors duration-300"
+                >
+                  Add Another Experience / अर्को अनुभव थप्नुहोस्
+                </button>
+              </div>
+            )}
+
+            <div>
+              <label className="flex items-center space-x-2">
                 <Field
-                  as="textarea"
-                  name="workExperience"
-                  rows={6}
-                  placeholder="Please provide details of your work experience including: Position, Company Name, Duration, Responsibilities, etc."
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  name="hasTrainingCertifications"
+                  type="checkbox"
+                  className="w-4 h-4 text-khaki bg-gray-100 border-gray-300 rounded focus:ring-khaki focus:ring-2"
                 />
-                <ErrorMessage name="workExperience" component="div" className="text-red-500 text-sm mt-1" />
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  I have training or certifications / मसँग तालिम वा प्रमाणपत्रहरू छन्
+                </span>
+              </label>
+            </div>
+
+            {values.hasTrainingCertifications && (
+              <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+                <h4 className="text-lg font-medium text-lightBlack dark:text-white mb-4">
+                  Training & Certifications / तालिम र प्रमाणपत्रहरू
+                </h4>
+                {values.trainingCertifications.map((training: any, index: number) => (
+                  <div key={index} className="border border-gray-100 dark:border-gray-700 rounded-lg p-4 mb-4">
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Training/Certification Title / तालिम/प्रमाणपत्रको शीर्षक
+                        </label>
+                        <Field
+                          name={`trainingCertifications.${index}.title`}
+                          type="text"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Institution / संस्था
+                        </label>
+                        <Field
+                          name={`trainingCertifications.${index}.institution`}
+                          type="text"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Duration / अवधि
+                        </label>
+                        <Field
+                          name={`trainingCertifications.${index}.duration`}
+                          type="text"
+                          placeholder="e.g., 3 months, 2021"
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Description / विवरण
+                        </label>
+                        <Field
+                          as="textarea"
+                          name={`trainingCertifications.${index}.description`}
+                          rows={2}
+                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                        />
+                      </div>
+                    </div>
+                    {values.trainingCertifications.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newTrainings = values.trainingCertifications.filter((_: any, i: number) => i !== index);
+                          setFieldValue('trainingCertifications', newTrainings);
+                        }}
+                        className="mt-2 text-red-600 hover:text-red-700 text-sm"
+                      >
+                        Remove Training / तालिम हटाउनुहोस्
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => {
+                    const newTrainings = [...values.trainingCertifications, { title: '', institution: '', duration: '', description: '' }];
+                    setFieldValue('trainingCertifications', newTrainings);
+                  }}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700 transition-colors duration-300"
+                >
+                  Add Another Training / अर्को तालिम थप्नुहोस्
+                </button>
               </div>
             )}
 
@@ -757,159 +1020,11 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
                 />
                 <ErrorMessage name="positionAppliedFor" component="div" className="text-red-500 text-sm mt-1" />
               </div>
-
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Expected Salary / अपेक्षित तलब
-                  </label>
-                  <Field
-                    name="expectedSalary"
-                    type="text"
-                    placeholder="e.g., Rs. 50,000 per month"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
-                  />
-                  <ErrorMessage name="expectedSalary" component="div" className="text-red-500 text-sm mt-1" />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Available Start Date / सुरु गर्न सक्ने मिति *
-                  </label>
-                  <Field
-                    name="availableStartDate"
-                    type="date"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
-                  />
-                  <ErrorMessage name="availableStartDate" component="div" className="text-red-500 text-sm mt-1" />
-                </div>
-              </div>
             </div>
           </div>
         );
 
       case 5:
-        return (
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-lightBlack dark:text-white font-Garamond mb-4">
-              References / सिफारिसकर्ता
-            </h3>
-            
-            {/* Reference 1 */}
-            <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
-              <h4 className="text-lg font-medium text-lightBlack dark:text-white mb-4">
-                Reference 1 / पहिलो सिफारिसकर्ता
-              </h4>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Full Name / पूरा नाम
-                  </label>
-                  <Field
-                    name="reference1Name"
-                    type="text"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
-                  />
-                  <ErrorMessage name="reference1Name" component="div" className="text-red-500 text-sm mt-1" />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Position / पद
-                  </label>
-                  <Field
-                    name="reference1Position"
-                    type="text"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
-                  />
-                  <ErrorMessage name="reference1Position" component="div" className="text-red-500 text-sm mt-1" />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Contact Number / सम्पर्क नम्बर
-                  </label>
-                  <Field
-                    name="reference1Contact"
-                    type="tel"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
-                  />
-                  <ErrorMessage name="reference1Contact" component="div" className="text-red-500 text-sm mt-1" />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Address / ठेगाना
-                  </label>
-                  <Field
-                    name="reference1Address"
-                    type="text"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
-                  />
-                  <ErrorMessage name="reference1Address" component="div" className="text-red-500 text-sm mt-1" />
-                </div>
-              </div>
-            </div>
-
-            {/* Reference 2 */}
-            <div className="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
-              <h4 className="text-lg font-medium text-lightBlack dark:text-white mb-4">
-                Reference 2 / दोस्रो सिफारिसकर्ता
-              </h4>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Full Name / पूरा नाम
-                  </label>
-                  <Field
-                    name="reference2Name"
-                    type="text"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
-                  />
-                  <ErrorMessage name="reference2Name" component="div" className="text-red-500 text-sm mt-1" />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Position / पद
-                  </label>
-                  <Field
-                    name="reference2Position"
-                    type="text"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
-                  />
-                  <ErrorMessage name="reference2Position" component="div" className="text-red-500 text-sm mt-1" />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Contact Number / सम्पर्क नम्बर
-                  </label>
-                  <Field
-                    name="reference2Contact"
-                    type="tel"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
-                  />
-                  <ErrorMessage name="reference2Contact" component="div" className="text-red-500 text-sm mt-1" />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Address / ठेगाना
-                  </label>
-                  <Field
-                    name="reference2Address"
-                    type="text"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
-                  />
-                  <ErrorMessage name="reference2Address" component="div" className="text-red-500 text-sm mt-1" />
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 6:
         return (
           <div className="space-y-6">
             <h3 className="text-xl font-semibold text-lightBlack dark:text-white font-Garamond mb-4">
