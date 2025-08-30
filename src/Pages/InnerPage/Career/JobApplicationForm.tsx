@@ -4,24 +4,86 @@ import * as Yup from 'yup';
 
 // Utility functions for date conversion between BS and AD
 const convertBStoAD = (bsDate: string): string => {
-  if (!bsDate) return '';
+  if (!bsDate || bsDate.length !== 10) return '';
   
-  // Basic conversion - in a real app, you'd use a proper conversion library
-  // This is a simplified conversion for demonstration
-  const bsYear = parseInt(bsDate.split('-')[0]);
-  const adYear = bsYear - 57; // Approximate conversion
-  
-  return bsDate.replace(bsYear.toString(), adYear.toString());
+  try {
+    const [bsYear, bsMonth, bsDay] = bsDate.split('-').map(Number);
+    
+    // Basic conversion with approximate month/day adjustment
+    // In a real app, you'd use a proper conversion library like nepali-date
+    let adYear = bsYear - 57;
+    let adMonth = bsMonth;
+    let adDay = bsDay;
+    
+    // Rough adjustment for BS/AD calendar differences
+    if (bsMonth >= 1 && bsMonth <= 3) {
+      // Chaitra, Baishakh, Jestha roughly correspond to April-June
+      adMonth = bsMonth + 3;
+      if (adMonth > 12) {
+        adMonth -= 12;
+        adYear += 1;
+      }
+    } else if (bsMonth >= 4 && bsMonth <= 9) {
+      // Mid-year months have less offset
+      adMonth = bsMonth + 3;
+      if (adMonth > 12) {
+        adMonth -= 12;
+        adYear += 1;
+      }
+    } else {
+      // Later months (Aswin, Kartik, Mangsir, Poush)
+      adMonth = bsMonth - 9;
+      if (adMonth <= 0) {
+        adMonth += 12;
+        adYear -= 1;
+      }
+    }
+    
+    // Adjust day if necessary
+    if (adDay > 28 && adMonth === 2) adDay = 28; // February adjustment
+    if (adDay > 30 && [4, 6, 9, 11].includes(adMonth)) adDay = 30; // 30-day months
+    
+    return `${adYear}-${adMonth.toString().padStart(2, '0')}-${adDay.toString().padStart(2, '0')}`;
+  } catch {
+    return '';
+  }
 };
 
 const convertADtoBS = (adDate: string): string => {
-  if (!adDate) return '';
+  if (!adDate || adDate.length !== 10) return '';
   
-  // Basic conversion - in a real app, you'd use a proper conversion library
-  const adYear = parseInt(adDate.split('-')[0]);
-  const bsYear = adYear + 57; // Approximate conversion
-  
-  return adDate.replace(adYear.toString(), bsYear.toString());
+  try {
+    const [adYear, adMonth, adDay] = adDate.split('-').map(Number);
+    
+    // Basic conversion with approximate month/day adjustment
+    let bsYear = adYear + 57;
+    let bsMonth = adMonth;
+    let bsDay = adDay;
+    
+    // Rough adjustment for AD/BS calendar differences
+    if (adMonth >= 4 && adMonth <= 6) {
+      // April-June roughly correspond to Chaitra, Baishakh, Jestha
+      bsMonth = adMonth - 3;
+      if (bsMonth <= 0) {
+        bsMonth += 12;
+        bsYear -= 1;
+      }
+    } else if (adMonth >= 7 && adMonth <= 12) {
+      // Mid to late year
+      bsMonth = adMonth - 3;
+    } else {
+      // January-March
+      bsMonth = adMonth + 9;
+      bsYear -= 1;
+    }
+    
+    // Adjust day if necessary for Nepali calendar
+    if (bsDay > 32) bsDay = 32; // Some Nepali months can have 32 days
+    
+    return `${bsYear}-${bsMonth.toString().padStart(2, '0')}-${bsDay.toString().padStart(2, '0')}`;
+  } catch {
+    return '';
+  }
 };
 
 // Calculate age from date of birth
@@ -203,7 +265,7 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [photoError, setPhotoError] = useState<string>('');
 
-  const totalSteps = 4;
+  const totalSteps = 5;
 
   const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -380,15 +442,26 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
                 </label>
                 <Field
                   name="dateOfBirthAD"
-                  type="date"
-                  max="2030-12-31"
-                  min="1940-01-01"
+                  type="text"
+                  placeholder="YYYY-MM-DD"
+                  maxLength={10}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    const value = e.target.value;
+                    let value = e.target.value;
+                    // Allow only numbers and hyphens, limit year to 4 digits
+                    value = value.replace(/[^\d-]/g, '');
+                    
+                    // Format as YYYY-MM-DD
+                    if (value.length >= 4 && value.indexOf('-') === -1) {
+                      value = value.substring(0, 4) + '-' + value.substring(4);
+                    }
+                    if (value.length >= 7 && value.lastIndexOf('-') === 4) {
+                      value = value.substring(0, 7) + '-' + value.substring(7, 9);
+                    }
+                    
                     setFieldValue('dateOfBirthAD', value);
                     // Auto-convert to BS and update the BS field
-                    if (value) {
+                    if (value.length === 10) {
                       const bsDate = convertADtoBS(value);
                       setFieldValue('dateOfBirth', bsDate);
                       const age = calculateAge(value);
@@ -408,14 +481,10 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
                   type="number"
                   min="18"
                   max="100"
+                  placeholder={values.calculatedAge ? `Calculated: ${values.calculatedAge}` : "Enter age"}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
                 />
                 <ErrorMessage name="age" component="div" className="text-red-500 text-sm mt-1" />
-                {values.calculatedAge && (
-                  <p className="text-sm text-green-600 mt-1">
-                    Calculated Age: {values.calculatedAge} / गणना गरिएको उमेर: {values.calculatedAge}
-                  </p>
-                )}
               </div>
 
               <div>
@@ -1183,35 +1252,34 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
           {renderStepContent(values, setFieldValue)}
           
           <div className="flex justify-between pt-8 border-t border-gray-200 dark:border-gray-600 mt-8">
-            <button
-              type="button"
-              onClick={handlePrevious}
-              disabled={currentStep === 1}
-              className={`px-6 py-2 rounded-md font-medium transition-colors duration-300 ${
-                currentStep === 1
-                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-green-600 text-white hover:bg-green-700'
-              }`}
-            >
-              Previous / अघिल्लो
-            </button>
-            
-            {currentStep < totalSteps ? (
+            {currentStep > 1 && (
               <button
                 type="button"
-                onClick={handleNext}
-                className="px-6 py-2 bg-khaki text-white rounded-md font-medium hover:bg-opacity-90 transition-colors duration-300"
+                onClick={handlePrevious}
+                className="px-6 py-2 rounded-md font-medium transition-colors duration-300 bg-green-600 text-white hover:bg-green-700"
               >
-                Next / अर्को
-              </button>
-            ) : (
-              <button
-                type="submit"
-                className="px-6 py-2 bg-green-600 text-white rounded-md font-medium hover:bg-green-700 transition-colors duration-300"
-              >
-                Submit Application / आवेदन पेश गर्नुहोस्
+                Previous / अघिल्लो
               </button>
             )}
+            
+            <div className={currentStep === 1 ? 'ml-auto' : ''}>
+              {currentStep < totalSteps ? (
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  className="px-6 py-2 bg-khaki text-white rounded-md font-medium hover:bg-opacity-90 transition-colors duration-300"
+                >
+                  Next / अर्को
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="px-6 py-2 bg-green-600 text-white rounded-md font-medium hover:bg-green-700 transition-colors duration-300"
+                >
+                  Submit Application / आवेदन पेश गर्नुहोस्
+                </button>
+              )}
+            </div>
           </div>
         </Form>
       )}
