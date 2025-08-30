@@ -24,6 +24,31 @@ const convertADtoBS = (adDate: string): string => {
   return adDate.replace(adYear.toString(), bsYear.toString());
 };
 
+// Calculate age from date of birth
+const calculateAge = (dateOfBirth: string): string => {
+  if (!dateOfBirth) return '';
+  
+  const birthDate = new Date(dateOfBirth);
+  const today = new Date();
+  
+  let years = today.getFullYear() - birthDate.getFullYear();
+  let months = today.getMonth() - birthDate.getMonth();
+  let days = today.getDate() - birthDate.getDate();
+  
+  if (days < 0) {
+    months--;
+    const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+    days += lastMonth.getDate();
+  }
+  
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+  
+  return `${years}Y ${months}M ${days}D`;
+};
+
 // Validation schema for the job application form
 const validationSchema = Yup.object({
   // Personal Information
@@ -33,11 +58,12 @@ const validationSchema = Yup.object({
   motherName: Yup.string().required('Mother\'s Name is required'),
   grandfatherName: Yup.string().required('Grandfather\'s Name is required'),
   dateOfBirth: Yup.date().required('Date of Birth is required'),
+  dateOfBirthAD: Yup.date().required('Date of Birth (AD) is required'),
+  calculatedAge: Yup.string(),
   age: Yup.number().required('Age is required').min(18, 'Must be at least 18 years old'),
   gender: Yup.string().required('Gender is required'),
   maritalStatus: Yup.string().required('Marital Status is required'),
   nationality: Yup.string().required('Nationality is required'),
-  dateOfBirthAD: Yup.date().required('Date of Birth (AD) is required'),
   
   // Address Information
   permanentAddress: Yup.string().required('Permanent Address is required'),
@@ -110,12 +136,13 @@ const initialValues = {
   fatherName: '',
   motherName: '',
   grandfatherName: '',
-  dateOfBirth: '',
   age: '',
   gender: '',
   maritalStatus: '',
   nationality: 'Nepali',
+  dateOfBirth: '',
   dateOfBirthAD: '',
+  calculatedAge: '',
   
   // Address Information
   permanentAddress: '',
@@ -313,12 +340,36 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Date of Birth / जन्म मिति *
+                  Date of Birth (BS) / जन्म मिति (वि.सं.) *
                 </label>
                 <Field
                   name="dateOfBirth"
-                  type="date"
+                  type="text"
+                  placeholder="YYYY-MM-DD"
+                  maxLength={10}
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    let value = e.target.value;
+                    // Allow only numbers and hyphens, limit year to 4 digits
+                    value = value.replace(/[^\d-]/g, '');
+                    
+                    // Format as YYYY-MM-DD
+                    if (value.length >= 4 && value.indexOf('-') === -1) {
+                      value = value.substring(0, 4) + '-' + value.substring(4);
+                    }
+                    if (value.length >= 7 && value.lastIndexOf('-') === 4) {
+                      value = value.substring(0, 7) + '-' + value.substring(7, 9);
+                    }
+                    
+                    setFieldValue('dateOfBirth', value);
+                    // Auto-convert to AD and update the AD field
+                    if (value.length === 10) {
+                      const adDate = convertBStoAD(value);
+                      setFieldValue('dateOfBirthAD', adDate);
+                      const age = calculateAge(adDate);
+                      setFieldValue('calculatedAge', age);
+                    }
+                  }}
                 />
                 <ErrorMessage name="dateOfBirth" component="div" className="text-red-500 text-sm mt-1" />
               </div>
@@ -330,12 +381,19 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
                 <Field
                   name="dateOfBirthAD"
                   type="date"
+                  max="2030-12-31"
+                  min="1940-01-01"
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setFieldValue('dateOfBirthAD', e.target.value);
+                    const value = e.target.value;
+                    setFieldValue('dateOfBirthAD', value);
                     // Auto-convert to BS and update the BS field
-                    const bsDate = convertADtoBS(e.target.value);
-                    setFieldValue('dateOfBirth', bsDate);
+                    if (value) {
+                      const bsDate = convertADtoBS(value);
+                      setFieldValue('dateOfBirth', bsDate);
+                      const age = calculateAge(value);
+                      setFieldValue('calculatedAge', age);
+                    }
                   }}
                 />
                 <ErrorMessage name="dateOfBirthAD" component="div" className="text-red-500 text-sm mt-1" />
@@ -353,6 +411,11 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
                 />
                 <ErrorMessage name="age" component="div" className="text-red-500 text-sm mt-1" />
+                {values.calculatedAge && (
+                  <p className="text-sm text-green-600 mt-1">
+                    Calculated Age: {values.calculatedAge} / गणना गरिएको उमेर: {values.calculatedAge}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -1127,7 +1190,7 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
               className={`px-6 py-2 rounded-md font-medium transition-colors duration-300 ${
                 currentStep === 1
                   ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-gray-600 text-white hover:bg-gray-700'
+                  : 'bg-green-600 text-white hover:bg-green-700'
               }`}
             >
               Previous / अघिल्लो
