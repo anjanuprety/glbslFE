@@ -275,7 +275,7 @@ const newYearBS = [
   new Date(2043, 3, 14)  // 2100
 ];
 
-// Convert BS date to AD date using lookup tables
+// Convert BS date to AD date using lookup tables (one-way conversion only)
 const convertBStoAD = (bsDate: string): string => {
   if (!bsDate || bsDate.length !== 10) return '';
   
@@ -322,60 +322,6 @@ const convertBStoAD = (bsDate: string): string => {
   }
 };
 
-// Convert AD date to BS date using lookup tables
-const convertADtoBS = (adDate: string): string => {
-  if (!adDate || adDate.length !== 10) return '';
-  
-  try {
-    const [adYear, adMonth, adDay] = adDate.split('-').map(Number);
-    const date = new Date(adYear, adMonth - 1, adDay); // JS months are 0-indexed
-    
-    let bsYear = 0;
-    let currentNewYearDayAD = null;
-    
-    // Find the appropriate BS year
-    for (let i = newYearBS.length - 1; i >= 0; i--) {
-      if (date >= newYearBS[i]) {
-        bsYear = i + startBSYear;
-        currentNewYearDayAD = newYearBS[i];
-        break;
-      }
-    }
-    
-    if (currentNewYearDayAD === null) {
-      throw new Error('Date out of range');
-    }
-    
-    // Calculate days difference
-    const timeDelta = date.getTime() - currentNewYearDayAD.getTime();
-    let timeDeltaDays = Math.floor(timeDelta / (1000 * 60 * 60 * 24));
-    
-    const offset = bsYear - startBSYear;
-    const daysInCurrentBSMonths = daysInBSMonths[offset];
-    
-    let bsMonth = null;
-    let bsDay = null;
-    
-    // Find the appropriate month and day
-    for (let i = 0; i < daysInCurrentBSMonths.length; i++) {
-      if (timeDeltaDays < daysInCurrentBSMonths[i]) {
-        bsMonth = i + 1;
-        bsDay = timeDeltaDays + 1;
-        break;
-      }
-      timeDeltaDays -= daysInCurrentBSMonths[i];
-    }
-    
-    if (bsMonth === null || bsDay === null) {
-      throw new Error('Unable to convert date');
-    }
-    
-    return `${bsYear}-${bsMonth.toString().padStart(2, '0')}-${bsDay.toString().padStart(2, '0')}`;
-  } catch {
-    return '';
-  }
-};
-
 // Calculate age from date of birth
 const calculateAge = (dateOfBirth: string): string => {
   if (!dateOfBirth) return '';
@@ -411,8 +357,7 @@ const validationSchema = Yup.object({
   grandfatherName: Yup.string().required('Grandfather\'s Name is required'),
   dateOfBirth: Yup.date().required('Date of Birth is required'),
   dateOfBirthAD: Yup.date().required('Date of Birth (AD) is required'),
-  calculatedAge: Yup.string(),
-  age: Yup.number().required('Age is required').min(18, 'Must be at least 18 years old'),
+  age: Yup.string().required('Age is required'),
   gender: Yup.string().required('Gender is required'),
   maritalStatus: Yup.string().required('Marital Status is required'),
   nationality: Yup.string().required('Nationality is required'),
@@ -494,7 +439,6 @@ const initialValues = {
   nationality: 'Nepali',
   dateOfBirth: '',
   dateOfBirthAD: '',
-  calculatedAge: '',
   
   // Address Information
   permanentAddress: '',
@@ -718,8 +662,11 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
                     if (value.length === 10) {
                       const adDate = convertBStoAD(value);
                       setFieldValue('dateOfBirthAD', adDate);
-                      const age = calculateAge(adDate);
-                      setFieldValue('calculatedAge', age);
+                      // Auto-calculate and set age
+                      if (adDate) {
+                        const age = calculateAge(adDate);
+                        setFieldValue('age', age);
+                      }
                     }
                   }}
                 />
@@ -750,13 +697,7 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
                     }
                     
                     setFieldValue('dateOfBirthAD', value);
-                    // Auto-convert to BS and update the BS field
-                    if (value.length === 10) {
-                      const bsDate = convertADtoBS(value);
-                      setFieldValue('dateOfBirth', bsDate);
-                      const age = calculateAge(value);
-                      setFieldValue('calculatedAge', age);
-                    }
+                    // Note: AD field changes don't affect BS field to avoid mapping inaccuracies
                   }}
                 />
                 <ErrorMessage name="dateOfBirthAD" component="div" className="text-red-500 text-sm mt-1" />
@@ -768,11 +709,34 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ onSubmit }) => 
                 </label>
                 <Field
                   name="age"
-                  type="number"
-                  min="18"
-                  max="100"
-                  placeholder={values.calculatedAge ? `Calculated: ${values.calculatedAge}` : "Enter age"}
+                  type="text"
+                  placeholder="Format: 21Y 8M 15D"
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent bg-white dark:bg-normalBlack text-lightBlack dark:text-white"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    let value = e.target.value.toUpperCase();
+                    
+                    // Remove any characters that aren't numbers, Y, M, D, or spaces
+                    value = value.replace(/[^0-9YMD\s]/g, '');
+                    
+                    // Smart formatting: if user types numbers, auto-add Y M D
+                    if (/^\d+$/.test(value) && value.length <= 2) {
+                      // Just years entered
+                      value = value + 'Y 0M 0D';
+                    } else if (/^\d+\s+\d+$/.test(value)) {
+                      // Years and months entered
+                      const parts = value.split(/\s+/);
+                      value = parts[0] + 'Y ' + parts[1] + 'M 0D';
+                    } else if (/^\d+\s+\d+\s+\d+$/.test(value)) {
+                      // Years, months, and days entered
+                      const parts = value.split(/\s+/);
+                      value = parts[0] + 'Y ' + parts[1] + 'M ' + parts[2] + 'D';
+                    }
+                    
+                    // Ensure proper format with regex replacement
+                    value = value.replace(/(\d+)Y?\s*(\d+)M?\s*(\d+)D?/g, '$1Y $2M $3D');
+                    
+                    setFieldValue('age', value);
+                  }}
                 />
                 <ErrorMessage name="age" component="div" className="text-red-500 text-sm mt-1" />
               </div>
