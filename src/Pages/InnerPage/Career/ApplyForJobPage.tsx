@@ -30,11 +30,7 @@ const ApplyForJobPage: React.FC = () => {
       
     } catch (error) {
       console.error('Submission error:', error);
-      setSubmitError(
-        language === 'en' 
-          ? 'There was an error submitting your application. Please try again.'
-          : 'तपाईंको आवेदन पेश गर्दा त्रुटि भयो। कृपया फेरि प्रयास गर्नुहोस्।'
-      );
+      setSubmitError(t('career.submission_error'));
     } finally {
       setIsSubmitting(false);
     }
@@ -56,14 +52,11 @@ const ApplyForJobPage: React.FC = () => {
                 </div>
                 
                 <h2 className="text-2xl font-bold text-green-800 dark:text-green-200 font-Garamond mb-4">
-                  {language === 'en' ? 'Application Submitted Successfully!' : 'आवेदन सफलतापूर्वक पेश भयो!'}
+                  {t('career.application_submitted')}
                 </h2>
                 
                 <p className="text-green-700 dark:text-green-300 mb-6">
-                  {language === 'en' 
-                    ? 'Thank you for your application. We have received your details and will review them shortly. You will be contacted if your profile matches our requirements.'
-                    : 'तपाईंको आवेदनको लागि धन्यवाद। हामीले तपाईंका विवरणहरू प्राप्त गरेका छौं र छिट्टै समीक्षा गर्नेछौं। यदि तपाईंको प्रोफाइल हाम्रो आवश्यकतासँग मेल खान्छ भने तपाईंलाई सम्पर्क गरिनेछ।'
-                  }
+                  {t('career.application_success_message')}
                 </p>
                 
                 <div className="space-x-4">
@@ -71,14 +64,14 @@ const ApplyForJobPage: React.FC = () => {
                     onClick={() => window.location.reload()}
                     className="bg-khaki text-white px-6 py-2 rounded-md font-medium hover:bg-opacity-90 transition-colors duration-300"
                   >
-                    {language === 'en' ? 'Submit Another Application' : 'अर्को आवेदन पेश गर्नुहोस्'}
+                    {t('career.submit_new_application')}
                   </button>
                   
                   <a
                     href="/career/notices"
                     className="inline-block bg-gray-600 text-white px-6 py-2 rounded-md font-medium hover:bg-gray-700 transition-colors duration-300"
                   >
-                    {language === 'en' ? 'View Job Notices' : 'जागिर सूचनाहरू हेर्नुहोस्'}
+                    {t('career.view_job_notices')}
                   </a>
                 </div>
               </div>
@@ -109,10 +102,7 @@ const ApplyForJobPage: React.FC = () => {
               <div className="w-[100px] h-[1px] bg-[#ccc] dark:bg-[#3b3b3b] ml-5"></div>
             </div>
             <p className="text-center text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray font-Lora font-normal mt-[10px]">
-              {language === 'en' 
-                ? 'Submit your application for available positions at GLBSL. Fill out the form below with your details and we will get back to you.'
-                : 'GLBSL मा उपलब्ध पदहरूको लागि आफ्नो आवेदन पेश गर्नुहोस्। तलको फारम आफ्ना विवरणहरूसँग भर्नुहोस् र हामी तपाईंलाई फिर्ता सम्पर्क गर्नेछौं।'
-              }
+              {t('career.submit_application_description')}
             </p>
           </div>
 
@@ -130,13 +120,10 @@ const ApplyForJobPage: React.FC = () => {
                 <div className="text-center py-16">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-khaki mx-auto mb-4"></div>
                   <h3 className="text-xl font-semibold text-lightBlack dark:text-white font-Garamond mb-2">
-                    {language === 'en' ? 'Submitting Application...' : 'आवेदन पेश गर्दै...'}
+                    {t('career.submitting_application')}
                   </h3>
                   <p className="text-gray-600 dark:text-gray-300">
-                    {language === 'en' 
-                      ? 'Please wait while we process your application.'
-                      : 'कृपया प्रतीक्षा गर्नुहोस् जब हामी तपाईंको आवेदन प्रशोधन गर्दैछौं।'
-                    }
+                    {t('career.processing_message')}
                   </p>
                 </div>
               </div>

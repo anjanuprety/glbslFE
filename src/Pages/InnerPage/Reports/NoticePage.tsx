@@ -4,8 +4,10 @@ import { BsDownload, BsEye, BsShare } from "react-icons/bs";
 import { HiArrowLongLeft } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import PDFPreview from "../../../Components/Reports/PDFPreview";
+import { useLanguage } from "../../../contexts/LanguageContext";
 
 const NoticePage: React.FC = () => {
+  const { t } = useLanguage();
   // Sample notices data - in real implementation, this would come from Strapi CMS
   const notices = [
     {
@@ -74,7 +76,7 @@ const NoticePage: React.FC = () => {
 
   return (
     <section className="">
-      <BreadCrumb title="NOTICES" home={"/"} />
+      <BreadCrumb title={t('notices.title')} home={"/"} />
 
       <div className="bg-whiteSmoke dark:bg-lightBlack py-20 2xl:py-[120px]">
         <div className="Container">
@@ -86,7 +88,7 @@ const NoticePage: React.FC = () => {
           >
             <div className="text-center">
               <h1 className="text-xl sm:text-2xl md:text-3xl 2xl:text-[38px] leading-7 sm:leading-8 md:leading-9 lg:leading-[42px] 2xl:leading-[52px] text-lightBlack dark:text-white font-Garamond font-semibold capitalize">
-                Official Notices & Announcements
+                {t('notices.important_notices')}
               </h1>
               <div className="flex items-center justify-center text-center mx-auto mt-2 lg:mt-[6px]">
                 <div className="w-[100px] h-[1px] bg-[#ccc] dark:bg-[#3b3b3b] mr-5 "></div>
@@ -98,7 +100,7 @@ const NoticePage: React.FC = () => {
                 <div className="w-[100px] h-[1px] bg-[#ccc] dark:bg-[#3b3b3b] ml-5"></div>
               </div>
               <p className="text-center text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray font-Lora font-normal mt-[10px]">
-                Stay informed with our latest official notices, announcements, and important updates
+                {t('notices.description')}
               </p>
             </div>
           </div>
@@ -124,7 +126,7 @@ const NoticePage: React.FC = () => {
                       title="View PDF"
                     >
                       <BsEye className="w-3 h-3 mr-1" />
-                      View
+                      {t('reports.view')}
                     </button>
                     <button
                       onClick={() => handleDownload(notice)}
@@ -132,14 +134,15 @@ const NoticePage: React.FC = () => {
                       title="Download PDF"
                     >
                       <BsDownload className="w-3 h-3 mr-1" />
-                      Download
+                      {t('reports.download')}
                     </button>
                     <button
                       onClick={() => handleShare(notice)}
                       className="flex items-center justify-center text-[13px] leading-[32px] bg-blue-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
                       title="Share Notice"
                     >
-                      <BsShare className="w-3 h-3" />
+                      <BsShare className="w-3 h-3 mr-1" />
+                      {t('reports.share')}
                     </button>
                   </div>
                 </div>
