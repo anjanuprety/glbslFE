@@ -1,13 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BreadCrumb from "../../../BreadCrumb/BreadCrumb";
 import { useLanguage } from "../../../contexts/LanguageContext";
+import { loanProductsData } from "../../Services/services/LoanServices/data/loanData";
 
 const EMICalculatorPage: React.FC = () => {
   const { t } = useLanguage();
   const [loanAmount, setLoanAmount] = useState<string>('');
+  const [selectedLoanType, setSelectedLoanType] = useState<string>('');
   const [interestRate, setInterestRate] = useState<string>('');
   const [loanTenure, setLoanTenure] = useState<string>('');
   const [emiResult, setEmiResult] = useState<number | null>(null);
+
+  // Only loan products for EMI calculation
+  const loanTypes = loanProductsData.map(loan => ({
+    name: loan.loanProductName,
+    rate: loan.interestRate
+  }));
+
+  // Auto-set interest rate when loan type is selected
+  useEffect(() => {
+    if (selectedLoanType) {
+      const selectedProduct = loanTypes.find(product => product.name === selectedLoanType);
+      if (selectedProduct) {
+        setInterestRate(selectedProduct.rate);
+      }
+    }
+  }, [selectedLoanType]);
 
   const calculateEMI = () => {
     const principal = parseFloat(loanAmount);
@@ -22,6 +40,7 @@ const EMICalculatorPage: React.FC = () => {
 
   const resetCalculator = () => {
     setLoanAmount('');
+    setSelectedLoanType('');
     setInterestRate('');
     setLoanTenure('');
     setEmiResult(null);
@@ -88,6 +107,24 @@ const EMICalculatorPage: React.FC = () => {
 
                   <div>
                     <label className="block text-white text-sm font-medium mb-2">
+                      ऋण प्रकार *
+                    </label>
+                    <select
+                      value={selectedLoanType}
+                      onChange={(e) => setSelectedLoanType(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent"
+                    >
+                      <option value="">ऋण प्रकार छान्नुहोस्</option>
+                      {loanTypes.map((loan, index) => (
+                        <option key={index} value={loan.name}>
+                          {loan.name} ({loan.rate}% दर)
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-white text-sm font-medium mb-2">
                       {t('online.interest_rate')} (% प्रति वर्ष) *
                     </label>
                     <input
@@ -96,7 +133,10 @@ const EMICalculatorPage: React.FC = () => {
                       onChange={(e) => setInterestRate(e.target.value)}
                       placeholder="जस्तै: 12.5"
                       step="0.1"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent"
+                      readOnly={!!selectedLoanType}
+                      className={`w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent ${
+                        selectedLoanType ? 'bg-gray-100 cursor-not-allowed' : ''
+                      }`}
                     />
                   </div>
 

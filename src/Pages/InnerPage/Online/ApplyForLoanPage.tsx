@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BreadCrumb from "../../../BreadCrumb/BreadCrumb";
 import { useLanguage } from "../../../contexts/LanguageContext";
+import { getBranches } from "../../Branches/data/index";
 
 const ApplyForLoanPage: React.FC = () => {
   const { t } = useLanguage();
@@ -8,7 +9,6 @@ const ApplyForLoanPage: React.FC = () => {
     fullName: '',
     email: '',
     mobileNumber: '',
-    note: '',
     branchOffice: '',
     province: '',
     district: '',
@@ -20,14 +20,14 @@ const ApplyForLoanPage: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [branches, setBranches] = useState<string[]>([]);
 
-  const branches = [
-    'धनकुटा शाखा कार्यालय',
-    'काठमाडौं शाखा कार्यालय',
-    'पोखरा शाखा कार्यालय',
-    'बुटवल शाखा कार्यालय',
-    'वीरगञ्ज शाखा कार्यालय'
-  ];
+  // Fetch branches on component mount
+  useEffect(() => {
+    const branchData = getBranches();
+    const branchNames = branchData.map(branch => branch.name);
+    setBranches(branchNames);
+  }, []);
 
   const provinces = [
     'प्रदेश नं. १',
@@ -60,7 +60,6 @@ const ApplyForLoanPage: React.FC = () => {
         fullName: '',
         email: '',
         mobileNumber: '',
-        note: '',
         branchOffice: '',
         province: '',
         district: '',
@@ -194,22 +193,6 @@ const ApplyForLoanPage: React.FC = () => {
                     <p className="text-xs text-gray-300 mt-1">
                       नोट: कृपया सही फोन नम्बर प्रविष्ट गर्नुहोस् हामी तपाईंलाई फोन नम्बर मार्फत सम्पर्क गर्नेछौं।
                     </p>
-                  </div>
-
-                  <div>
-                    <label className="block text-white text-sm font-medium mb-2">
-                      नोट
-                    </label>
-                    <textarea
-                      name="note"
-                      value={formData.note}
-                      onChange={handleInputChange}
-                      maxLength={10}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent resize-none"
-                      rows={2}
-                      placeholder="छोटो नोट (अधिकतम १० अक्षर)"
-                    />
-                    <p className="text-xs text-gray-300 mt-1">{formData.note.length} of 10 max characters.</p>
                   </div>
 
                   <div>

@@ -1,17 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BreadCrumb from "../../../BreadCrumb/BreadCrumb";
 import { useLanguage } from "../../../contexts/LanguageContext";
+import { savingsProductsData } from "../../Services/services/SavingsServices/data/savingsData";
 
 const InterestCalculatorPage: React.FC = () => {
   const { t } = useLanguage();
   const [principal, setPrincipal] = useState<string>('');
+  const [selectedLoanType, setSelectedLoanType] = useState<string>('');
   const [rate, setRate] = useState<string>('');
   const [time, setTime] = useState<string>('');
-  const [calculationType, setCalculationType] = useState<'simple' | 'compound'>('simple');
   const [interestResult, setInterestResult] = useState<{
     interest: number;
     totalAmount: number;
   } | null>(null);
+
+  // Only savings products for interest calculation
+  const savingsTypes = savingsProductsData.map(savings => ({
+    name: savings.savingProductName,
+    rate: savings.interestRate
+  }));
+
+  // Auto-set interest rate when savings type is selected
+  useEffect(() => {
+    if (selectedLoanType) {
+      const selectedProduct = savingsTypes.find(product => product.name === selectedLoanType);
+      if (selectedProduct) {
+        setRate(selectedProduct.rate);
+      }
+    }
+  }, [selectedLoanType]);
 
   const calculateInterest = () => {
     const p = parseFloat(principal);
@@ -19,18 +36,9 @@ const InterestCalculatorPage: React.FC = () => {
     const t = parseFloat(time);
 
     if (p && r && t) {
-      let interest: number;
-      let totalAmount: number;
-
-      if (calculationType === 'simple') {
-        // Simple Interest: SI = P * R * T / 100
-        interest = (p * r * t);
-        totalAmount = p + interest;
-      } else {
-        // Compound Interest: CI = P(1 + R)^T - P
-        totalAmount = p * Math.pow(1 + r, t);
-        interest = totalAmount - p;
-      }
+      // Always use Compound Interest as requested (simple interest option removed)
+      const totalAmount = p * Math.pow(1 + r, t);
+      const interest = totalAmount - p;
 
       setInterestResult({ interest, totalAmount });
     }
@@ -38,6 +46,7 @@ const InterestCalculatorPage: React.FC = () => {
 
   const resetCalculator = () => {
     setPrincipal('');
+    setSelectedLoanType('');
     setRate('');
     setTime('');
     setInterestResult(null);
@@ -69,7 +78,7 @@ const InterestCalculatorPage: React.FC = () => {
               {interestResult && (
                 <div className="mt-6 p-6 bg-khaki rounded-lg">
                   <h3 className="text-white text-xl font-semibold mb-4">
-                    {calculationType === 'simple' ? t('online.simple_interest_result') : t('online.compound_interest_result')}
+                    {t('online.compound_interest_result')}
                   </h3>
                   <div className="text-white">
                     <p className="text-lg mb-2">
@@ -109,6 +118,24 @@ const InterestCalculatorPage: React.FC = () => {
 
                   <div>
                     <label className="block text-white text-sm font-medium mb-2">
+                      बचत प्रकार *
+                    </label>
+                    <select
+                      value={selectedLoanType}
+                      onChange={(e) => setSelectedLoanType(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent"
+                    >
+                      <option value="">बचत प्रकार छान्नुहोस्</option>
+                      {savingsTypes.map((product, index) => (
+                        <option key={index} value={product.name}>
+                          {product.name} ({product.rate}% दर)
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-white text-sm font-medium mb-2">
                       {t('online.interest_rate')} (% प्रति वर्ष) *
                     </label>
                     <input
@@ -117,7 +144,10 @@ const InterestCalculatorPage: React.FC = () => {
                       onChange={(e) => setRate(e.target.value)}
                       placeholder="जस्तै: 10.5"
                       step="0.1"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent"
+                      readOnly={!!selectedLoanType}
+                      className={`w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent ${
+                        selectedLoanType ? 'bg-gray-100 cursor-not-allowed' : ''
+                      }`}
                     />
                   </div>
 
@@ -132,20 +162,6 @@ const InterestCalculatorPage: React.FC = () => {
                       placeholder="जस्तै: 2"
                       className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent"
                     />
-                  </div>
-
-                  <div>
-                    <label className="block text-white text-sm font-medium mb-2">
-                      {t('online.calculation_type')} *
-                    </label>
-                    <select
-                      value={calculationType}
-                      onChange={(e) => setCalculationType(e.target.value as 'simple' | 'compound')}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent"
-                    >
-                      <option value="simple">{t('online.simple_interest')}</option>
-                      <option value="compound">{t('online.compound_interest')}</option>
-                    </select>
                   </div>
 
                   <div className="flex gap-4 mt-4">
