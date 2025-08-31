@@ -381,6 +381,38 @@ const Navbar: React.FC = () => {
                   ? "pending"
                   : isActive
                   ? "active"
+                  : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
+              to="#"
+            >
+              <span className="flex items-center">
+                {t('nav.gunaso')}
+                <BiChevronDown className="ml-1" />
+              </span>
+              <div className="absolute pt-5 lg:pt-8 z-20">
+                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
+                  <div className=" px-5 group hover:bg-khaki hover:text-white">
+                    <li className="hover:ml-3 duration-300  ">
+                      <NavLink to="/gunaso/register-complaint" className="block py-2">
+                        {t('submenu.register_complaint')}
+                      </NavLink>
+                    </li>
+                  </div>
+                  <div className=" px-5 group hover:bg-khaki hover:text-white">
+                    <li className="hover:ml-3 duration-300  ">
+                      <NavLink to="/gunaso/register-complaint-nrb" className="block py-2">
+                        {t('submenu.register_complaint_nrb')}
+                      </NavLink>
+                    </li>
+                  </div>
+                </ul>
+              </div>
+            </NavLink>
+            <NavLink
+              className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
+                isPending
+                  ? "pending"
+                  : isActive
+                  ? "active"
                   : ""} text-lightBlack lg:text-white dark:text-white lg:border-b-0 px-3 py-2 w-full block transition-all duration-300`}
               to="/contact"
             >

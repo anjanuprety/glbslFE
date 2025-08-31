@@ -30,6 +30,10 @@ export const translations: Translations = {
     en: 'Online',
     ne: 'अनलाइन'
   },
+  'nav.gunaso': {
+    en: 'Gunaso',
+    ne: 'गुनासो'
+  },
   'nav.page': {
     en: 'Page',
     ne: 'पृष्ठ'
@@ -187,6 +191,14 @@ export const translations: Translations = {
   'submenu.apply_for_loan': {
     en: 'Apply for Loan',
     ne: 'ऋणको लागि आवेदन'
+  },
+  'submenu.register_complaint': {
+    en: 'Register a Complaint',
+    ne: 'गुनासो दर्ता गर्नुहोस्'
+  },
+  'submenu.register_complaint_nrb': {
+    en: 'Register a Complaint to NRB',
+    ne: 'NRB मा गुनासो दर्ता गर्नुहोस्'
   },
   'submenu.services': {
     en: 'Services',
@@ -771,5 +783,31 @@ export const translations: Translations = {
   'online.loan_application_description': {
     en: 'Apply for loan online with our simple application form. Fill out the details and we will contact you shortly.',
     ne: 'हाम्रो सरल आवेदन फारमको साथ अनलाइन ऋणको लागि आवेदन दिनुहोस्। विवरणहरू भर्नुहोस् र हामी तपाईंलाई छिट्टै सम्पर्क गर्नेछौं।'
+  },
+
+  // Gunaso/Complaint related translations
+  'gunaso.register_complaint': {
+    en: 'Register a Complaint',
+    ne: 'गुनासो दर्ता गर्नुहोस्'
+  },
+  'gunaso.register_complaint_nrb': {
+    en: 'Register a Complaint to NRB',
+    ne: 'NRB मा गुनासो दर्ता गर्नुहोस्'
+  },
+  'gunaso.complaint_service': {
+    en: 'COMPLAINT SERVICE',
+    ne: 'गुनासो सेवा'
+  },
+  'gunaso.complaint_description': {
+    en: 'Register your complaint with our complaint management system. We ensure quick resolution and transparent communication.',
+    ne: 'हाम्रो गुनासो व्यवस्थापन प्रणालीमा आफ्नो गुनासो दर्ता गर्नुहोस्। हामी छिटो समाधान र पारदर्शी संचारको ग्यारेन्टी गर्छौं।'
+  },
+  'gunaso.nrb_redirect_service': {
+    en: 'NRB COMPLAINT PORTAL',
+    ne: 'NRB गुनासो पोर्टल'
+  },
+  'gunaso.nrb_redirect_description': {
+    en: 'You are being redirected to Nepal Rastra Bank official complaint portal for banking and financial services related complaints.',
+    ne: 'बैंकिङ र वित्तीय सेवासँग सम्बन्धित गुनासोको लागि तपाईंलाई नेपाल राष्ट्र बैंकको आधिकारिक गुनासो पोर्टलमा रिडिरेक्ट गरिँदैछ।'
   }
 };

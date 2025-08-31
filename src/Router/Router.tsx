@@ -49,6 +49,12 @@ import {
   ApplyForLoanPage as OnlineApplyForLoanPage 
 } from "../Pages/InnerPage/Online";
 
+// Gunaso pages
+import { 
+  RegisterComplaintPage, 
+  RegisterComplaintNRBPage 
+} from "../Pages/InnerPage/Gunaso";
+
 // Only the primary route is kept (Home1). Extra homepage routes removed.
 const router = createBrowserRouter([
   {
@@ -143,6 +149,14 @@ const router = createBrowserRouter([
       {
         path: "/online/apply-for-loan",
         element: <OnlineApplyForLoanPage />,
+      },
+      {
+        path: "/gunaso/register-complaint",
+        element: <RegisterComplaintPage />,
+      },
+      {
+        path: "/gunaso/register-complaint-nrb",
+        element: <RegisterComplaintNRBPage />,
       },
       {
         path: "/services",
