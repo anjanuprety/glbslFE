@@ -26,6 +26,10 @@ export const translations: Translations = {
     en: 'Career',
     ne: 'करियर'
   },
+  'nav.online': {
+    en: 'Online',
+    ne: 'अनलाइन'
+  },
   'nav.page': {
     en: 'Page',
     ne: 'पृष्ठ'
@@ -171,6 +175,18 @@ export const translations: Translations = {
   'submenu.application_form': {
     en: 'Application Form',
     ne: 'आवेदन फारम'
+  },
+  'submenu.emi_calculator': {
+    en: 'EMI Calculator',
+    ne: 'EMI क्यालकुलेटर'
+  },
+  'submenu.interest_calculator': {
+    en: 'Interest Calculator',
+    ne: 'ब्याज क्यालकुलेटर'
+  },
+  'submenu.apply_for_loan': {
+    en: 'Apply for Loan',
+    ne: 'ऋणको लागि आवेदन'
   },
   'submenu.services': {
     en: 'Services',
@@ -649,5 +665,111 @@ export const translations: Translations = {
   'error.try_again': {
     en: 'Try Again',
     ne: 'फेरि प्रयास गर्नुहोस्'
+  },
+
+  // Online Section
+  'online.emi_calculator': {
+    en: 'EMI Calculator',
+    ne: 'EMI क्यालकुलेटर'
+  },
+  'online.interest_calculator': {
+    en: 'Interest Calculator',
+    ne: 'ब्याज क्यालकुलेटर'
+  },
+  'online.apply_for_loan': {
+    en: 'Apply for Loan',
+    ne: 'ऋणको लागि आवेदन'
+  },
+  'online.calculate_emi': {
+    en: 'CALCULATE EMI',
+    ne: 'EMI गणना गर्नुहोस्'
+  },
+  'online.emi_description': {
+    en: 'Calculate your Equated Monthly Installment (EMI) for loans. Enter loan amount, interest rate, and tenure to get instant results.',
+    ne: 'ऋणको लागि तपाईंको मासिक किस्ता (EMI) गणना गर्नुहोस्। ऋण रकम, ब्याज दर, र अवधि प्रविष्ट गर्नुहोस्।'
+  },
+  'online.monthly_emi': {
+    en: 'Monthly EMI',
+    ne: 'मासिक EMI'
+  },
+  'online.calculate_your_emi': {
+    en: 'CALCULATE YOUR EMI',
+    ne: 'तपाईंको EMI गणना गर्नुहोस्'
+  },
+  'online.loan_amount': {
+    en: 'Loan Amount',
+    ne: 'ऋण रकम'
+  },
+  'online.interest_rate': {
+    en: 'Interest Rate',
+    ne: 'ब्याज दर'
+  },
+  'online.loan_tenure': {
+    en: 'Loan Tenure',
+    ne: 'ऋण अवधि'
+  },
+  'online.calculate': {
+    en: 'Calculate',
+    ne: 'गणना गर्नुहोस्'
+  },
+  'online.reset': {
+    en: 'Reset',
+    ne: 'रिसेट गर्नुहोस्'
+  },
+  'online.calculate_interest': {
+    en: 'CALCULATE INTEREST',
+    ne: 'ब्याज गणना गर्नुहोस्'
+  },
+  'online.interest_description': {
+    en: 'Calculate simple or compound interest on your deposits or investments. Choose between simple and compound interest calculations.',
+    ne: 'तपाईंको निक्षेप वा लगानीमा साधारण वा चक्रवृद्धि ब्याज गणना गर्नुहोस्।'
+  },
+  'online.simple_interest_result': {
+    en: 'Simple Interest Result',
+    ne: 'साधारण ब्याजको नतिजा'
+  },
+  'online.compound_interest_result': {
+    en: 'Compound Interest Result',
+    ne: 'चक्रवृद्धि ब्याजको नतिजा'
+  },
+  'online.interest_amount': {
+    en: 'Interest Amount',
+    ne: 'ब्याज रकम'
+  },
+  'online.total_amount': {
+    en: 'Total Amount',
+    ne: 'कुल रकम'
+  },
+  'online.calculate_your_interest': {
+    en: 'CALCULATE YOUR INTEREST',
+    ne: 'तपाईंको ब्याज गणना गर्नुहोस्'
+  },
+  'online.principal_amount': {
+    en: 'Principal Amount',
+    ne: 'मूल रकम'
+  },
+  'online.time_period': {
+    en: 'Time Period',
+    ne: 'समय अवधि'
+  },
+  'online.calculation_type': {
+    en: 'Calculation Type',
+    ne: 'गणना प्रकार'
+  },
+  'online.simple_interest': {
+    en: 'Simple Interest',
+    ne: 'साधारण ब्याज'
+  },
+  'online.compound_interest': {
+    en: 'Compound Interest',
+    ne: 'चक्रवृद्धि ब्याज'
+  },
+  'online.loan_application': {
+    en: 'LOAN APPLICATION',
+    ne: 'ऋण आवेदन'
+  },
+  'online.loan_application_description': {
+    en: 'Apply for loan online with our simple application form. Fill out the details and we will contact you shortly.',
+    ne: 'हाम्रो सरल आवेदन फारमको साथ अनलाइन ऋणको लागि आवेदन दिनुहोस्। विवरणहरू भर्नुहोस् र हामी तपाईंलाई छिट्टै सम्पर्क गर्नेछौं।'
   }
 };

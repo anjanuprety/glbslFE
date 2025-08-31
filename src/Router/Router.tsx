@@ -42,6 +42,13 @@ import {
   ApplicationFormPage 
 } from "../Pages/InnerPage/Career";
 
+// Online pages
+import { 
+  EMICalculatorPage, 
+  InterestCalculatorPage, 
+  ApplyForLoanPage as OnlineApplyForLoanPage 
+} from "../Pages/InnerPage/Online";
+
 // Only the primary route is kept (Home1). Extra homepage routes removed.
 const router = createBrowserRouter([
   {
@@ -124,6 +131,18 @@ const router = createBrowserRouter([
       {
         path: "/career/application-form",
         element: <ApplicationFormPage />,
+      },
+      {
+        path: "/online/emi-calculator",
+        element: <EMICalculatorPage />,
+      },
+      {
+        path: "/online/interest-calculator",
+        element: <InterestCalculatorPage />,
+      },
+      {
+        path: "/online/apply-for-loan",
+        element: <OnlineApplyForLoanPage />,
       },
       {
         path: "/services",
