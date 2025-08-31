@@ -7,7 +7,7 @@
     &copy: Dream It web Solution.
 */
 /* Google Fonts Link */
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Noto+Sans+Devanagari:wght@300;400;500;600;700&display=swap");
 
 /* Tailwind  layer configure */
 @tailwind base;
@@ -97,6 +97,54 @@ option:hover {
   background-color: #ffc300;
   /* padding: 6px; */
   color: white;
+}
+
+/* Language-specific navigation styling */
+.nav-item-nepali {
+  @apply font-Nepali;
+  line-height: 1.4;
+  letter-spacing: 0.5px;
+}
+
+.nav-item-english {
+  @apply font-Nepali;
+  line-height: 1.4;
+  letter-spacing: 0.5px;
+}
+
+/* Consistent language toggle button */
+.language-toggle {
+  @apply text-white text-sm font-medium px-4 py-2 rounded border border-white hover:bg-white hover:text-lightBlack transition-all duration-300 min-w-[44px] text-center;
+}
+
+/* Navigation item styling for single-line layout */
+.nav-item {
+  @apply leading-normal text-center whitespace-nowrap;
+  line-height: 1.2;
+}
+
+/* Single-line navigation text wrapper */
+.nav-text-wrapper {
+  @apply flex items-center justify-center gap-1;
+  min-height: 1.5rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.nav-text-content {
+  @apply flex items-center justify-center;
+  white-space: nowrap;
+}
+
+/* Remove text breaking - keep all text on single lines */
+.nav-text-break {
+  display: inline;
+}
+
+/* Logo size increase */
+.logo-120 {
+  width: 120%;
+  max-width: none;
 }
 
 /* slider responsive */

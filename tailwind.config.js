@@ -17,6 +17,7 @@ export default {
       fontFamily: {
         Garamond: ["Cormorant Garamond", "serif"],
         Lora: ["Lora", "serif"],
+        Nepali: ["Noto Sans Devanagari", "Lora", "serif"],
       },
       screens: {
         esm: "480px",

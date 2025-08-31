@@ -29,16 +29,16 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={` w-full lg:fixed font-Lora z-10  lg:px-5 lg:py-2  transition-all duration-300 ${navbarBgColor} `}
+      className={` w-full lg:fixed font-Lora z-10  lg:px-5 lg:py-4  transition-all duration-300 ${navbarBgColor} `}
     >
       <div className="lg:px-10">
-        <div className="flex flex-col lg:flex-row items-center justify-between">
+        <div className="flex flex-col lg:flex-row items-center justify-between lg:min-h-[80px]">
           {/* website Logo */}
-          <div className=" w-64 lg:w-52 lg:p-4 ">
+          <div className=" w-64 lg:w-52 lg:p-4 lg:pr-8 ">
             <Link to="/">
               <img
                 src="/images/home-1/logo-1.png"
-                className="hidden lg:block w-full"
+                className="hidden lg:block logo-120"
                 alt="website_logo"
               />
             </Link>
@@ -59,7 +59,7 @@ const Navbar: React.FC = () => {
             <div className="flex items-center ">
               <span onClick={toggleLanguage} className="mr-3 cursor-pointer">
                 <span 
-                  className="text-white text-sm font-medium px-2 py-1 rounded border border-white"
+                  className="language-toggle"
                   title={language === 'en' ? 'Switch to Nepali' : 'Switch to English'}
                 >
                   {language === 'en' ? 'NE' : 'EN'}
@@ -82,31 +82,22 @@ const Navbar: React.FC = () => {
           <ul
             className={`${
               isOpen ? "block" : "hidden"
-            } text-left w-full lg:w-fit  ease-in-out lg:flex space-y-2 lg:space-y-0 lg:text-center space-x-0 lg:space-x-3 xl:space-x-4 2xl:space-x-5 3xl:space-x-[24px] flex flex-col lg:flex-row text-sm text-lightBlack lg:text-white dark:text-white uppercase font-normal bg-white dark:bg-normalBlack lg:bg-transparent dark:lg:bg-transparent py-3 lg:py-0 `}
+            } text-left w-full lg:w-fit ease-in-out lg:flex space-y-2 lg:space-y-0 lg:text-center space-x-0 lg:space-x-2 xl:space-x-3 2xl:space-x-4 flex flex-col lg:flex-row text-sm text-lightBlack lg:text-white dark:text-white uppercase font-normal bg-white dark:bg-normalBlack lg:bg-transparent dark:lg:bg-transparent py-3 lg:py-0 font-Nepali lg:min-h-[4rem] lg:items-center`}
           >
-            <NavLink
-              className={({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
-                `${isPending
-                  ? "pending"
-                  : isActive
-                  ? "active"
-                  : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300`}
-              to="/"
-            >
-              {t('nav.home')}
-            </NavLink>
             <NavLink
               className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
                 isPending
                   ? "pending"
                   : isActive
                   ? "active"
-                  : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative`}
+                  : ""} text-lightBlack lg:text-white dark:text-white lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative nav-item`}
               to="#"
             >
-              <span className="flex items-center">
-                {t('nav.about')}
-                <BiChevronDown className="ml-1" />
+              <span className="nav-text-wrapper">
+                <span className="nav-item">
+                  {t('nav.about')}
+                </span>
+                <BiChevronDown className="ml-1 flex-shrink-0" />
               </span>
               <div className="absolute pt-5 lg:pt-8 z-20">
                 <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
@@ -161,12 +152,14 @@ const Navbar: React.FC = () => {
                   ? "pending"
                   : isActive
                   ? "active"
-                  : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
+                  : ""} text-lightBlack lg:text-white dark:text-white lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative nav-item`}
               to="#"
             >
-              <span className="flex items-center">
-                {t('nav.services')}
-                <BiChevronDown className="ml-1" />
+              <span className="nav-text-wrapper">
+                <span className="nav-item">
+                  {t('nav.services')}
+                </span>
+                <BiChevronDown className="ml-1 flex-shrink-0" />
               </span>
               <div className="absolute pt-5 lg:pt-8 z-20">
                 <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
@@ -214,10 +207,12 @@ const Navbar: React.FC = () => {
                   ? "pending"
                   : isActive
                   ? "active"
-                  : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300`}
+                  : ""} text-lightBlack lg:text-white dark:text-white lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 nav-item`}
               to="/branches"
             >
-              {t('nav.branches')}
+              <span className="nav-item">
+                {t('nav.branches')}
+              </span>
             </NavLink>
             <NavLink
               className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
@@ -225,12 +220,14 @@ const Navbar: React.FC = () => {
                   ? "pending"
                   : isActive
                   ? "active"
-                  : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
+                  : ""} text-lightBlack lg:text-white dark:text-white lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative nav-item`}
               to="#"
             >
-              <span className="flex items-center">
-                {t('nav.reports')}
-                <BiChevronDown className="ml-1" />
+              <span className="nav-text-wrapper">
+                <span className="nav-item">
+                  {t('nav.reports')}
+                </span>
+                <BiChevronDown className="ml-1 flex-shrink-0" />
               </span>
               <div className="absolute pt-5 lg:pt-8 z-20">
                 <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
@@ -292,10 +289,12 @@ const Navbar: React.FC = () => {
                   ? "pending"
                   : isActive
                   ? "active"
-                  : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300`}
+                  : ""} text-lightBlack lg:text-white dark:text-white lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 nav-item`}
               to="/reports/notices"
             >
-              {t('nav.notices')}
+              <span className="nav-item">
+                {t('nav.notices')}
+              </span>
             </NavLink>
             <NavLink
               className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
@@ -303,12 +302,14 @@ const Navbar: React.FC = () => {
                   ? "pending"
                   : isActive
                   ? "active"
-                  : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
+                  : ""} text-lightBlack lg:text-white dark:text-white lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative nav-item`}
               to="#"
             >
-              <span className="flex items-center">
-                {t('nav.career')}
-                <BiChevronDown className="ml-1" />
+              <span className="nav-text-wrapper">
+                <span className="nav-item">
+                  {t('nav.career')}
+                </span>
+                <BiChevronDown className="ml-1 flex-shrink-0" />
               </span>
               <div className="absolute pt-5 lg:pt-8 z-20">
                 <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
@@ -342,12 +343,14 @@ const Navbar: React.FC = () => {
                   ? "pending"
                   : isActive
                   ? "active"
-                  : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
+                  : ""} text-lightBlack lg:text-white dark:text-white lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative nav-item`}
               to="#"
             >
-              <span className="flex items-center">
-                {t('nav.online')}
-                <BiChevronDown className="ml-1" />
+              <span className="nav-text-wrapper">
+                <span className="nav-item">
+                  {t('nav.online')}
+                </span>
+                <BiChevronDown className="ml-1 flex-shrink-0" />
               </span>
               <div className="absolute pt-5 lg:pt-8 z-20">
                 <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
@@ -381,12 +384,14 @@ const Navbar: React.FC = () => {
                   ? "pending"
                   : isActive
                   ? "active"
-                  : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
+                  : ""} text-lightBlack lg:text-white dark:text-white lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative nav-item`}
               to="#"
             >
-              <span className="flex items-center">
-                {t('nav.gunaso')}
-                <BiChevronDown className="ml-1" />
+              <span className="nav-text-wrapper">
+                <span className="nav-item">
+                  {t('nav.gunaso')}
+                </span>
+                <BiChevronDown className="ml-1 flex-shrink-0" />
               </span>
               <div className="absolute pt-5 lg:pt-8 z-20">
                 <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
@@ -413,18 +418,20 @@ const Navbar: React.FC = () => {
                   ? "pending"
                   : isActive
                   ? "active"
-                  : ""} text-lightBlack lg:text-white dark:text-white lg:border-b-0 px-3 py-2 w-full block transition-all duration-300`}
+                  : ""} text-lightBlack lg:text-white dark:text-white lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 nav-item`}
               to="/contact"
             >
-              {t('nav.contact')}
+              <span className="nav-item">
+                {t('nav.contact')}
+              </span>
             </NavLink>
           </ul>
 
           {/* large device visible button and search icon */}
-          <div className="hidden lg:flex items-center">
-            <span onClick={toggleLanguage} className="mr-3 cursor-pointer group">
+          <div className="hidden lg:flex items-center lg:pl-8">
+            <span onClick={toggleLanguage} className="cursor-pointer group">
               <span 
-                className="text-white text-lg font-medium px-3 py-2 rounded border border-white hover:bg-white hover:text-lightBlack transition-all duration-300"
+                className="language-toggle"
                 title={language === 'en' ? 'Switch to Nepali' : 'Switch to English'}
               >
                 {language === 'en' ? 'NE' : 'EN'}
