@@ -1,10 +1,36 @@
 import axios from 'axios';
 
 const API_URL = (import.meta as any).env.VITE_STRAPI_API_URL || 'http://localhost:1337';
+console.log('🔍 API_URL being used:', API_URL);
 
 const api = axios.create({
   baseURL: API_URL,
+  timeout: 10000,
 });
+
+// Add request interceptor to log requests
+api.interceptors.request.use(
+  (config) => {
+    console.log('🚀 Making API request to:', `${config.baseURL || ''}${config.url || ''}`);
+    return config;
+  },
+  (error) => {
+    console.error('❌ Request error:', error);
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor to log responses
+api.interceptors.response.use(
+  (response) => {
+    console.log('✅ API response received:', response.status, response.data);
+    return response;
+  },
+  (error) => {
+    console.error('❌ API response error:', error.response?.status, error.response?.data, error.message);
+    return Promise.reject(error);
+  }
+);
 
 const getLocale = () => {
   return (localStorage.getItem('language') as string) || 'en';

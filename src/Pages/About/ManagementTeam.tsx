@@ -13,7 +13,9 @@ const ManagementTeam: React.FC = () => {
     const fetch = async () => {
       try {
         setLoading(true);
+        console.log('🔍 Attempting to fetch management team...');
         const data = await aboutService.getManagementTeam();
+        console.log('✅ Successfully fetched management team:', data);
         setMembers(
           data.map((d: any) => {
             const mapped = mapStrapiPersonData(d);
@@ -24,7 +26,11 @@ const ManagementTeam: React.FC = () => {
           })
         );
       } catch (err) {
-        console.error(err);
+        console.error('❌ Management team fetch error:', err);
+        if (err instanceof Error) {
+          console.error('Error message:', err.message);
+          console.error('Error stack:', err.stack);
+        }
         setError("Failed to load management team");
       } finally {
         setLoading(false);

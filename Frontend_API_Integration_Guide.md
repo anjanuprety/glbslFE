@@ -181,59 +181,54 @@ GET /api/people?pagination[start]=0&pagination[limit]=25
 
 ### **Required Environment Variables:**
 ```env
-# API Configuration for Vite (replace your-actual-app-name with your DigitalOcean app name)
-VITE_STRAPI_API_URL=https://your-actual-app-name.ondigitalocean.app
+# API Configuration
+NEXT_PUBLIC_STRAPI_URL=https://your-digitalocean-app-name.ondigitalocean.app
+NEXT_PUBLIC_STRAPI_API_URL=https://your-digitalocean-app-name.ondigitalocean.app/api
 
-# For local development (comment out when using production)
-# VITE_STRAPI_API_URL=http://localhost:1337
+# For authenticated requests (keep secure)
+STRAPI_API_TOKEN=your-generated-api-token
+
+# Development URLs (optional)
+NEXT_PUBLIC_DEV_STRAPI_URL=http://localhost:1337
+NEXT_PUBLIC_DEV_STRAPI_API_URL=http://localhost:1337/api
 ```
-
-### **Setup Instructions:**
-1. **Find Your DigitalOcean App URL**:
-   - Go to your DigitalOcean dashboard
-   - Navigate to Apps section
-   - Copy your Strapi app's live URL
-
-2. **Create Environment File**:
-   - Create `.env` file in your project root
-   - Add `VITE_STRAPI_API_URL=https://your-actual-app-url`
-   - Replace "your-actual-app-url" with your real DigitalOcean URL
-
-3. **Test Connection**:
-   - Restart your development server
-   - Check browser network tab for API calls to new URL
 
 ## 🖼️ **Media/Image Handling**
 
 ### **Image URLs:**
 ```javascript
-// Images are served from your Strapi instance (Vite version)
-const STRAPI_URL = import.meta.env.VITE_STRAPI_API_URL || 'http://localhost:1337';
-const imageUrl = `${STRAPI_URL}${image.url}`;
+// Images are served from your Strapi instance
+const imageUrl = `${process.env.NEXT_PUBLIC_STRAPI_URL}${image.url}`;
 
 // Example response structure
 {
   "id": 1,
-  "name": "John Doe",
-  "image": {
-    "id": 5,
-    "url": "/uploads/avatar_123.jpg",
-    "alternativeText": "John Doe Avatar",
-    "width": 300,
-    "height": 300
+  "attributes": {
+    "name": "John Doe",
+    "avatar": {
+      "data": {
+        "id": 5,
+        "attributes": {
+          "url": "/uploads/avatar_123.jpg",
+          "alternativeText": "John Doe Avatar",
+          "width": 300,
+          "height": 300
+        }
+      }
+    }
   }
 }
 ```
 
 ## 📱 **Sample Frontend Code**
 
-### **React/Vite API Client:**
+### **React/Next.js API Client:**
 ```javascript
-// services/strapi.js (Vite version)
-const API_URL = import.meta.env.VITE_STRAPI_API_URL || 'http://localhost:1337';
+// lib/strapi.js
+const API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 
 export async function fetchAPI(endpoint, options = {}) {
-  const url = `${API_URL}/api${endpoint}`;
+  const url = `${API_URL}${endpoint}`;
   
   const response = await fetch(url, {
     headers: {
