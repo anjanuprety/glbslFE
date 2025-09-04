@@ -1,14 +1,14 @@
 import React from "react";
-import Action from "../../Components/CallDoAction/Action";
-import Facilities from "../../Components/Facilities/Facilities";
-import HeroSection from "../../Components/HeroSection/HeroSection";
+import Action from "../../components/CallDoAction/Action";
+import Facilities from "../../components/Facilities/Facilities";
+import HeroSection from "../../components/HeroSection/HeroSection";
 // import HotelAndFacilities from "../../Components/HotelAndFacilities/HotelAndFacilities";
-import HotelAndResort from "../../Components/HotelAndResort/HotelAndResort";
+import HotelAndResort from "../../components/HotelAndResort/HotelAndResort";
 // import LatestBlog from "../../Components/LatestBlog/LatestBlog";
-import Offers from "../../Components/Offers/Offers";
-import Reports from "../../Components/Reports/Reports";
-import Rooms from "../../Components/Rooms/Rooms";
-import Testimonial from "../../Components/Testimonial/Testimonial";
+import Offers from "../../components/Offers/Offers";
+import Reports from "../../components/Reports/Reports";
+import Rooms from "../../components/Rooms/Rooms";
+import Testimonial from "../../components/Testimonial/Testimonial";
 
 const Home1: React.FC = () => {
   return (
