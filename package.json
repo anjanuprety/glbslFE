@@ -16,6 +16,7 @@
     "aos": "^3.0.0-beta.6",
     "axios": "^1.11.0",
     "flowbite-react": "^0.6.0",
+    "formik": "^2.4.6",
     "fslightbox-react": "^1.7.6",
     "keen-slider": "^6.8.6",
     "localforage": "^1.10.0",
@@ -29,13 +30,15 @@
     "styled-components": "^6.1.1",
     "sweetalert2": "^11.9.0",
     "swiper": "^10.2.0",
-    "tw-daterange": "^1.1.25"
+    "tw-daterange": "^1.1.25",
+    "yup": "^1.7.0"
   },
   "devDependencies": {
     "@types/aos": "^3.0.7",
     "@types/fslightbox-react": "^1.8.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
+    "@types/yup": "^0.29.14",
     "@typescript-eslint/eslint-plugin": "^8.40.0",
     "@typescript-eslint/parser": "^8.40.0",
     "@vitejs/plugin-react": "^4.0.3",
