@@ -2,6 +2,11 @@ import React from "react";
 const Brand: React.FC = () => {
   return (
     <div className="bg-khaki pt-[54px] pb-[44px]">
+      <div className="text-center mb-8">
+        <h3 className="text-xl sm:text-2xl md:text-3xl font-Garamond font-semibold text-lightBlack">
+          Our Payment Partners
+        </h3>
+      </div>
       <div
         className="Container grid grid-cols-2 sm:grid-cols-2  md:grid-cols-5 2xl:grid-cols-5 items-center justify-center gap-[30px]"
         data-aos="fade-up"

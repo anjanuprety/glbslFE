@@ -1,22 +1,14 @@
 import React from "react";
 import { BsArrowRight } from "react-icons/bs";
-import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import { useState } from "react";
-import { BiChevronDown } from "react-icons/bi";
+import PDFPreview from "./PDFPreview";
 
-// import required modules
-
-const Rooms: React.FC = () => {
-  const [open, setOpen] = useState(false);
-  const [guestOpen, setGuestOpen] = useState(false);
-  const [room, setRoom] = useState(1);
-  const [adult, setAdult] = useState(1);
-  const [children, setChildren] = useState(0);
+const Reports: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [loaded] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   const [sliderRef, instanceRef] = useKeenSlider({
     breakpoints: {
@@ -30,13 +22,13 @@ const Rooms: React.FC = () => {
         slides: { perView: 3, spacing: 20 },
       },
     },
-  loop: false,
+    loop: false,
     initial: 0,
     slideChanged(slider) {
       setCurrentSlide(slider.track.details.rel);
     },
     created() {
-      // setLoaded(true);
+      setLoaded(true);
     },
   });
 
@@ -54,6 +46,9 @@ const Rooms: React.FC = () => {
                 GURANS LAGHUBITTA BITTIYA SANSTHA LIMITED
               </p>
               <p className="text-lightGray font-bold mt-1" style={{ fontSize: "150%" }}>
+                गुराँस लघुवीत्त वित्तीय संस्था लिमिटेड
+              </p>
+              <p className="text-lightGray font-normal text-sm mt-1">
                 गरिबको मित्र गुराँस लघुवीत्त
               </p>
             </div>
@@ -67,7 +62,7 @@ const Rooms: React.FC = () => {
           </div>
         </div>
       </div>
-      {/* Rooms section heading */}
+      {/* Reports section heading */}
       <div className=" py-20 2xl:py-[120px] w-full bg-[url('/images/home-1/section-shape2.png')] bg-no-repeat bg-top bg-opacity-[0.07]">
         <div className="Container ">
           {/* section heading */}
@@ -81,22 +76,19 @@ const Rooms: React.FC = () => {
               <hr className="w-[100px] h-[1px] text-[#dedbd4] dark:text-[#3b3b3b] " />
               <img
                 src="/images/home-1/section-shape1.png"
-                alt="room_section_logo"
+                alt="reports_section_logo"
                 className="w-[50px] h-[50px]"
               />
               <hr className="w-[100px] h-[1px] text-[#dedbd4] dark:text-[#3b3b3b] " />
             </div>
-
             <h1 className="text-[22px] sm:text-2xl md:text-3xl 2xl:text-[38px] leading-7 sm:leading-8 md:leading-9 lg:leading-[42px] 2xl:leading-[52px] text-lightBlack dark:text-white mb-[6]  font-Garamond font-semibold uppercase">
-              OUR PRODUCTS AND SERVICES
+              REPORTS AND DOCUMENTS
             </h1>
             <p className="font-Lora leading-[26px] text-gray dark:text-lightGray font-normal text-sm sm:text-base mt-[15px] lg:mt-0">
-              Proactively morph optimal infomediaries rather than accurate
-              expertise. Intrinsicly progressive resources rather than
-              resource-leveling
+              Access our comprehensive collection of financial reports, regulatory documents, and institutional publications
             </p>
           </div>
-          {/* Rooms Slider Container */}
+          {/* Reports Slider Container */}
 
           <div className="relative">
             <div className="mt-14 2xl:mt-[60px] keen-slider " ref={sliderRef}>
@@ -106,36 +98,30 @@ const Rooms: React.FC = () => {
                   <div className="overflow-x-hidden 3xl:w-[410px] group relative">
                     <div className="relative">
                       <div className="overflow-hidden">
-                        <img
-                          src="/images/home-1/room-1.jpg "
-                          className="w-full h-full object-cover group-hover:scale-110 transition-all duration-300"
-                          alt=""
-                        />
+                        <PDFPreview title="Quarterly Report" description="Financial performance Q1 2024" />
                       </div>
                       <div className="">
-                        <Link to="/services/loan">
+                        <Link to={"/reports/quarterly-report"}>
                           <button className="flex items-center justify-center text-[15px] leading-[38px] bg-lightBlack absolute bottom-0 -left-40 px-5 text-white  group-hover:left-0 transition-all duration-300 hover:bg-khaki">
-                            View Details{" "}
+                            View Report{" "}
                             <BsArrowRight className="w-4 h-4 ml-2  text-white" />{" "}
                           </button>
                         </Link>
                       </div>
                     </div>
                     <div className="font-Garamond">
-                      {/* price badge removed per request */}
-
                       <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242] border-t-0">
                         <div className="py-6 px-[30px]">
                           <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
-                            Loan Services
+                            Financial Report
                           </h4>
-                          <Link to="/services/loan">
+                          <Link to="/reports/quarterly-report">
                             <h2 className="text-2xl lg:text-[28px] leading-[26px] font-semibold text-lightBlack dark:text-white py-4">
-                              Loan Services
+                              Quarterly Report
                             </h2>
                           </Link>
                           <p className="text-sm font-normal text-gray  dark:text-lightGray font-Lora">
-                            Microfinance loans tailored for small enterprises and individuals.
+                            Quarterly financial performance and business highlights for stakeholders.
                           </p>
                         </div>
                       </div>
@@ -149,36 +135,30 @@ const Rooms: React.FC = () => {
                   <div className=" 3xl:w-[410px] group relative">
                     <div className="relative">
                       <div className="overflow-hidden">
-                        <img
-                          src="/images/home-1/room-2.jpg "
-                          className="w-full h-full object-cover group-hover:scale-110 transition-all duration-300"
-                          alt=""
-                        />
+                        <PDFPreview title="Annual Report" description="Comprehensive yearly report" />
                       </div>
                       <div className="">
-                        <Link to="/services/savings">
+                        <Link to={"/reports/annual-report"}>
                           <button className="flex items-center justify-center text-[15px] leading-[38px] bg-lightBlack absolute bottom-0 -left-40 px-5 text-white  group-hover:left-0 transition-all duration-300 hover:bg-khaki">
-                            View Details{" "}
+                            View Report{" "}
                             <BsArrowRight className="w-4 h-4 ml-2  text-white" />{" "}
                           </button>
                         </Link>
                       </div>
                     </div>
                     <div className="font-Garamond">
-                      {/* price badge removed per request */}
-
                       <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242] border-t-0">
                         <div className="py-6 px-[30px]">
                           <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
-                            Saving Accounts
+                            Annual Report
                           </h4>
-                          <Link to="/services/savings">
+                          <Link to="/reports/annual-report">
                             <h2 className="text-2xl lg:text-[28px] leading-[26px] font-semibold text-lightBlack dark:text-white py-4">
-                              Saving Accounts
+                              Annual Report
                             </h2>
                           </Link>
                           <p className="text-sm font-normal text-gray  dark:text-lightGray font-Lora">
-                            Secure savings products with competitive interest rates and easy access.
+                            Comprehensive annual financial report and institutional achievements overview.
                           </p>
                         </div>
                       </div>
@@ -192,36 +172,30 @@ const Rooms: React.FC = () => {
                   <div className=" 3xl:w-[410px] group relative">
                     <div className="relative">
                       <div className="overflow-hidden">
-                        <img
-                          src="/images/home-1/room-3.jpg "
-                          className="w-full h-full object-cover group-hover:scale-110 transition-all duration-300"
-                          alt=""
-                        />
+                        <PDFPreview title="AGM Minutes" description="Meeting documentation" />
                       </div>
                       <div className="">
-                        <Link to="/services/remittance">
+                        <Link to={"/reports/agm-minutes"}>
                           <button className="flex items-center justify-center text-[15px] leading-[38px] bg-lightBlack absolute bottom-0 -left-40 px-5 text-white  group-hover:left-0 transition-all duration-300 hover:bg-khaki">
-                            View Details{" "}
+                            View Document{" "}
                             <BsArrowRight className="w-4 h-4 ml-2  text-white" />{" "}
                           </button>
                         </Link>
                       </div>
                     </div>
                     <div className="font-Garamond">
-                      {/* price badge removed per request */}
-
                       <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242] border-t-0">
                         <div className="py-6 px-[30px]">
                           <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
-                            Remittance
+                            AGM Documents
                           </h4>
-                          <Link to="/services/remittance">
+                          <Link to="/reports/agm-minutes">
                             <h2 className="text-2xl lg:text-[28px] leading-[26px] font-semibold text-lightBlack dark:text-white py-4">
-                              Remittance
+                              AGM Minutes
                             </h2>
                           </Link>
                           <p className="text-sm font-normal text-gray  dark:text-lightGray font-Lora">
-                            Fast and reliable money transfer services locally and internationally.
+                            Annual General Meeting minutes and resolutions for transparency and governance.
                           </p>
                         </div>
                       </div>
@@ -231,7 +205,7 @@ const Rooms: React.FC = () => {
               </div>
             </div>
 
-            {/* slider breckpoints */}
+            {/* slider breakpoints */}
             <div className="mx-auto ">
               {loaded && instanceRef.current && (
                 <div className="dots flex items-center justify-center">
@@ -262,4 +236,4 @@ const Rooms: React.FC = () => {
   );
 };
 
-export default Rooms;
+export default Reports;

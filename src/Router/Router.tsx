@@ -17,17 +17,30 @@ import RemittanceServicesPage from "../Pages/Services/services/RemittanceService
 import MemberWelfareServicesPage from "../Pages/Services/services/MemberWelfare/MemberWelfareServicesPage";
 
 // Inner pages
-import Room from "../Pages/InnerPage/Room";
-import FindRoom from "../Pages/InnerPage/FindRoom";
-import RoomDetails from "../Pages/InnerPage/RoomDetails";
+import ReportsPage from "../Pages/InnerPage/ReportsPage";
 import Services from "../Pages/InnerPage/Services";
 import ServiceDetails from "../Pages/InnerPage/ServiceDetails";
 import Team from "../Pages/InnerPage/Team";
-import Pricing from "../Pages/InnerPage/Pricing";
-import Blog from "../Pages/InnerPage/Blog";
-import BlogDetails from "../Pages/InnerPage/BlogDetails";
 import Contact from "../Pages/InnerPage/Contact";
 import ErrorPage from "../Shared/ErrorPage/ErrorPage";
+
+// Report pages
+import { 
+  QuarterlyReportPage, 
+  AnnualReportPage, 
+  AGMMinutesPage, 
+  BaseRatePage, 
+  StaffTrainingPage, 
+  GovernanceReportPage,
+  NoticePage 
+} from "../Pages/InnerPage/Reports";
+
+// Career pages
+import { 
+  CareerNoticesPage, 
+  ApplyForJobPage, 
+  ApplicationFormPage 
+} from "../Pages/InnerPage/Career";
 
 // Only the primary route is kept (Home1). Extra homepage routes removed.
 const router = createBrowserRouter([
@@ -69,16 +82,48 @@ const router = createBrowserRouter([
         element: <BranchesPage />,
       },
       {
-        path: "/room",
-        element: <Room />,
+        path: "/reports",
+        element: <ReportsPage />,
       },
       {
-        path: "/find_room",
-        element: <FindRoom />,
+        path: "/reports/quarterly-report",
+        element: <QuarterlyReportPage />,
       },
       {
-        path: "/room_details",
-        element: <RoomDetails />,
+        path: "/reports/annual-report",
+        element: <AnnualReportPage />,
+      },
+      {
+        path: "/reports/agm-minutes",
+        element: <AGMMinutesPage />,
+      },
+      {
+        path: "/reports/base-rate",
+        element: <BaseRatePage />,
+      },
+      {
+        path: "/reports/staff-training",
+        element: <StaffTrainingPage />,
+      },
+      {
+        path: "/reports/governance-report",
+        element: <GovernanceReportPage />,
+      },
+      {
+        path: "/reports/notices",
+        element: <NoticePage />,
+      },
+      {
+        path: "/career/notices",
+        element: <CareerNoticesPage />,
+      },
+      {
+        path: "/career/apply",
+        element: <ApplyForJobPage />,
+      },
+      {
+        path: "/career/application-form",
+        element: <ApplicationFormPage />,
       },
       {
         path: "/services",
@@ -107,18 +152,6 @@ const router = createBrowserRouter([
       {
         path: "/our_team",
         element: <Team />,
-      },
-      {
-        path: "/pricing",
-        element: <Pricing />,
-      },
-      {
-        path: "/blog",
-        element: <Blog />,
-      },
-      {
-        path: "/blog_details",
-        element: <BlogDetails />,
       },
       {
         path: "/contact",

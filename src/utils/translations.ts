@@ -14,6 +14,18 @@ export const translations: Translations = {
     en: 'Rooms',
     ne: 'कोठाहरू'
   },
+  'nav.reports': {
+    en: 'Reports',
+    ne: 'प्रतिवेदनहरू'
+  },
+  'nav.notices': {
+    en: 'Notices',
+    ne: 'सूचनाहरू'
+  },
+  'nav.career': {
+    en: 'Career',
+    ne: 'करियर'
+  },
   'nav.page': {
     en: 'Page',
     ne: 'पृष्ठ'
@@ -75,7 +87,35 @@ export const translations: Translations = {
     ne: 'कोठाको विवरण'
   },
   
-  // Page submenu
+  // Reports submenu
+  'submenu.all_reports': {
+    en: 'All Reports',
+    ne: 'सबै प्रतिवेदनहरू'
+  },
+  'submenu.quarterly_report': {
+    en: 'Quarterly Report',
+    ne: 'त्रैमासिक प्रतिवेदन'
+  },
+  'submenu.annual_report': {
+    en: 'Annual Report',
+    ne: 'वार्षिक प्रतिवेदन'
+  },
+  'submenu.agm_minutes': {
+    en: 'AGM Minutes',
+    ne: 'साधारण सभाको मिनेट'
+  },
+  'submenu.base_rate': {
+    en: 'Base Rate',
+    ne: 'आधार दर'
+  },
+  'submenu.staff_training': {
+    en: 'Staff Training',
+    ne: 'कर्मचारी तालिम'
+  },
+  'submenu.governance_report': {
+    en: 'Governance Report',
+    ne: 'शासन प्रतिवेदन'
+  },
   'submenu.about_us': {
     en: 'About Us',
     ne: 'हाम्रो बारेमा'
@@ -119,6 +159,18 @@ export const translations: Translations = {
   'submenu.member_welfare': {
     en: 'Member Welfare',
     ne: 'सदस्य कल्याण'
+  },
+  'submenu.career_notices': {
+    en: 'Career Notices',
+    ne: 'करियर सूचनाहरू'
+  },
+  'submenu.apply_for_job': {
+    en: 'Apply for Job',
+    ne: 'जागिरको लागि आवेदन'
+  },
+  'submenu.application_form': {
+    en: 'Application Form',
+    ne: 'आवेदन फारम'
   },
   'submenu.services': {
     en: 'Services',

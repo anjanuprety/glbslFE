@@ -229,29 +229,57 @@ const Navbar: React.FC = () => {
               to="#"
             >
               <span className="flex items-center">
-                {t('nav.rooms')}
+                {t('nav.reports')}
                 <BiChevronDown className="ml-1" />
               </span>
               <div className="absolute pt-5 lg:pt-8 z-20">
                 <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
-                      <NavLink to="/room" className="block py-2">
-                        {t('submenu.room')}
+                      <NavLink to="/reports" className="block py-2">
+                        {t('submenu.all_reports')}
                       </NavLink>
                     </li>
                   </div>
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
-                      <NavLink to="/find_room" className="block py-2">
-                        {t('submenu.find_room')}
+                      <NavLink to="/reports/quarterly-report" className="block py-2">
+                        {t('submenu.quarterly_report')}
                       </NavLink>
                     </li>
                   </div>
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
-                      <NavLink to="/room_details" className="block py-2">
-                        {t('submenu.room_details')}
+                      <NavLink to="/reports/annual-report" className="block py-2">
+                        {t('submenu.annual_report')}
+                      </NavLink>
+                    </li>
+                  </div>
+                  <div className=" px-5 group hover:bg-khaki hover:text-white">
+                    <li className="hover:ml-3 duration-300  ">
+                      <NavLink to="/reports/agm-minutes" className="block py-2">
+                        {t('submenu.agm_minutes')}
+                      </NavLink>
+                    </li>
+                  </div>
+                  <div className=" px-5 group hover:bg-khaki hover:text-white">
+                    <li className="hover:ml-3 duration-300  ">
+                      <NavLink to="/reports/base-rate" className="block py-2">
+                        {t('submenu.base_rate')}
+                      </NavLink>
+                    </li>
+                  </div>
+                  <div className=" px-5 group hover:bg-khaki hover:text-white">
+                    <li className="hover:ml-3 duration-300  ">
+                      <NavLink to="/reports/staff-training" className="block py-2">
+                        {t('submenu.staff_training')}
+                      </NavLink>
+                    </li>
+                  </div>
+                  <div className=" px-5 group hover:bg-khaki hover:text-white">
+                    <li className="hover:ml-3 duration-300  ">
+                      <NavLink to="/reports/governance-report" className="block py-2">
+                        {t('submenu.governance_report')}
                       </NavLink>
                     </li>
                   </div>
@@ -264,54 +292,11 @@ const Navbar: React.FC = () => {
                   ? "pending"
                   : isActive
                   ? "active"
-                  : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300 group relative `}
-              to="#"
+                  : ""} text-lightBlack lg:text-white dark:text-white  lg:border-b-0 px-3 py-2 w-full block transition-all duration-300`}
+              to="/reports/notices"
             >
-              <span className="flex items-center">
-                {t('nav.page')}
-                <BiChevronDown className="ml-1" />
-              </span>
-              <div className="absolute pt-5 lg:pt-8 z-20">
-                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
-                  <div className=" px-5 group hover:bg-khaki hover:text-white">
-                    <li className="hover:ml-3 duration-300  ">
-                      <NavLink to="/about" className="py-2 block">
-                        {t('submenu.about_us')}
-                      </NavLink>
-                    </li>
-                  </div>
-                  <div className=" px-5 group hover:bg-khaki hover:text-white">
-                    <li className="hover:ml-3 duration-300  ">
-                      <NavLink to="/services" className="py-2 block">
-                        {t('submenu.services')}
-                      </NavLink>
-                    </li>
-                  </div>
-                  <div className=" px-5 group hover:bg-khaki hover:text-white">
-                    <li className="hover:ml-3 duration-300  ">
-                      <NavLink to="/service_details" className="py-2 block">
-                        {t('submenu.service_details')}
-                      </NavLink>
-                    </li>
-                  </div>
-                  <div className=" px-5 group hover:bg-khaki hover:text-white">
-                    <li className="hover:ml-3 duration-300  ">
-                      <NavLink to="/our_team" className="py-2 block">
-                        {t('submenu.team')}
-                      </NavLink>
-                    </li>
-                  </div>
-                  <div className=" px-5 group hover:bg-khaki hover:text-white">
-                    <li className="hover:ml-3 duration-300  ">
-                      <NavLink to="/pricing" className="py-2 block">
-                        {t('submenu.pricing')}
-                      </NavLink>
-                    </li>
-                  </div>
-                </ul>
-              </div>
+              {t('nav.notices')}
             </NavLink>
-            {/* blog sub menu link */}
             <NavLink
               className={`${({ isActive, isPending }: { isActive: boolean; isPending: boolean }) =>
                 isPending
@@ -322,22 +307,29 @@ const Navbar: React.FC = () => {
               to="#"
             >
               <span className="flex items-center">
-                {t('nav.blog')}
+                {t('nav.career')}
                 <BiChevronDown className="ml-1" />
               </span>
-              <div className="absolute pt-4 lg:pt-8 z-20">
-                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-60 text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm  py-4">
+              <div className="absolute pt-5 lg:pt-8 z-20">
+                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
-                    <li className="hover:ml-3 duration-300 ">
-                      <NavLink to="/blog" className="py-2 block">
-                        {t('submenu.blog_list')}
+                    <li className="hover:ml-3 duration-300  ">
+                      <NavLink to="/career/notices" className="block py-2">
+                        {t('submenu.career_notices')}
                       </NavLink>
                     </li>
                   </div>
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
-                    <li className="hover:ml-3 duration-300 ">
-                      <NavLink to="/blog_details" className="py-2 block">
-                        {t('submenu.blog_details')}
+                    <li className="hover:ml-3 duration-300  ">
+                      <NavLink to="/career/apply" className="block py-2">
+                        {t('submenu.apply_for_job')}
+                      </NavLink>
+                    </li>
+                  </div>
+                  <div className=" px-5 group hover:bg-khaki hover:text-white">
+                    <li className="hover:ml-3 duration-300  ">
+                      <NavLink to="/career/application-form" className="block py-2">
+                        {t('submenu.application_form')}
                       </NavLink>
                     </li>
                   </div>
