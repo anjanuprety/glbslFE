@@ -42,6 +42,19 @@ import {
   ApplicationFormPage 
 } from "../Pages/InnerPage/Career";
 
+// Online pages
+import { 
+  EMICalculatorPage, 
+  InterestCalculatorPage, 
+  ApplyForLoanPage as OnlineApplyForLoanPage 
+} from "../Pages/InnerPage/Online";
+
+// Gunaso pages
+import { 
+  RegisterComplaintPage, 
+  RegisterComplaintNRBPage 
+} from "../Pages/InnerPage/Gunaso";
+
 // Only the primary route is kept (Home1). Extra homepage routes removed.
 const router = createBrowserRouter([
   {
@@ -156,6 +169,26 @@ const router = createBrowserRouter([
       {
         path: "/contact",
         element: <Contact />,
+      },
+      {
+        path: "/online/emi-calculator",
+        element: <EMICalculatorPage />,
+      },
+      {
+        path: "/online/interest-calculator",
+        element: <InterestCalculatorPage />,
+      },
+      {
+        path: "/online/apply-for-loan",
+        element: <OnlineApplyForLoanPage />,
+      },
+      {
+        path: "/gunaso/register-complaint",
+        element: <RegisterComplaintPage />,
+      },
+      {
+        path: "/gunaso/register-complaint-nrb",
+        element: <RegisterComplaintNRBPage />,
       },
     ],
   },
