@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = (import.meta as any).env.VITE_STRAPI_API_URL || 'http://localhost:1337';
+const API_URL = (import.meta as any).env.VITE_STRAPI_API_URL || 'https://gurans-cms-dlm49.ondigitalocean.app';
 console.log('🔍 API_URL being used:', API_URL);
 
 const api = axios.create({
