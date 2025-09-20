@@ -1,90 +1,160 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import BreadCrumb from "../../../BreadCrumb/BreadCrumb";
 import { BsDownload, BsEye, BsShare } from "react-icons/bs";
 import { HiArrowLongLeft } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import PDFPreview from "../../../Components/Reports/PDFPreview";
+import { reportsService, googleDriveHelpers } from "../../../services/strapi";
+
+// TypeScript interface for Report from Strapi
+// TypeScript interface for Report from Strapi v5 API
+interface StrapiReport {
+  id: number;
+  documentId: string;
+  title: string;
+  slug: string;
+  description?: string;
+  reportType?: string;
+  publishDate?: string;
+  fiscalYear?: string;
+  quarter?: string;
+  file_Id: string;
+  fileName: string;
+  featured?: boolean;
+  isActive?: boolean;
+  order?: number;
+  tags?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  locale: string;
+}
 
 const QuarterlyReportPage: React.FC = () => {
-  // Sample quarterly reports data - in real implementation, this would come from Strapi CMS
-  const quarterlyReports = [
-    {
-      id: 1,
-      title: "Q4 2024 Quarterly Report",
-      description: "Fourth Quarter Financial Performance Report",
-      publishDate: "January 2025",
-      fileSize: "2.3 MB",
-      pdfUrl: "/reports/q4-2024.pdf" // This would be the actual file URL from Strapi/Google Drive
-    },
-    {
-      id: 2,
-      title: "Q3 2024 Quarterly Report", 
-      description: "Third Quarter Financial Performance Report",
-      publishDate: "October 2024",
-      fileSize: "2.1 MB",
-      pdfUrl: "/reports/q3-2024.pdf"
-    },
-    {
-      id: 3,
-      title: "Q2 2024 Quarterly Report",
-      description: "Second Quarter Financial Performance Report", 
-      publishDate: "July 2024",
-      fileSize: "2.5 MB",
-      pdfUrl: "/reports/q2-2024.pdf"
-    },
-    {
-      id: 4,
-      title: "Q1 2024 Quarterly Report",
-      description: "First Quarter Financial Performance Report",
-      publishDate: "April 2024", 
-      fileSize: "2.2 MB",
-      pdfUrl: "/reports/q1-2024.pdf"
-    },
-    {
-      id: 5,
-      title: "Q4 2023 Quarterly Report",
-      description: "Fourth Quarter Financial Performance Report",
-      publishDate: "January 2024",
-      fileSize: "2.4 MB", 
-      pdfUrl: "/reports/q4-2023.pdf"
-    },
-    {
-      id: 6,
-      title: "Q3 2023 Quarterly Report",
-      description: "Third Quarter Financial Performance Report",
-      publishDate: "October 2023",
-      fileSize: "2.0 MB",
-      pdfUrl: "/reports/q3-2023.pdf"
+  const [reports, setReports] = useState<StrapiReport[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchQuarterlyReports = async () => {
+      try {
+        setLoading(true);
+        const response = await reportsService.getAllReports();
+        setReports(response.data || []);
+      } catch (err) {
+        setError('Failed to load quarterly reports');
+        console.error('Error fetching quarterly reports:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuarterlyReports();
+  }, []);
+
+  const handleDownload = async (report: StrapiReport) => {
+    try {
+      // Generate download URL for Google Drive file
+      const downloadUrl = googleDriveHelpers.getDownloadUrl(report.file_Id);
+      
+      // Open download in new tab
+      window.open(downloadUrl, '_blank');
+      
+      alert(`Downloading ${report.fileName}`);
+    } catch (error) {
+      console.error('Download failed:', error);
+      alert('Download failed. Please try again.');
     }
-  ];
-
-  const handleDownload = (report: typeof quarterlyReports[0]) => {
-    // Demo implementation - in real app, this would download from Strapi/Google Drive
-    alert(`Demo: Downloading ${report.title}`);
   };
 
-  const handleView = (report: typeof quarterlyReports[0]) => {
-    // Demo implementation - in real app, this would open PDF in new tab
-    alert(`Demo: Opening ${report.title} for viewing`);
+  const handleView = (report: StrapiReport) => {
+    // Open file in new tab using Google Drive view URL
+    const viewUrl = googleDriveHelpers.getViewUrl(report.file_Id);
+    window.open(viewUrl, '_blank');
   };
 
-  const handleShare = async (report: typeof quarterlyReports[0]) => {
-    // Demo implementation for sharing specific report
+  const handleShare = async (report: StrapiReport) => {
+    const shareUrl = `${window.location.origin}/reports/quarterly/${report.slug}`;
+    
     if (navigator.share) {
       try {
         await navigator.share({
           title: `${report.title} - GLBSL`,
           text: `Check out our ${report.title}`,
-          url: `${window.location.origin}/reports/quarterly/${report.id}`,
+          url: shareUrl,
         });
       } catch (error) {
         console.log('Error sharing:', error);
-        alert(`Demo: ${report.title} link copied to clipboard!`);
+        // Fallback to clipboard
+        await navigator.clipboard.writeText(shareUrl);
+        alert('Report link copied to clipboard!');
       }
     } else {
-      alert(`Demo: ${report.title} link copied to clipboard!`);
+      // Fallback for browsers without Web Share API
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        alert('Report link copied to clipboard!');
+      } catch (error) {
+        console.error('Failed to copy to clipboard:', error);
+        alert(`Share this link: ${shareUrl}`);
+      }
     }
   };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long'
+    });
+  };
+
+  const getQuarterDisplay = (report: StrapiReport) => {
+    const { quarter, fiscalYear, publishDate } = report;
+    if (quarter && fiscalYear) {
+      return `${quarter} ${fiscalYear}`;
+    }
+    return formatDate(publishDate || '');
+  };
+
+  if (loading) {
+    return (
+      <section className="">
+        <BreadCrumb title="QUARTERLY REPORTS" home={"/"} />
+        <div className="bg-whiteSmoke dark:bg-lightBlack py-20 2xl:py-[120px]">
+          <div className="Container">
+            <div className="flex justify-center items-center min-h-[300px]">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-khaki"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="">
+        <BreadCrumb title="QUARTERLY REPORTS" home={"/"} />
+        <div className="bg-whiteSmoke dark:bg-lightBlack py-20 2xl:py-[120px]">
+          <div className="Container">
+            <div className="flex justify-center items-center min-h-[300px]">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 max-w-md">
+                <p className="text-red-800">{error}</p>
+                <button 
+                  onClick={() => window.location.reload()} 
+                  className="mt-2 text-sm text-red-600 hover:text-red-800 underline"
+                >
+                  Try again
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="">
@@ -118,83 +188,108 @@ const QuarterlyReportPage: React.FC = () => {
           </div>
 
           {/* Reports Grid */}
-          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 pt-16 2xl:pt-20">
-            {quarterlyReports.map((report, index) => (
-              <div
-                key={report.id}
-                className="overflow-x-hidden 3xl:w-[410px] group"
-                data-aos="fade-up"
-                data-aos-duration={800 + (index * 200)}
-              >
-                <div className="relative">
-                  <div className="overflow-hidden">
-                    <PDFPreview title={report.title} description={report.description} />
-                  </div>
+          {reports.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-gray-500 dark:text-gray-400">No quarterly reports available at the moment.</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 pt-16 2xl:pt-20">
+              {reports.map((report: StrapiReport, index: number) => (
+                <div
+                  key={report.id}
+                  className="overflow-x-hidden 3xl:w-[410px] group"
+                  data-aos="fade-up"
+                  data-aos-duration={800 + (index * 200)}
+                >
+                  <div className="relative">
+                    <div className="overflow-hidden">
+                      <PDFPreview 
+                        title={report.title} 
+                        description={report.description || "Click to view report"}
+                        fileId={report.file_Id}
+                        showThumbnail={true}
+                      />
+                    </div>
 
-                  <div className="flex space-x-2 absolute bottom-2 -left-52 group-hover:left-2 transition-all duration-300">
-                    <button
-                      onClick={() => handleView(report)}
-                      className="flex items-center justify-center text-[13px] leading-[32px] bg-khaki px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
-                      title="View PDF"
-                    >
-                      <BsEye className="w-3 h-3 mr-1" />
-                      View
-                    </button>
-                    <button
-                      onClick={() => handleDownload(report)}
-                      className="flex items-center justify-center text-[13px] leading-[32px] bg-green-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
-                      title="Download PDF"
-                    >
-                      <BsDownload className="w-3 h-3 mr-1" />
-                      Download
-                    </button>
-                    <button
-                      onClick={() => handleShare(report)}
-                      className="flex items-center justify-center text-[13px] leading-[32px] bg-blue-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
-                      title="Share Report"
-                    >
-                      <BsShare className="w-3 h-3" />
-                    </button>
+                    <div className="flex space-x-2 absolute bottom-2 -left-52 group-hover:left-2 transition-all duration-300">
+                      <button
+                        onClick={() => handleView(report)}
+                        className="flex items-center justify-center text-[13px] leading-[32px] bg-khaki px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
+                        title="View PDF"
+                      >
+                        <BsEye className="w-3 h-3 mr-1" />
+                        View
+                      </button>
+                      <button
+                        onClick={() => handleDownload(report)}
+                        className="flex items-center justify-center text-[13px] leading-[32px] bg-green-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
+                        title="Download PDF"
+                      >
+                        <BsDownload className="w-3 h-3 mr-1" />
+                        Download
+                      </button>
+                      <button
+                        onClick={() => handleShare(report)}
+                        className="flex items-center justify-center text-[13px] leading-[32px] bg-blue-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
+                        title="Share Report"
+                      >
+                        <BsShare className="w-3 h-3" />
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <div className="font-Garamond">
-                  <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242]  border-t-0">
-                    <div className="py-6 px-[30px]">
-                      <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
-                        {report.publishDate}
-                      </h4>
-                      <h2 className="text-lg lg:text-[20px] xl:text-[22px] leading-[24px] font-semibold text-lightBlack dark:text-white py-3">
-                        {report.title}
-                      </h2>
-                      <p className="text-sm font-normal text-gray dark:text-lightGray font-Lora mb-3">
-                        {report.description}
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
-                          File Size: {report.fileSize}
-                        </span>
-                        <div className="flex space-x-2">
-                          <button
-                            onClick={() => handleView(report)}
-                            className="text-xs text-khaki hover:text-opacity-80 transition-colors duration-300"
-                          >
-                            Quick View
-                          </button>
-                          <span className="text-xs text-gray-300">|</span>
-                          <button
-                            onClick={() => handleDownload(report)}
-                            className="text-xs text-green-600 hover:text-opacity-80 transition-colors duration-300"
-                          >
-                            Download
-                          </button>
+                  <div className="font-Garamond">
+                    <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242]  border-t-0">
+                      <div className="py-6 px-[30px]">
+                        {report.featured && (
+                          <div className="mb-2">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-khaki text-white">
+                              Featured
+                            </span>
+                          </div>
+                        )}
+                        <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
+                          {getQuarterDisplay(report)}
+                        </h4>
+                        <h2 className="text-lg lg:text-[20px] xl:text-[22px] leading-[24px] font-semibold text-lightBlack dark:text-white py-3">
+                          {report.title}
+                        </h2>
+                        <p className="text-sm font-normal text-gray dark:text-lightGray font-Lora mb-3">
+                          {report.description || "No description available"}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                            File: {report.fileName}
+                          </span>
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() => handleView(report)}
+                              className="text-xs text-khaki hover:text-opacity-80 transition-colors duration-300"
+                            >
+                              Quick View
+                            </button>
+                            <span className="text-xs text-gray-300">|</span>
+                            <button
+                              onClick={() => handleDownload(report)}
+                              className="text-xs text-green-600 hover:text-opacity-80 transition-colors duration-300"
+                            >
+                              Download
+                            </button>
+                          </div>
                         </div>
+                        {report.reportType && (
+                          <div className="mt-2">
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                              {report.reportType}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Back to Reports Navigation */}
           <div className="flex justify-center mt-16">

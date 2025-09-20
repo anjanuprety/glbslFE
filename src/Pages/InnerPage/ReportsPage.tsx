@@ -304,6 +304,91 @@ const ReportsPage: React.FC = () => {
             </div>
 
           </div>
+
+          {/* Notices Section */}
+          <div className="mt-20 2xl:mt-[120px]">
+            {/* section heading */}
+            <div
+              className="flex justify-center"
+              data-aos="fade-up"
+              data-aos-duration="1000"
+            >
+              <div className="text-center">
+                <h2 className="text-xl sm:text-2xl md:text-3xl 2xl:text-[38px] leading-7 sm:leading-8 md:leading-9 lg:leading-[42px] 2xl:leading-[52px] text-lightBlack dark:text-white font-Garamond font-semibold capitalize">
+                  Official Notices & Announcements
+                </h2>
+                <div className="flex items-center justify-center text-center mx-auto mt-2 lg:mt-[6px]">
+                  <div className="w-[100px] h-[1px] bg-[#ccc] dark:bg-[#3b3b3b] mr-5 "></div>
+                  <img
+                    src="/images/home-1/section-shape1.png"
+                    className="w-[30px] h-[30px]"
+                    alt=""
+                  />
+                  <div className="w-[100px] h-[1px] bg-[#ccc] dark:bg-[#3b3b3b] ml-5"></div>
+                </div>
+                <p className="text-center text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray font-Lora font-normal mt-[10px]">
+                  Stay updated with our latest official notices and important announcements
+                </p>
+              </div>
+            </div>
+
+            {/* Notices Quick Access */}
+            <div className="grid md:grid-cols-1 xl:grid-cols-1 gap-8 pt-16 2xl:pt-20 max-w-2xl mx-auto">
+              <div
+                className="overflow-x-hidden group"
+                data-aos="fade-up"
+                data-aos-duration="800"
+              >
+                <div className="relative">
+                  <div className="overflow-hidden">
+                    <div className="w-full h-[200px] bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 border border-blue-200 dark:border-blue-700 flex items-center justify-center group-hover:scale-105 transition-all duration-300">
+                      <div className="text-center p-6">
+                        <svg className="w-16 h-16 text-blue-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-5 5v-5zM4 4h7v7H4zM20 4h-7a2 2 0 00-2 2v7a2 2 0 002 2h7a2 2 0 002-2V6a2 2 0 00-2-2zM4 15h7v5H4z" />
+                        </svg>
+                        <p className="text-blue-700 dark:text-blue-300 text-lg font-medium">Official Notices</p>
+                        <p className="text-blue-600 dark:text-blue-400 text-sm mt-1">View all announcements</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Link to={"/reports/notices"}>
+                    <button className="flex items-center justify-center text-[15px] leading-[38px] bg-blue-600  absolute bottom-0 -left-40 px-6 py-1 text-white  group-hover:left-0 transition-all duration-300">
+                      View All Notices{" "}
+                      <BsArrowRight className="w-4 h-4 ml-2  text-white" />{" "}
+                    </button>
+                  </Link>
+                </div>
+                <div className="font-Garamond">
+                  <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242]  border-t-0">
+                    <div className="py-6 px-[30px]">
+                      <h4 className="text-sm leading-[26px] text-blue-600 uppercase font-semibold">
+                        Announcements
+                      </h4>
+                      <Link
+                        to="/reports/notices"
+                      >
+                        <h2 className="text-2xl lg:text-[24px] xl:text-[28px] leading-[26px] font-semibold text-lightBlack dark:text-white py-4">
+                          Official Notices
+                        </h2>
+                      </Link>
+                      <p className="text-sm font-normal text-gray  dark:text-lightGray font-Lora mb-4">
+                        Access all official notices, announcements, and important updates from GLBSL management.
+                      </p>
+                      <div className="flex items-center justify-center">
+                        <Link to="/reports/notices">
+                          <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded transition-colors duration-300 flex items-center">
+                            Browse All Notices
+                            <HiArrowLongRight className="w-4 h-4 ml-2" />
+                          </button>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

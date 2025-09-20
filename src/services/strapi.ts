@@ -113,4 +113,106 @@ export const servicesService = {
   },
 };
 
+export const reportsService = {
+  // Get all active reports with proper population
+  getAllReports: async () => {
+    const locale = getLocale();
+    const res = await api.get(`/api/reports?locale=${locale}&filters[isActive][$eq]=true&populate=category&sort=featured:desc,publishDate:desc`);
+    return res.data || { data: [] };
+  },
+
+  // Get reports by category
+  getReportsByCategory: async (categorySlug: string) => {
+    const locale = getLocale();
+    const res = await api.get(`/api/reports?locale=${locale}&filters[category][slug][$eq]=${categorySlug}&filters[isActive][$eq]=true&populate=category&sort=publishDate:desc`);
+    return res.data || { data: [] };
+  },
+
+  // Get featured reports
+  getFeaturedReports: async () => {
+    const locale = getLocale();
+    const res = await api.get(`/api/reports?locale=${locale}&filters[featured][$eq]=true&filters[isActive][$eq]=true&populate=category&sort=publishDate:desc`);
+    return res.data || { data: [] };
+  },
+
+  // Get single report
+  getReport: async (slug: string) => {
+    const locale = getLocale();
+    const res = await api.get(`/api/reports?locale=${locale}&filters[slug][$eq]=${slug}&populate=category`);
+    return res.data?.data?.[0] || null;
+  }
+};
+
+export const noticesService = {
+  // Get all active notices with proper population
+  getNotices: async () => {
+    const locale = getLocale();
+    const res = await api.get(`/api/notices?locale=${locale}&filters[isActive][$eq]=true&sort=publishDate:desc&populate=noticeImage`);
+    return res.data || { data: [] };
+  },
+
+  // Get notices by type
+  getNoticesByType: async (noticeType: string) => {
+    const locale = getLocale();
+    const res = await api.get(`/api/notices?locale=${locale}&filters[noticeType][$eq]=${noticeType}&filters[isActive][$eq]=true&sort=publishDate:desc&populate=noticeImage`);
+    return res.data || { data: [] };
+  },
+
+  // Get urgent notices
+  getUrgentNotices: async () => {
+    const locale = getLocale();
+    const res = await api.get(`/api/notices?locale=${locale}&filters[featured][$eq]=true&filters[isActive][$eq]=true&sort=publishDate:desc&populate=noticeImage`);
+    return res.data || { data: [] };
+  },
+
+  // Get single notice
+  getNotice: async (slug: string) => {
+    const locale = getLocale();
+    const res = await api.get(`/api/notices?locale=${locale}&filters[slug][$eq]=${slug}&populate=noticeImage`);
+    return res.data?.data?.[0] || null;
+  }
+};
+
+// Helper functions for Google Drive integration
+export const googleDriveHelpers = {
+  // Generate view URL for embedding
+  getViewUrl: (fileId: string) => {
+    return `https://drive.google.com/file/d/${fileId}/preview`;
+  },
+
+  // Generate download URL
+  getDownloadUrl: (fileId: string) => {
+    return `https://drive.google.com/uc?export=download&id=${fileId}`;
+  },
+
+  // Generate thumbnail URL
+  getThumbnailUrl: (fileId: string, size: string = 'w400') => {
+    return `https://drive.google.com/thumbnail?id=${fileId}&sz=${size}`;
+  },
+
+  // Open file in new tab
+  openInNewTab: (fileId: string) => {
+    const url = `https://drive.google.com/file/d/${fileId}/view`;
+    window.open(url, '_blank');
+  },
+
+  // Download file directly
+  downloadFile: async (fileId: string, fileName: string, trackingCallback?: () => void) => {
+    const downloadUrl = googleDriveHelpers.getDownloadUrl(fileId);
+    
+    // Track download if callback provided
+    if (trackingCallback) {
+      trackingCallback();
+    }
+
+    // Create temporary link for download
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+};
+
 export default api;
