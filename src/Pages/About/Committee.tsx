@@ -18,7 +18,7 @@ const Committee: React.FC = () => {
         const data = await aboutService.getCommittees();
         setCommittees(data);
       } catch (err) {
-        console.error(err);
+        console.error('Committee fetch error:', err);
         setError("Failed to load committees");
       } finally {
         setLoading(false);
@@ -67,28 +67,33 @@ const Committee: React.FC = () => {
                   </p>
                 )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-[30px]">
-                  {committee.members && committee.members.length > 0 ? committee.members
-                    .sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
-                    .map((member: any) => {
-                      const person = member.person;
-                      return (
-                        <div key={`${committee.id}-${person.id}`}>
-                          <PersonTile
-                            id={person.id}
-                            name={person.name}
-                            position={member.committeePosition} // Use committee-specific position
-                            email={person.email || ""}
-                            phone={person.phone || ""}
-                            image={getStrapiMediaUrl(person.image?.url)}
-                          />
-                          {member.roleDescription && (
-                            <p className="text-sm text-lightGray mt-2 text-center px-4">
-                              {member.roleDescription}
-                            </p>
-                          )}
-                        </div>
-                      );
-                    }) : <p className="text-center text-lightGray col-span-full">No members assigned to this committee yet.</p>}
+                  {committee.members && committee.members.length > 0 ? (
+                    committee.members.filter((member: any) => member.person !== null).length > 0 ? 
+                      committee.members
+                        .filter((member: any) => member.person !== null) // Filter out members with null person
+                        .sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
+                        .map((member: any) => {
+                          const person = member.person;
+                          return (
+                            <div key={`${committee.id}-${person.id}`}>
+                              <PersonTile
+                                id={person.id}
+                                name={person.name}
+                                position={member.committeePosition} // Use committee-specific position
+                                email={person.email || ""}
+                                phone={person.phone || ""}
+                                image={getStrapiMediaUrl(person.image?.url)}
+                              />
+                              {member.roleDescription && (
+                                <p className="text-sm text-lightGray mt-2 text-center px-4">
+                                  {member.roleDescription}
+                                </p>
+                              )}
+                            </div>
+                          );
+                        })
+                      : <p className="text-center text-lightGray col-span-full">Committee member details are being updated. Please check back soon.</p>
+                  ) : <p className="text-center text-lightGray col-span-full">No members assigned to this committee yet.</p>}
                 </div>
               </div>
             ))}
