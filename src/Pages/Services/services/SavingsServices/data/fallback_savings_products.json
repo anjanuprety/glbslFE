@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "documentId": "fallback-jeevan-bachat",
+    "name": "Jeevan Bachat / जीवन बचत",
+    "interestRate": "10% / १०%",
+    "order": 1,
+    "locale": "fallback"
+  },
+  {
+    "id": 2,
+    "documentId": "fallback-bachat-khata",
+    "name": "General Savings / सामान्य बचत खाता",
+    "interestRate": "8% / ८%",
+    "order": 2,
+    "locale": "fallback"
+  },
+  {
+    "id": 3,
+    "documentId": "fallback-fixed-deposit",
+    "name": "Fixed Deposit / स्थायी निक्षेप",
+    "interestRate": "12% / १२%",
+    "order": 3,
+    "locale": "fallback"
+  }
+]

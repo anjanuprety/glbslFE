@@ -27,11 +27,41 @@ const MemberWelfareServicesPage: React.FC = () => {
       try {
         setLoading(true);
         const data = await servicesService.getMemberWelfareService();
-        // data.welfareServices is expected to be an array of components
-        setItems((data?.welfareServices || []).map((w: any, idx: number) => ({ id: idx, attributes: { title: w.title, description: w.description, order: w.order } })));
+        if (data && data.welfareServices) {
+          // data.welfareServices is expected to be an array of components
+          setItems((data?.welfareServices || []).map((w: any, idx: number) => ({ id: idx, attributes: { title: w.title, description: w.description, order: w.order } })));
+        } else {
+          // Fallback to static data if no data is available
+          const fallbackData = await import('./data/fallback_member_welfare_service.json');
+          const welfareServices = fallbackData.default.welfareServices || [];
+          setItems(welfareServices.map((w: any, idx: number) => ({ 
+            id: idx, 
+            attributes: { 
+              title: w.title, 
+              description: w.description, 
+              order: w.order 
+            } 
+          })));
+          console.warn('Using fallback member welfare service data due to empty API response');
+        }
       } catch (err) {
-        console.error(err);
-        setError('Failed to load welfare services');
+        console.error('API Error:', err);
+        // Fallback to static data if API fails
+        try {
+          const fallbackData = await import('./data/fallback_member_welfare_service.json');
+          const welfareServices = fallbackData.default.welfareServices || [];
+          setItems(welfareServices.map((w: any, idx: number) => ({ 
+            id: idx, 
+            attributes: { 
+              title: w.title, 
+              description: w.description, 
+              order: w.order 
+            } 
+          })));
+          setError('Using offline data - some information may be outdated');
+        } catch (fallbackErr) {
+          setError('Failed to load welfare services');
+        }
       } finally {
         setLoading(false);
       }

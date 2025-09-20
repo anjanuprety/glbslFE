@@ -28,10 +28,24 @@ const SavingsServicesPage: React.FC = () => {
       try {
         setLoading(true);
         const data = await servicesService.getSavingsProducts();
-        setItems(data);
+        if (data && data.length > 0) {
+          setItems(data);
+        } else {
+          // Fallback to static data if no data is available
+          const fallbackData = await import('./data/fallback_savings_products.json');
+          setItems(fallbackData.default);
+          console.warn('Using fallback savings products data due to empty API response');
+        }
       } catch (err) {
-        console.error(err);
-        setError('Failed to load savings products');
+        console.error('API Error:', err);
+        // Fallback to static data if API fails
+        try {
+          const fallbackData = await import('./data/fallback_savings_products.json');
+          setItems(fallbackData.default);
+          setError('Using offline data - some information may be outdated');
+        } catch (fallbackErr) {
+          setError('Failed to load savings products');
+        }
       } finally {
         setLoading(false);
       }

@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "documentId": "fallback-emergency-loan",
+    "name": "Emergency Loan / आकस्मिक ऋण",
+    "volume": "Rs. 15,000 / रु. १५,०००",
+    "rate": "15% / १५%",
+    "serviceCharge": "1.3% / १.३%",
+    "term": "Up to 1 year / १ वर्ष सम्म",
+    "order": 1,
+    "locale": "fallback"
+  },
+  {
+    "id": 2, 
+    "documentId": "fallback-agriculture-loan",
+    "name": "Agriculture Loan / कृषि ऋण",
+    "volume": "Rs. 2,00,000 / रु. २,००,०००",
+    "rate": "12% / १२%",
+    "serviceCharge": "1.0% / १.०%",
+    "term": "Up to 3 years / ३ वर्ष सम्म",
+    "order": 2,
+    "locale": "fallback"
+  },
+  {
+    "id": 3,
+    "documentId": "fallback-business-loan", 
+    "name": "Business Loan / व्यापारिक ऋण",
+    "volume": "Rs. 5,00,000 / रु. ५,००,०००", 
+    "rate": "14% / १४%",
+    "serviceCharge": "1.5% / १.५%",
+    "term": "Up to 5 years / ५ वर्ष सम्म",
+    "order": 3,
+    "locale": "fallback"
+  }
+]

@@ -18,10 +18,24 @@ const RemittanceServicesPage: React.FC = () => {
       try {
         setLoading(true);
         const data = await servicesService.getRemittanceService();
-        setContent(data);
+        if (data) {
+          setContent(data);
+        } else {
+          // Fallback to static data if no data is available
+          const fallbackData = await import('./data/fallback_remittance_service.json');
+          setContent(fallbackData.default);
+          console.warn('Using fallback remittance service data due to empty API response');
+        }
       } catch (err) {
-        console.error(err);
-        setError('Failed to load remittance content');
+        console.error('API Error:', err);
+        // Fallback to static data if API fails
+        try {
+          const fallbackData = await import('./data/fallback_remittance_service.json');
+          setContent(fallbackData.default);
+          setError('Using offline data - some information may be outdated');
+        } catch (fallbackErr) {
+          setError('Failed to load remittance service information');
+        }
       } finally {
         setLoading(false);
       }

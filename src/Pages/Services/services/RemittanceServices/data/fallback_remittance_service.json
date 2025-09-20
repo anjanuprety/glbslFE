@@ -1,0 +1,16 @@
+{
+  "title": "Remittance Services / रेमिट्यान्स सेवाहरू",
+  "description": "We provide reliable money transfer services to various countries worldwide. / हामी विश्वभरका विभिन्न देशहरूमा भरपर्दो रेमिट्यान्स सेवा प्रदान गर्छौं।",
+  "services": [
+    {
+      "name": "IME Money Transfer / आईएमई मनी ट्रान्सफर", 
+      "description": "Fast and secure money transfer through IME network / आईएमई नेटवर्कको माध्यमबाट छिटो र सुरक्षित रकम पठाउने सेवा",
+      "countries": ["Malaysia", "UAE", "Saudi Arabia", "Qatar"]
+    },
+    {
+      "name": "Western Union / वेस्टर्न युनियन",
+      "description": "International money transfer service / अन्तर्राष्ट्रिय रेमिट्यान्स सेवा", 
+      "countries": ["USA", "UK", "Australia", "Japan"]
+    }
+  ]
+}

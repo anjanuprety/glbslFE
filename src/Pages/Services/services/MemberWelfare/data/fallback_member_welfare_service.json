@@ -1,0 +1,21 @@
+{
+  "title": "Member Welfare Services / सदस्य कल्याण सेवाहरू",
+  "description": "Various welfare services provided to our members / हाम्रा सदस्यहरूलाई प्रदान गरिने विभिन्न कल्याणकारी सेवाहरू",
+  "welfareServices": [
+    {
+      "title": "Health Insurance / स्वास्थ्य बीमा",
+      "description": "Comprehensive health insurance coverage for members and their families / सदस्यहरू र तिनका परिवारका लागि व्यापक स्वास्थ्य बीमा",
+      "order": 1
+    },
+    {
+      "title": "Educational Support / शैक्षिक सहयोग", 
+      "description": "Educational scholarships and support for members' children / सदस्यका छोराछोरीहरूका लागि शैक्षिक छात्रवृत्ति र सहयोग",
+      "order": 2
+    },
+    {
+      "title": "Emergency Fund / आपतकालीन कोष",
+      "description": "Emergency financial assistance during crisis / संकटको समयमा आपतकालीन आर्थिक सहायता",
+      "order": 3
+    }
+  ]
+}

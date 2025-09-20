@@ -17,8 +17,8 @@ const ApplyForJobPage: React.FC = () => {
       // Here you would typically send the data to your backend API
       // For now, we'll simulate a successful submission
       
-      console.log('Form Data:', formData);
-      console.log('Photo:', photo);
+      // Form submitted successfully
+      // Avoid logging sensitive form data in production
       
       // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 2000));
