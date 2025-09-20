@@ -3,12 +3,14 @@ import BreadCrumb from "../../BreadCrumb/BreadCrumb";
 import PersonTile from "./components/PersonTile";
 import { aboutService, getStrapiMediaUrl } from "../../services/strapi";
 import { mapStrapiPersonData } from "../../utils/strapiHelpers";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 const CorporateTeam: React.FC = () => {
   const [corporateMembers, setCorporateMembers] = useState<any[]>([]);
   const [monitoringMembers, setMonitoringMembers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { language } = useLanguage();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,7 +48,7 @@ const CorporateTeam: React.FC = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [language]); // Add language dependency
 
   return (
     <div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import BreadCrumb from "../../../../BreadCrumb/BreadCrumb";
 import LoanTable from "./components/LoanTable";
 import { servicesService } from "../../../../services/strapi";
+import { useLanguage } from "../../../../contexts/LanguageContext";
 
 interface LoanProductItem {
   id: number;
@@ -22,6 +23,7 @@ const LoanServicesPage: React.FC = () => {
   const [loanProducts, setLoanProducts] = useState<LoanProductItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { language } = useLanguage();
 
   useEffect(() => {
     const fetch = async () => {
@@ -37,7 +39,7 @@ const LoanServicesPage: React.FC = () => {
       }
     };
     fetch();
-  }, []);
+  }, [language]); // Add language dependency
 
   return (
     <section className="">

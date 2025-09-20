@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import BreadCrumb from "../../BreadCrumb/BreadCrumb";
 import { aboutService, getStrapiMediaUrl } from "../../services/strapi";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 const AboutUs: React.FC = () => {
   const [content, setContent] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { language } = useLanguage();
 
   useEffect(() => {
     const fetch = async () => {
@@ -21,7 +23,7 @@ const AboutUs: React.FC = () => {
       }
     };
     fetch();
-  }, []);
+  }, [language]); // Add language dependency
 
   return (
     <div>

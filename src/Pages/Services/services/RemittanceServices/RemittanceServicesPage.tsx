@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import BreadCrumb from "../../../../BreadCrumb/BreadCrumb";
 import { servicesService } from "../../../../services/strapi";
+import { useLanguage } from "../../../../contexts/LanguageContext";
 import { getStrapiMediaUrl } from "../../../../services/strapi";
 
 // RemittanceServicesPage component for displaying remittance service information
@@ -10,6 +11,7 @@ const RemittanceServicesPage: React.FC = () => {
   const [content, setContent] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { language } = useLanguage();
 
   useEffect(() => {
     const fetch = async () => {
@@ -25,7 +27,7 @@ const RemittanceServicesPage: React.FC = () => {
       }
     }
     fetch();
-  }, []);
+  }, [language]); // Add language dependency
 
   return (
     <section className="">

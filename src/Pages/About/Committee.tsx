@@ -3,11 +3,13 @@ import BreadCrumb from "../../BreadCrumb/BreadCrumb";
 import PersonTile from "./components/PersonTile";
 import { aboutService, getStrapiMediaUrl } from "../../services/strapi";
 import { renderStrapiBlocks, mapStrapiPersonData } from "../../utils/strapiHelpers";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 const Committee: React.FC = () => {
   const [committees, setCommittees] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { language } = useLanguage();
 
   useEffect(() => {
     const fetch = async () => {
@@ -23,7 +25,7 @@ const Committee: React.FC = () => {
       }
     };
     fetch();
-  }, []);
+  }, [language]); // Add language dependency
 
   return (
     <div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import BreadCrumb from "../../../../BreadCrumb/BreadCrumb";
 import WelfareServicesList from "./components/WelfareServicesList";
 import { servicesService } from "../../../../services/strapi";
+import { useLanguage } from "../../../../contexts/LanguageContext";
 
 interface WelfareItem {
   id: number | string;
@@ -16,7 +17,7 @@ interface WelfareItem {
 // Follows website theme and design patterns
 // Compatible with Strapi CMS for future data integration
 const MemberWelfareServicesPage: React.FC = () => {
-  
+  const { language } = useLanguage();
   const [items, setItems] = useState<WelfareItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -36,7 +37,7 @@ const MemberWelfareServicesPage: React.FC = () => {
       }
     }
     fetch();
-  }, []);
+  }, [language]);
 
   return (
     <section className="">

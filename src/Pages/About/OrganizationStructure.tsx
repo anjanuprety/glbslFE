@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import BreadCrumb from "../../BreadCrumb/BreadCrumb";
 import { aboutService, getStrapiMediaUrl } from "../../services/strapi";
 import { renderStrapiBlocks } from "../../utils/strapiHelpers";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 const OrgNode: React.FC<{ node: any; level?: number }> = ({ node, level = 0 }) => {
   const [open, setOpen] = useState(level < 1);
@@ -35,6 +36,7 @@ const OrganizationStructure: React.FC = () => {
   const [structure, setStructure] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { language } = useLanguage();
 
   useEffect(() => {
     const fetch = async () => {
@@ -61,7 +63,7 @@ const OrganizationStructure: React.FC = () => {
       }
     };
     fetch();
-  }, []);
+  }, [language]); // Add language dependency
 
   return (
     <div>
