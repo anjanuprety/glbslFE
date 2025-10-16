@@ -4,10 +4,10 @@ import { BsDownload, BsEye, BsShare } from "react-icons/bs";
 import { HiArrowLongLeft } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import PDFPreview from "../../../Components/Reports/PDFPreview";
+import PDFViewer from "../../../Components/Reports/PDFViewer";
 import { reportsService, googleDriveHelpers } from "../../../services/strapi";
 
-// TypeScript interface for Report from Strapi
-// TypeScript interface for Report from Strapi v5 API
+// TypeScript interface for Report from Strapi v5 API with Hybrid Upload Support
 interface StrapiReport {
   id: number;
   documentId: string;
@@ -18,8 +18,17 @@ interface StrapiReport {
   publishDate?: string;
   fiscalYear?: string;
   quarter?: string;
-  file_Id: string;
-  fileName: string;
+  // NEW HYBRID UPLOAD FIELDS
+  File_Source?: "Upload" | "Google_Drive";
+  Uploaded_File?: {
+    url: string;
+    name: string;
+    size: number;
+    mime: string;
+  };
+  // EXISTING GOOGLE DRIVE FIELDS (still present for backwards compatibility)
+  file_Id?: string;
+  fileName?: string;
   featured?: boolean;
   isActive?: boolean;
   order?: number;
@@ -32,10 +41,62 @@ interface StrapiReport {
   locale: string;
 }
 
+// HYBRID FILE HANDLING UTILITIES FOR REPORTS
+// Get file URL based on source (Google Drive or Direct Upload)
+const getReportFileUrl = (report: StrapiReport): string | null => {
+  if (report.File_Source === 'Google_Drive' && report.file_Id) {
+    return `https://drive.google.com/file/d/${report.file_Id}/view`;
+  } else if (report.File_Source === 'Upload' && report.Uploaded_File?.url) {
+    return report.Uploaded_File.url;
+  }
+  return null;
+};
+
+// Get download URL based on source
+const getReportDownloadUrl = (report: StrapiReport): string | null => {
+  if (report.File_Source === 'Google_Drive' && report.file_Id) {
+    return googleDriveHelpers.getDownloadUrl(report.file_Id);
+  } else if (report.File_Source === 'Upload' && report.Uploaded_File?.url) {
+    return report.Uploaded_File.url;
+  }
+  return null;
+};
+
+// Get file name for display
+const getReportFileName = (report: StrapiReport): string => {
+  if (report.File_Source === 'Google_Drive' && report.fileName) {
+    return report.fileName;
+  } else if (report.File_Source === 'Upload' && report.Uploaded_File?.name) {
+    return report.Uploaded_File.name;
+  }
+  return 'Report File';
+};
+
+// Check if report has any file attached
+const hasReportFile = (report: StrapiReport): boolean => {
+  return (
+    (report.File_Source === 'Google_Drive' && !!report.file_Id) ||
+    (report.File_Source === 'Upload' && !!report.Uploaded_File?.url)
+  );
+};
+
+// Get file size for display
+const getReportFileSize = (report: StrapiReport): string => {
+  if (report.File_Source === 'Upload' && report.Uploaded_File?.size) {
+    const size = report.Uploaded_File.size;
+    if (size < 1024) return `${size} B`;
+    if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)} KB`;
+    return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+  }
+  return '';
+};
+
 const QuarterlyReportPage: React.FC = () => {
   const [reports, setReports] = useState<StrapiReport[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [selectedReport, setSelectedReport] = useState<StrapiReport | null>(null);
 
   useEffect(() => {
     const fetchQuarterlyReports = async () => {
@@ -56,13 +117,13 @@ const QuarterlyReportPage: React.FC = () => {
 
   const handleDownload = async (report: StrapiReport) => {
     try {
-      // Generate download URL for Google Drive file
-      const downloadUrl = googleDriveHelpers.getDownloadUrl(report.file_Id);
-      
-      // Open download in new tab
-      window.open(downloadUrl, '_blank');
-      
-      alert(`Downloading ${report.fileName}`);
+      const downloadUrl = getReportDownloadUrl(report);
+      if (downloadUrl) {
+        window.open(downloadUrl, '_blank');
+        alert(`Downloading ${getReportFileName(report)}`);
+      } else {
+        alert('No report file available for download.');
+      }
     } catch (error) {
       console.error('Download failed:', error);
       alert('Download failed. Please try again.');
@@ -70,9 +131,12 @@ const QuarterlyReportPage: React.FC = () => {
   };
 
   const handleView = (report: StrapiReport) => {
-    // Open file in new tab using Google Drive view URL
-    const viewUrl = googleDriveHelpers.getViewUrl(report.file_Id);
-    window.open(viewUrl, '_blank');
+    if (hasReportFile(report)) {
+      setSelectedReport(report);
+      setViewerOpen(true);
+    } else {
+      alert('No report file available for viewing.');
+    }
   };
 
   const handleShare = async (report: StrapiReport) => {
@@ -158,6 +222,22 @@ const QuarterlyReportPage: React.FC = () => {
 
   return (
     <section className="">
+      {/* PDF Viewer Modal */}
+      {selectedReport && (
+        <PDFViewer
+          isOpen={viewerOpen}
+          onClose={() => {
+            setViewerOpen(false);
+            setSelectedReport(null);
+          }}
+          fileUrl={selectedReport.File_Source === 'Google_Drive' 
+            ? selectedReport.file_Id || '' 
+            : getReportFileUrl(selectedReport) || ''}
+          fileName={getReportFileName(selectedReport)}
+          fileSource={selectedReport.File_Source}
+        />
+      )}
+
       <BreadCrumb title="QUARTERLY REPORTS" home={"/"} />
 
       <div className="bg-whiteSmoke dark:bg-lightBlack py-20 2xl:py-[120px]">
@@ -206,7 +286,8 @@ const QuarterlyReportPage: React.FC = () => {
                       <PDFPreview 
                         title={report.title} 
                         description={report.description || "Click to view report"}
-                        fileId={report.file_Id}
+                        fileId={report.File_Source === 'Google_Drive' ? report.file_Id : undefined}
+                        fileUrl={report.File_Source === 'Upload' ? (getReportFileUrl(report) || undefined) : undefined}
                         showThumbnail={true}
                       />
                     </div>
@@ -247,6 +328,17 @@ const QuarterlyReportPage: React.FC = () => {
                             </span>
                           </div>
                         )}
+                        {hasReportFile(report) && (
+                          <div className="mb-2">
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                              report.File_Source === 'Google_Drive' 
+                                ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' 
+                                : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                            }`}>
+                              {report.File_Source === 'Google_Drive' ? '📂 Google Drive' : '📁 Direct Upload'}
+                            </span>
+                          </div>
+                        )}
                         <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
                           {getQuarterDisplay(report)}
                         </h4>
@@ -257,9 +349,12 @@ const QuarterlyReportPage: React.FC = () => {
                           {report.description || "No description available"}
                         </p>
                         <div className="flex items-center justify-between">
-                          <span className="text-xs text-gray-500 dark:text-gray-400">
-                            File: {report.fileName}
-                          </span>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                            <span>File: {getReportFileName(report)}</span>
+                            {getReportFileSize(report) && (
+                              <span className="ml-2">({getReportFileSize(report)})</span>
+                            )}
+                          </div>
                           <div className="flex space-x-2">
                             <button
                               onClick={() => handleView(report)}

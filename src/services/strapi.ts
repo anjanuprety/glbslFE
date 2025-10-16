@@ -5,7 +5,10 @@ console.log('🔍 API_URL being used:', API_URL);
 
 const api = axios.create({
   baseURL: API_URL,
-  timeout: 10000,
+  timeout: 30000, // Increased to 30 seconds for production
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 // Add request interceptor to log requests
@@ -114,62 +117,102 @@ export const servicesService = {
 };
 
 export const reportsService = {
-  // Get all active reports with proper population
+  // Get all active reports with proper population (including hybrid upload fields)
   getAllReports: async () => {
-    const locale = getLocale();
-    const res = await api.get(`/api/reports?locale=${locale}&filters[isActive][$eq]=true&populate=category&sort=featured:desc,publishDate:desc`);
-    return res.data || { data: [] };
+    try {
+      const locale = getLocale();
+      const res = await api.get(`/api/reports?locale=${locale}&filters[isActive][$eq]=true&populate=*&sort=featured:desc,publishDate:desc`);
+      return res.data || { data: [] };
+    } catch (error) {
+      console.error('Error fetching all reports:', error);
+      return { data: [] };
+    }
   },
 
   // Get reports by category
   getReportsByCategory: async (categorySlug: string) => {
-    const locale = getLocale();
-    const res = await api.get(`/api/reports?locale=${locale}&filters[category][slug][$eq]=${categorySlug}&filters[isActive][$eq]=true&populate=category&sort=publishDate:desc`);
-    return res.data || { data: [] };
+    try {
+      const locale = getLocale();
+      const res = await api.get(`/api/reports?locale=${locale}&filters[category][slug][$eq]=${categorySlug}&filters[isActive][$eq]=true&populate=*&sort=publishDate:desc`);
+      return res.data || { data: [] };
+    } catch (error) {
+      console.error('Error fetching reports by category:', error);
+      return { data: [] };
+    }
   },
 
   // Get featured reports
   getFeaturedReports: async () => {
-    const locale = getLocale();
-    const res = await api.get(`/api/reports?locale=${locale}&filters[featured][$eq]=true&filters[isActive][$eq]=true&populate=category&sort=publishDate:desc`);
-    return res.data || { data: [] };
+    try {
+      const locale = getLocale();
+      const res = await api.get(`/api/reports?locale=${locale}&filters[featured][$eq]=true&filters[isActive][$eq]=true&populate=*&sort=publishDate:desc`);
+      return res.data || { data: [] };
+    } catch (error) {
+      console.error('Error fetching featured reports:', error);
+      return { data: [] };
+    }
   },
 
   // Get single report
   getReport: async (slug: string) => {
-    const locale = getLocale();
-    const res = await api.get(`/api/reports?locale=${locale}&filters[slug][$eq]=${slug}&populate=category`);
-    return res.data?.data?.[0] || null;
+    try {
+      const locale = getLocale();
+      const res = await api.get(`/api/reports?locale=${locale}&filters[slug][$eq]=${slug}&populate=*`);
+      return res.data?.data?.[0] || null;
+    } catch (error) {
+      console.error('Error fetching report:', error);
+      return null;
+    }
   }
 };
 
 export const noticesService = {
-  // Get all active notices with proper population
+  // Get all active notices with proper population (including hybrid upload fields)
   getNotices: async () => {
-    const locale = getLocale();
-    const res = await api.get(`/api/notices?locale=${locale}&filters[isActive][$eq]=true&sort=publishDate:desc&populate=noticeImage`);
-    return res.data || { data: [] };
+    try {
+      const locale = getLocale();
+      const res = await api.get(`/api/notices?locale=${locale}&filters[isActive][$eq]=true&sort=publishDate:desc&populate=*`);
+      return res.data || { data: [] };
+    } catch (error) {
+      console.error('Error fetching notices:', error);
+      return { data: [] };
+    }
   },
 
   // Get notices by type
   getNoticesByType: async (noticeType: string) => {
-    const locale = getLocale();
-    const res = await api.get(`/api/notices?locale=${locale}&filters[noticeType][$eq]=${noticeType}&filters[isActive][$eq]=true&sort=publishDate:desc&populate=noticeImage`);
-    return res.data || { data: [] };
+    try {
+      const locale = getLocale();
+      const res = await api.get(`/api/notices?locale=${locale}&filters[noticeType][$eq]=${noticeType}&filters[isActive][$eq]=true&sort=publishDate:desc&populate=*`);
+      return res.data || { data: [] };
+    } catch (error) {
+      console.error('Error fetching notices by type:', error);
+      return { data: [] };
+    }
   },
 
   // Get urgent notices
   getUrgentNotices: async () => {
-    const locale = getLocale();
-    const res = await api.get(`/api/notices?locale=${locale}&filters[featured][$eq]=true&filters[isActive][$eq]=true&sort=publishDate:desc&populate=noticeImage`);
-    return res.data || { data: [] };
+    try {
+      const locale = getLocale();
+      const res = await api.get(`/api/notices?locale=${locale}&filters[featured][$eq]=true&filters[isActive][$eq]=true&sort=publishDate:desc&populate=*`);
+      return res.data || { data: [] };
+    } catch (error) {
+      console.error('Error fetching urgent notices:', error);
+      return { data: [] };
+    }
   },
 
   // Get single notice
   getNotice: async (slug: string) => {
-    const locale = getLocale();
-    const res = await api.get(`/api/notices?locale=${locale}&filters[slug][$eq]=${slug}&populate=noticeImage`);
-    return res.data?.data?.[0] || null;
+    try {
+      const locale = getLocale();
+      const res = await api.get(`/api/notices?locale=${locale}&filters[slug][$eq]=${slug}&populate=*`);
+      return res.data?.data?.[0] || null;
+    } catch (error) {
+      console.error('Error fetching notice:', error);
+      return null;
+    }
   }
 };
 

@@ -4,6 +4,7 @@ interface PDFPreviewProps {
   title?: string;
   description?: string;
   fileId?: string; // Google Drive file ID
+  fileUrl?: string; // Direct upload URL (for Strapi uploads)
   showThumbnail?: boolean; // Whether to show actual PDF thumbnail
 }
 
@@ -12,14 +13,26 @@ const getGoogleDriveThumbnailUrl = (fileId: string): string => {
   return `https://drive.google.com/thumbnail?id=${fileId}&sz=w400-h300`;
 };
 
+// Helper function to determine if we should show thumbnail
+const shouldShowThumbnail = (fileId?: string, fileUrl?: string): boolean => {
+  // Only show thumbnail for Google Drive files (fileId exists)
+  // For direct uploads (fileUrl), we'll show a generic PDF icon
+  return !!fileId;
+};
+
 const PDFPreview: React.FC<PDFPreviewProps> = ({ 
   title = "PDF Document", 
   description = "Click to view",
   fileId,
+  fileUrl,
   showThumbnail = true
 }) => {
   const [thumbnailError, setThumbnailError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const hasFile = !!(fileId || fileUrl);
+  const isGoogleDrive = !!fileId;
+  const isDirectUpload = !!fileUrl;
 
   const handleThumbnailLoad = () => {
     setIsLoading(false);
@@ -30,8 +43,8 @@ const PDFPreview: React.FC<PDFPreviewProps> = ({
     setIsLoading(false);
   };
 
-  // If we have a fileId and want to show thumbnail, try to load it
-  if (fileId && showThumbnail && !thumbnailError) {
+  // Render thumbnail preview for Google Drive files
+  if (isGoogleDrive && showThumbnail && !thumbnailError) {
     return (
       <div className="w-full h-[250px] bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-700 flex items-center justify-center group-hover:scale-110 transition-all duration-300 relative overflow-hidden">
         {isLoading && (
@@ -43,7 +56,7 @@ const PDFPreview: React.FC<PDFPreviewProps> = ({
           </div>
         )}
         <img
-          src={getGoogleDriveThumbnailUrl(fileId)}
+          src={getGoogleDriveThumbnailUrl(fileId!)}
           alt={`${title} thumbnail`}
           className={`w-full h-full object-cover ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
           onLoad={handleThumbnailLoad}
@@ -53,12 +66,15 @@ const PDFPreview: React.FC<PDFPreviewProps> = ({
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
           <p className="text-white text-sm font-medium truncate">{title}</p>
           <p className="text-white/80 text-xs truncate">{description}</p>
+          <span className="inline-block bg-blue-500 text-white text-xs px-2 py-1 rounded mt-1">
+            Google Drive
+          </span>
         </div>
       </div>
     );
   }
 
-  // Fallback to generic PDF icon if no fileId or thumbnail failed to load
+  // Generic preview for direct uploads or when thumbnail fails
   return (
     <div className="w-full h-[250px] bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-700 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
       <div className="text-center p-6">
@@ -67,8 +83,22 @@ const PDFPreview: React.FC<PDFPreviewProps> = ({
         </svg>
         <p className="text-gray-600 dark:text-gray-300 text-sm font-medium">{title}</p>
         <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">{description}</p>
-        {thumbnailError && (
-          <p className="text-yellow-600 dark:text-yellow-400 text-xs mt-2">Preview not available</p>
+        
+        {/* Source indicator */}
+        {isDirectUpload && (
+          <span className="inline-block bg-green-500 text-white text-xs px-2 py-1 rounded mt-2">
+            Direct Upload
+          </span>
+        )}
+        {thumbnailError && isGoogleDrive && (
+          <span className="inline-block bg-yellow-500 text-white text-xs px-2 py-1 rounded mt-2">
+            Preview unavailable
+          </span>
+        )}
+        {!hasFile && (
+          <span className="inline-block bg-gray-500 text-white text-xs px-2 py-1 rounded mt-2">
+            No file attached
+          </span>
         )}
       </div>
     </div>

@@ -4,9 +4,10 @@ import { BsDownload, BsEye, BsShare } from "react-icons/bs";
 import { HiArrowLongLeft } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import PDFPreview from "../../../Components/Reports/PDFPreview";
+import PDFViewer from "../../../Components/Reports/PDFViewer";
 import { noticesService, googleDriveHelpers } from "../../../services/strapi";
 
-// TypeScript interface for Notice from Strapi v5 API
+// TypeScript interface for Notice from Strapi v5 API with Hybrid Upload Support
 interface StrapiNotice {
   id: number;
   documentId: string;
@@ -25,6 +26,15 @@ interface StrapiNotice {
   isUrgent?: boolean;
   priority?: number;
   isActive?: boolean;
+  // NEW HYBRID UPLOAD FIELDS
+  FileSource?: "Upload" | "Google_Drive";
+  UploadedFile?: {
+    url: string;
+    name: string;
+    size: number;
+    mime: string;
+  };
+  // EXISTING GOOGLE DRIVE FIELDS (still present for backwards compatibility)
   attatchmentFile_Id?: string;
   attatchmentFileName?: string;
   attatchmentFileSize?: string;
@@ -38,25 +48,6 @@ interface StrapiNotice {
   locale: string;
 }
 
-// Helper function to generate Google Drive download URL
-const getGoogleDriveDownloadUrl = (fileId: string): string => {
-  return googleDriveHelpers.getDownloadUrl(fileId);
-};
-
-// Helper function to generate Google Drive view URL  
-const getGoogleDriveViewUrl = (fileId: string): string => {
-  return googleDriveHelpers.getViewUrl(fileId);
-};
-
-// Helper function to format date
-const formatDate = (dateString: string): string => {
-  return new Date(dateString).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long', 
-    day: 'numeric'
-  });
-};
-
 // Helper function to extract text from rich content
 const extractTextFromContent = (content?: Array<any>): string => {
   if (!content || !Array.isArray(content)) return '';
@@ -69,10 +60,77 @@ const extractTextFromContent = (content?: Array<any>): string => {
   }).join(' ');
 };
 
+// HYBRID FILE HANDLING UTILITIES
+// Get file URL based on source (Google Drive or Direct Upload)
+const getNoticeFileUrl = (notice: StrapiNotice): string | null => {
+  if (notice.FileSource === 'Google_Drive' && notice.attatchmentFile_Id) {
+    // Use existing Google Drive logic
+    return `https://drive.google.com/file/d/${notice.attatchmentFile_Id}/view`;
+  } else if (notice.FileSource === 'Upload' && notice.UploadedFile?.url) {
+    // Use direct upload from DigitalOcean Spaces
+    return notice.UploadedFile.url;
+  }
+  return null; // No file available
+};
+
+// Get download URL based on source
+const getNoticeDownloadUrl = (notice: StrapiNotice): string | null => {
+  if (notice.FileSource === 'Google_Drive' && notice.attatchmentFile_Id) {
+    return googleDriveHelpers.getDownloadUrl(notice.attatchmentFile_Id);
+  } else if (notice.FileSource === 'Upload' && notice.UploadedFile?.url) {
+    // For direct uploads, the URL is already a direct download link
+    return notice.UploadedFile.url;
+  }
+  return null;
+};
+
+// Get file name for display
+const getNoticeFileName = (notice: StrapiNotice): string => {
+  if (notice.FileSource === 'Google_Drive' && notice.attatchmentFileName) {
+    return notice.attatchmentFileName;
+  } else if (notice.FileSource === 'Upload' && notice.UploadedFile?.name) {
+    return notice.UploadedFile.name;
+  }
+  return 'Attachment';
+};
+
+// Check if notice has any file attached
+const hasNoticeFile = (notice: StrapiNotice): boolean => {
+  return (
+    (notice.FileSource === 'Google_Drive' && !!notice.attatchmentFile_Id) ||
+    (notice.FileSource === 'Upload' && !!notice.UploadedFile?.url)
+  );
+};
+
+// Get file size for display
+const getNoticeFileSize = (notice: StrapiNotice): string => {
+  if (notice.FileSource === 'Google_Drive' && notice.attatchmentFileSize) {
+    return notice.attatchmentFileSize;
+  } else if (notice.FileSource === 'Upload' && notice.UploadedFile?.size) {
+    // Convert bytes to readable format
+    const size = notice.UploadedFile.size;
+    if (size < 1024) return `${size} B`;
+    if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)} KB`;
+    return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+  }
+  return '';
+};
+
+// Helper function to format date
+const formatDate = (dateString: string): string => {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long', 
+    day: 'numeric'
+  });
+};
+
 const NoticePage: React.FC = () => {
   const [notices, setNotices] = useState<StrapiNotice[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [selectedNotice, setSelectedNotice] = useState<StrapiNotice | null>(null);
 
   useEffect(() => {
     const fetchNotices = async () => {
@@ -90,9 +148,11 @@ const NoticePage: React.FC = () => {
     };
 
     fetchNotices();
-  }, []);  const handleDownload = (notice: StrapiNotice) => {
-    if (notice.attatchmentFile_Id) {
-      const downloadUrl = getGoogleDriveDownloadUrl(notice.attatchmentFile_Id);
+  }, []);
+
+  const handleDownload = (notice: StrapiNotice) => {
+    const downloadUrl = getNoticeDownloadUrl(notice);
+    if (downloadUrl) {
       window.open(downloadUrl, '_blank');
     } else {
       alert('No attachment file available for this notice.');
@@ -100,9 +160,9 @@ const NoticePage: React.FC = () => {
   };
 
   const handleView = (notice: StrapiNotice) => {
-    if (notice.attatchmentFile_Id) {
-      const viewUrl = getGoogleDriveViewUrl(notice.attatchmentFile_Id);
-      window.open(viewUrl, '_blank');
+    if (hasNoticeFile(notice)) {
+      setSelectedNotice(notice);
+      setViewerOpen(true);
     } else {
       alert('No attachment file available for this notice.');
     }
@@ -127,6 +187,22 @@ const NoticePage: React.FC = () => {
 
   return (
     <section className="">
+      {/* PDF Viewer Modal */}
+      {selectedNotice && (
+        <PDFViewer
+          isOpen={viewerOpen}
+          onClose={() => {
+            setViewerOpen(false);
+            setSelectedNotice(null);
+          }}
+          fileUrl={selectedNotice.FileSource === 'Google_Drive' 
+            ? selectedNotice.attatchmentFile_Id || '' 
+            : getNoticeFileUrl(selectedNotice) || ''}
+          fileName={getNoticeFileName(selectedNotice)}
+          fileSource={selectedNotice.FileSource}
+        />
+      )}
+
       <BreadCrumb title="NOTICES" home={"/"} />
 
       <div className="bg-whiteSmoke dark:bg-lightBlack py-20 2xl:py-[120px]">
@@ -194,21 +270,22 @@ const NoticePage: React.FC = () => {
                           <PDFPreview 
                             title={notice.title} 
                             description={extractTextFromContent(notice.content) || "Click to view notice"}
-                            fileId={notice.attatchmentFile_Id}
-                            showThumbnail={!!notice.attatchmentFile_Id}
+                            fileId={notice.FileSource === 'Google_Drive' ? notice.attatchmentFile_Id : undefined}
+                            fileUrl={notice.FileSource === 'Upload' ? notice.UploadedFile?.url : undefined}
+                            showThumbnail={hasNoticeFile(notice)}
                           />
                         </div>
 
-                        <div className="flex space-x-2 absolute bottom-2 -left-52 group-hover:left-2 transition-all duration-300">
-                          <button
-                            onClick={() => handleView(notice)}
-                            className="flex items-center justify-center text-[13px] leading-[32px] bg-khaki px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
-                            title="View Notice"
-                          >
-                            <BsEye className="w-3 h-3 mr-1" />
-                            View
-                          </button>
-                          {notice.attatchmentFile_Id && (
+                        {hasNoticeFile(notice) && (
+                          <div className="flex space-x-2 absolute bottom-2 -left-52 group-hover:left-2 transition-all duration-300">
+                            <button
+                              onClick={() => handleView(notice)}
+                              className="flex items-center justify-center text-[13px] leading-[32px] bg-khaki px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
+                              title="View Notice"
+                            >
+                              <BsEye className="w-3 h-3 mr-1" />
+                              View
+                            </button>
                             <button
                               onClick={() => handleDownload(notice)}
                               className="flex items-center justify-center text-[13px] leading-[32px] bg-green-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
@@ -217,15 +294,15 @@ const NoticePage: React.FC = () => {
                               <BsDownload className="w-3 h-3 mr-1" />
                               Download
                             </button>
-                          )}
-                          <button
-                            onClick={() => handleShare(notice)}
-                            className="flex items-center justify-center text-[13px] leading-[32px] bg-blue-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
-                            title="Share Notice"
-                          >
-                            <BsShare className="w-3 h-3" />
-                          </button>
-                        </div>
+                            <button
+                              onClick={() => handleShare(notice)}
+                              className="flex items-center justify-center text-[13px] leading-[32px] bg-blue-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
+                              title="Share Notice"
+                            >
+                              <BsShare className="w-3 h-3" />
+                            </button>
+                          </div>
+                        )}
                       </div>
                       <div className="font-Garamond">
                         <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242]  border-t-0">
@@ -244,19 +321,55 @@ const NoticePage: React.FC = () => {
                               {extractTextFromContent(notice.content) || "No description available"}
                             </p>
                             {notice.publishDate && (
-                              <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
                                 Published: {formatDate(notice.publishDate)}
                               </p>
                             )}
+                            
+                            {/* File Information */}
+                            {hasNoticeFile(notice) && (
+                              <div className="mb-3 p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-xs text-gray-600 dark:text-gray-400">
+                                    📎 {getNoticeFileName(notice)}
+                                  </span>
+                                  <div className="flex items-center space-x-2">
+                                    {notice.FileSource === 'Upload' && (
+                                      <span className="inline-block bg-green-500 text-white text-xs px-2 py-1 rounded">
+                                        Direct Download
+                                      </span>
+                                    )}
+                                    {notice.FileSource === 'Google_Drive' && (
+                                      <span className="inline-block bg-blue-500 text-white text-xs px-2 py-1 rounded">
+                                        Google Drive
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                                {getNoticeFileSize(notice) && (
+                                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                    Size: {getNoticeFileSize(notice)}
+                                  </p>
+                                )}
+                              </div>
+                            )}
+                            
                             <div className="flex space-x-2">
                               <button
-                                onClick={() => handleView(notice)}
-                                className="text-xs text-khaki hover:text-opacity-80 transition-colors duration-300"
+                                onClick={() => handleShare(notice)}
+                                className="text-xs text-blue-600 hover:text-opacity-80 transition-colors duration-300"
                               >
-                                View
+                                Share
                               </button>
-                              {notice.attatchmentFile_Id && (
+                              {hasNoticeFile(notice) && (
                                 <>
+                                  <span className="text-xs text-gray-300">|</span>
+                                  <button
+                                    onClick={() => handleView(notice)}
+                                    className="text-xs text-khaki hover:text-opacity-80 transition-colors duration-300"
+                                  >
+                                    View
+                                  </button>
                                   <span className="text-xs text-gray-300">|</span>
                                   <button
                                     onClick={() => handleDownload(notice)}
