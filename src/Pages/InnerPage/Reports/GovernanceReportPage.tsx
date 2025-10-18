@@ -159,26 +159,6 @@ const GovernanceReportPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Governance Statistics */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-16 mt-12">
-            <div className="bg-white dark:bg-normalBlack p-6 rounded-lg text-center" data-aos="zoom-in-up" data-aos-duration="800">
-              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">27</div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Board Meetings</p>
-            </div>
-            <div className="bg-white dark:bg-normalBlack p-6 rounded-lg text-center" data-aos="zoom-in-up" data-aos-duration="900">
-              <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">97%</div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Avg Compliance</p>
-            </div>
-            <div className="bg-white dark:bg-normalBlack p-6 rounded-lg text-center" data-aos="zoom-in-up" data-aos-duration="1000">
-              <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">8</div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Audit Reviews</p>
-            </div>
-            <div className="bg-white dark:bg-normalBlack p-6 rounded-lg text-center" data-aos="zoom-in-up" data-aos-duration="1100">
-              <div className="text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">15</div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Policy Updates</p>
-            </div>
-          </div>
-
           {/* Documents Grid */}
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 pt-8">
             {governanceDocuments.map((document, index) => (
@@ -215,13 +195,6 @@ const GovernanceReportPage: React.FC = () => {
                       <BsDownload className="w-3 h-3 mr-1" />
                       Download
                     </button>
-                    <button
-                      onClick={() => handleShare(document)}
-                      className="flex items-center justify-center text-[13px] leading-[32px] bg-blue-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
-                      title="Share Document"
-                    >
-                      <BsShare className="w-3 h-3" />
-                    </button>
                   </div>
                 </div>
                 <div className="font-Garamond">
@@ -236,18 +209,6 @@ const GovernanceReportPage: React.FC = () => {
                       <p className="text-sm font-normal text-gray dark:text-lightGray font-Lora mb-3">
                         {document.description}
                       </p>
-                      <div className="grid grid-cols-2 gap-3 mb-3">
-                        <div className="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-md text-center">
-                          <p className="text-xs text-blue-600 dark:text-blue-300 font-medium">Meetings</p>
-                          <p className="text-sm font-semibold text-blue-800 dark:text-blue-200">{document.boardMeetings}</p>
-                        </div>
-                        <div className="bg-gray-50 dark:bg-gray-800 p-2 rounded-md text-center">
-                          <p className="text-xs text-gray-600 dark:text-gray-300 font-medium">Compliance</p>
-                          <p className={`text-sm font-semibold ${getComplianceColor(document.complianceScore)}`}>
-                            {document.complianceScore}
-                          </p>
-                        </div>
-                      </div>
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-gray-500 dark:text-gray-400">
                           File Size: {document.fileSize}

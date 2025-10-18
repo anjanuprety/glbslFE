@@ -145,15 +145,6 @@ const BaseRatePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Current Base Rate Highlight */}
-          <div className="max-w-md mx-auto mb-16 mt-12" data-aos="zoom-in-up" data-aos-duration="1000">
-            <div className="bg-khaki p-6 rounded-lg text-center text-white">
-              <h3 className="text-lg font-Garamond font-semibold mb-2">Current Base Rate</h3>
-              <div className="text-3xl font-bold mb-2">12.5%</div>
-              <p className="text-sm opacity-90">Effective from January 1, 2025</p>
-            </div>
-          </div>
-
           {/* Documents Grid */}
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 pt-8">
             {rateDocuments.map((document, index) => (
@@ -190,13 +181,6 @@ const BaseRatePage: React.FC = () => {
                       <BsDownload className="w-3 h-3 mr-1" />
                       Download
                     </button>
-                    <button
-                      onClick={() => handleShare(document)}
-                      className="flex items-center justify-center text-[13px] leading-[32px] bg-blue-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
-                      title="Share Document"
-                    >
-                      <BsShare className="w-3 h-3" />
-                    </button>
                   </div>
                 </div>
                 <div className="font-Garamond">
@@ -211,10 +195,6 @@ const BaseRatePage: React.FC = () => {
                       <p className="text-sm font-normal text-gray dark:text-lightGray font-Lora mb-3">
                         {document.description}
                       </p>
-                      <div className="bg-orange-50 dark:bg-orange-900/20 p-3 rounded-md mb-3 text-center">
-                        <p className="text-xs text-orange-600 dark:text-orange-300 font-medium">Base Rate</p>
-                        <p className="text-lg font-bold text-orange-800 dark:text-orange-200">{document.baseRate}</p>
-                      </div>
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-gray-500 dark:text-gray-400">
                           File Size: {document.fileSize}

@@ -159,23 +159,6 @@ const StaffTrainingPage: React.FC = () => {
               </p>
             </div>
           </div>
-
-          {/* Training Statistics */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto mb-16 mt-12">
-            <div className="bg-white dark:bg-normalBlack p-6 rounded-lg text-center" data-aos="zoom-in-up" data-aos-duration="800">
-              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">203</div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Total Training Hours</p>
-            </div>
-            <div className="bg-white dark:bg-normalBlack p-6 rounded-lg text-center" data-aos="zoom-in-up" data-aos-duration="1000">
-              <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">45</div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Staff Participants</p>
-            </div>
-            <div className="bg-white dark:bg-normalBlack p-6 rounded-lg text-center" data-aos="zoom-in-up" data-aos-duration="1200">
-              <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">92%</div>
-              <p className="text-sm text-gray-600 dark:text-gray-300">Average Completion Rate</p>
-            </div>
-          </div>
-
           {/* Documents Grid */}
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 pt-8">
             {trainingDocuments.map((document, index) => (
@@ -212,13 +195,6 @@ const StaffTrainingPage: React.FC = () => {
                       <BsDownload className="w-3 h-3 mr-1" />
                       Download
                     </button>
-                    <button
-                      onClick={() => handleShare(document)}
-                      className="flex items-center justify-center text-[13px] leading-[32px] bg-blue-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
-                      title="Share Document"
-                    >
-                      <BsShare className="w-3 h-3" />
-                    </button>
                   </div>
                 </div>
                 <div className="font-Garamond">
@@ -233,18 +209,6 @@ const StaffTrainingPage: React.FC = () => {
                       <p className="text-sm font-normal text-gray dark:text-lightGray font-Lora mb-3">
                         {document.description}
                       </p>
-                      <div className="grid grid-cols-2 gap-3 mb-3">
-                        <div className="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-md text-center">
-                          <p className="text-xs text-blue-600 dark:text-blue-300 font-medium">Participants</p>
-                          <p className="text-sm font-semibold text-blue-800 dark:text-blue-200">{document.participants}</p>
-                        </div>
-                        <div className="bg-gray-50 dark:bg-gray-800 p-2 rounded-md text-center">
-                          <p className="text-xs text-gray-600 dark:text-gray-300 font-medium">Completion</p>
-                          <p className={`text-sm font-semibold ${getCompletionRateColor(document.completionRate)}`}>
-                            {document.completionRate}
-                          </p>
-                        </div>
-                      </div>
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-gray-500 dark:text-gray-400">
                           File Size: {document.fileSize}

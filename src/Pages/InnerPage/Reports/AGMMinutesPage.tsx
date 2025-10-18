@@ -166,13 +166,6 @@ const AGMMinutesPage: React.FC = () => {
                       <BsDownload className="w-3 h-3 mr-1" />
                       Download
                     </button>
-                    <button
-                      onClick={() => handleShare(document)}
-                      className="flex items-center justify-center text-[13px] leading-[32px] bg-blue-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
-                      title="Share Document"
-                    >
-                      <BsShare className="w-3 h-3" />
-                    </button>
                   </div>
                 </div>
                 <div className="font-Garamond">
@@ -187,16 +180,6 @@ const AGMMinutesPage: React.FC = () => {
                       <p className="text-sm font-normal text-gray dark:text-lightGray font-Lora mb-3">
                         {document.description}
                       </p>
-                      <div className="grid grid-cols-2 gap-3 mb-3">
-                        <div className="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-md text-center">
-                          <p className="text-xs text-blue-600 dark:text-blue-300 font-medium">Attendees</p>
-                          <p className="text-sm font-semibold text-blue-800 dark:text-blue-200">{document.attendees}</p>
-                        </div>
-                        <div className="bg-green-50 dark:bg-green-900/20 p-2 rounded-md text-center">
-                          <p className="text-xs text-green-600 dark:text-green-300 font-medium">Resolutions</p>
-                          <p className="text-sm font-semibold text-green-800 dark:text-green-200">{document.resolutions}</p>
-                        </div>
-                      </div>
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-gray-500 dark:text-gray-400">
                           File Size: {document.fileSize}

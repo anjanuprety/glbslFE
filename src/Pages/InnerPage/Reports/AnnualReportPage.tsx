@@ -154,13 +154,6 @@ const AnnualReportPage: React.FC = () => {
                       <BsDownload className="w-3 h-3 mr-1" />
                       Download
                     </button>
-                    <button
-                      onClick={() => handleShare(report)}
-                      className="flex items-center justify-center text-[13px] leading-[32px] bg-blue-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
-                      title="Share Report"
-                    >
-                      <BsShare className="w-3 h-3" />
-                    </button>
                   </div>
                 </div>
                 <div className="font-Garamond">
@@ -175,11 +168,6 @@ const AnnualReportPage: React.FC = () => {
                       <p className="text-sm font-normal text-gray dark:text-lightGray font-Lora mb-3">
                         {report.description}
                       </p>
-                      <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-md mb-3">
-                        <p className="text-xs text-gray-600 dark:text-gray-300 font-medium">
-                          Key Highlights: {report.highlights}
-                        </p>
-                      </div>
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-gray-500 dark:text-gray-400">
                           File Size: {report.fileSize}
