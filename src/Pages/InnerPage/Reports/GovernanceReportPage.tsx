@@ -173,11 +173,6 @@ const GovernanceReportPage: React.FC = () => {
                     <PDFPreview title={document.title} description={document.description} />
                   </div>
 
-                  {/* Category Badge */}
-                  <div className={`absolute top-3 right-3 ${getCategoryColor(document.category)} text-white px-2 py-1 rounded-md text-xs font-medium`}>
-                    {document.category}
-                  </div>
-
                   <div className="flex space-x-2 absolute bottom-2 -left-52 group-hover:left-2 transition-all duration-300">
                     <button
                       onClick={() => handleView(document)}

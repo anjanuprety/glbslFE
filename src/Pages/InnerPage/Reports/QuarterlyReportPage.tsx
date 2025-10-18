@@ -314,13 +314,6 @@ const QuarterlyReportPage: React.FC = () => {
                   <div className="font-Garamond">
                     <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242]  border-t-0">
                       <div className="py-6 px-[30px]">
-                        {report.featured && (
-                          <div className="mb-2">
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-khaki text-white">
-                              Featured
-                            </span>
-                          </div>
-                        )}
                         <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
                           {getQuarterDisplay(report)}
                         </h4>

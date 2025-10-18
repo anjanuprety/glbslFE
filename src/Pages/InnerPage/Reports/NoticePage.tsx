@@ -300,13 +300,6 @@ const NoticePage: React.FC = () => {
                       <div className="font-Garamond">
                         <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242]  border-t-0">
                           <div className="py-6 px-[30px]">
-                            {notice.isUrgent && (
-                              <div className="mb-2">
-                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-500 text-white">
-                                  Urgent
-                                </span>
-                              </div>
-                            )}
                             <h2 className="text-lg lg:text-[20px] xl:text-[22px] leading-[24px] font-semibold text-lightBlack dark:text-white py-3">
                               {notice.title}
                             </h2>
