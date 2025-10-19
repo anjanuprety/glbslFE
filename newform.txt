@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { useLanguage } from "../../../contexts/LanguageContext";
-
-// Helper function for generating IDs (replacement for glbId)
-const glbId = (...args: string[]) => args.join("-");
+import { useLanguage } from "../../hooks/useLanguage";
+import { glbId } from "../../utils/glbId";
+import { set } from "zod";
 
 interface FormData {
   personalInfo: {
@@ -78,7 +77,7 @@ interface ExperienceEntry {
 }
 
 const JobApplicationFormPage: React.FC = () => {
-  const { language } = useLanguage();
+  const { currentLanguage } = useLanguage();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     personalInfo: {
@@ -164,9 +163,9 @@ const JobApplicationFormPage: React.FC = () => {
 
   useEffect(() => {
     document.title = `${
-      language === "en" ? "Job Application Form" : "जागिर आवेदन फारम"
+      currentLanguage === "en" ? "Job Application Form" : "जागिर आवेदन फारम"
     } - Gurans Laghubitta`;
-  }, [language]);
+  }, [currentLanguage]);
 
   const totalSteps = 8;
 
@@ -429,20 +428,20 @@ const JobApplicationFormPage: React.FC = () => {
     });
 
     try {
-      const response = await fetch("http://localhost:5001/submit-application", {
+      const response = await fetch("http://localhost:5000/submit-application", {
         method: "POST",
         body: formDataToSend,
       });
 
       if (response.ok) {
         alert(
-          language === "en"
+          currentLanguage === "en"
             ? "Application submitted successfully! We will contact you soon."
             : "आवेदन सफलतापूर्वक पेश गरियो! हामी तपाईंलाई छिट्टै सम्पर्क गर्नेछौं।"
         );
       } else {
         alert(
-          language === "en"
+          currentLanguage === "en"
             ? "Failed to submit the application. Please try again later."
             : "आवेदन पेश गर्न असफल। कृपया पछि प्रयास गर्नुहोस्।"
         );
@@ -450,7 +449,7 @@ const JobApplicationFormPage: React.FC = () => {
     } catch (error) {
       console.error("Error submitting application:", error);
       alert(
-        language === "en"
+        currentLanguage === "en"
           ? "An error occurred while submitting the application."
           : "आवेदन पेश गर्दा त्रुटि भयो।"
       );
@@ -465,7 +464,7 @@ const JobApplicationFormPage: React.FC = () => {
         return (
           <div className="space-y-6" id={glbId("career", "form", "personal")}>
             <h3 className="text-xl font-bold text-gray-900 mb-4">
-              {language === "en"
+              {currentLanguage === "en"
                 ? "Personal Information"
                 : "व्यक्तिगत जानकारी"}
             </h3>
@@ -473,7 +472,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* English Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en"
+                  {currentLanguage === "en"
                     ? "Name (English)"
                     : "नाम (अंग्रेजी)"}{" "}
                   *
@@ -492,7 +491,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Name Nepali */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en" ? "Name (Nepali)" : "नाम (नेपाली)"}{" "}
+                  {currentLanguage === "en" ? "Name (Nepali)" : "नाम (नेपाली)"}{" "}
                   *
                 </label>
                 <input
@@ -509,7 +508,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Father's Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en" ? "Father's Name" : "बुवाको नाम"} *
+                  {currentLanguage === "en" ? "Father's Name" : "बुवाको नाम"} *
                 </label>
                 <input
                   type="text"
@@ -529,7 +528,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Mother's Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en" ? "Mother's Name" : "आमाको नाम"} *
+                  {currentLanguage === "en" ? "Mother's Name" : "आमाको नाम"} *
                 </label>
                 <input
                   type="text"
@@ -549,7 +548,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Grandfather's Name */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en"
+                  {currentLanguage === "en"
                     ? "Grandfather's Name"
                     : "हजुरबुवाको नाम"}{" "}
                   *
@@ -572,7 +571,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Spouse's Name (conditionally displayed if married) */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en"
+                  {currentLanguage === "en"
                     ? "Spouse's Name (if married)"
                     : "पति/पत्नीको नाम (यदि विवाहित हुनुहुन्छ भने)"}
                 </label>
@@ -593,7 +592,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Date of Birth */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en" ? "Date of Birth" : "जन्म मिति"} *
+                  {currentLanguage === "en" ? "Date of Birth" : "जन्म मिति"} *
                 </label>
                 <input
                   type="date"
@@ -620,7 +619,7 @@ const JobApplicationFormPage: React.FC = () => {
             id={glbId("career", "form", "personal-info")}
           >
             <h3 className="text-xl font-bold text-gray-900 mb-4">
-              {language === "en"
+              {currentLanguage === "en"
                 ? "Personal Information"
                 : "व्यक्तिगत जानकारी"}
             </h3>
@@ -628,7 +627,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Gender */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en" ? "Gender" : "लिङ्ग"} *
+                  {currentLanguage === "en" ? "Gender" : "लिङ्ग"} *
                 </label>
                 <select
                   required
@@ -639,18 +638,18 @@ const JobApplicationFormPage: React.FC = () => {
                   }
                 >
                   <option value="">
-                    {language === "en"
+                    {currentLanguage === "en"
                       ? "Select Gender"
                       : "लिङ्ग छान्नुहोस्"}
                   </option>
                   <option value="Male">
-                    {language === "en" ? "Male" : "पुरुष"}
+                    {currentLanguage === "en" ? "Male" : "पुरुष"}
                   </option>
                   <option value="Female">
-                    {language === "en" ? "Female" : "महिला"}
+                    {currentLanguage === "en" ? "Female" : "महिला"}
                   </option>
                   <option value="Other">
-                    {language === "en" ? "Other" : "अन्य"}
+                    {currentLanguage === "en" ? "Other" : "अन्य"}
                   </option>
                 </select>
               </div>
@@ -658,7 +657,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Ethnicity */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en" ? "Ethnicity" : "जातीयता"} *
+                  {currentLanguage === "en" ? "Ethnicity" : "जातीयता"} *
                 </label>
                 <input
                   type="text"
@@ -678,7 +677,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Mother Language */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en" ? "Mother Language" : "मातृभाषा"} *
+                  {currentLanguage === "en" ? "Mother Language" : "मातृभाषा"} *
                 </label>
                 <input
                   type="text"
@@ -698,7 +697,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Citizenship Number */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en"
+                  {currentLanguage === "en"
                     ? "Citizenship Number"
                     : "नागरिकता नम्बर"}{" "}
                   *
@@ -721,7 +720,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Citizenship Issued District */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en"
+                  {currentLanguage === "en"
                     ? "Citizenship Issued District"
                     : "नागरिकता जारी जिल्ला"}{" "}
                   *
@@ -744,7 +743,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Citizenship Issued Date */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en"
+                  {currentLanguage === "en"
                     ? "Citizenship Issued Date"
                     : "नागरिकता जारी मिति"}{" "}
                   *
@@ -767,7 +766,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Has Personal Vehicle */}
               <div className="col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en"
+                  {currentLanguage === "en"
                     ? "Do you have a personal vehicle?"
                     : "के तपाईंसँग व्यक्तिगत सवारी साधन छ?"}
                 </label>
@@ -785,7 +784,7 @@ const JobApplicationFormPage: React.FC = () => {
                     }
                   />
                   <span className="text-sm text-gray-700">
-                    {language === "en" ? "Yes" : "हो"}
+                    {currentLanguage === "en" ? "Yes" : "हो"}
                   </span>
                 </div>
               </div>
@@ -794,7 +793,7 @@ const JobApplicationFormPage: React.FC = () => {
               {formData.personalInfo.hasPersonalVehicle && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === "en"
+                    {currentLanguage === "en"
                       ? "License Number"
                       : "लाइसेन्स नम्बर"}{" "}
                     *
@@ -819,7 +818,7 @@ const JobApplicationFormPage: React.FC = () => {
               {formData.personalInfo.hasPersonalVehicle && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {language === "en"
+                    {currentLanguage === "en"
                       ? "Vehicle Type"
                       : "सवारी साधनको प्रकार"}{" "}
                     *
@@ -841,7 +840,7 @@ const JobApplicationFormPage: React.FC = () => {
                         }
                       />
                       <span className="text-sm text-gray-700">
-                        {language === "en"
+                        {currentLanguage === "en"
                           ? "Two Wheeler"
                           : "दुई पाङ्ग्रे"}
                       </span>
@@ -862,7 +861,7 @@ const JobApplicationFormPage: React.FC = () => {
                         }
                       />
                       <span className="text-sm text-gray-700">
-                        {language === "en"
+                        {currentLanguage === "en"
                           ? "Four Wheeler"
                           : "चार पाङ्ग्रे"}
                       </span>
@@ -881,7 +880,7 @@ const JobApplicationFormPage: React.FC = () => {
             id={glbId("career", "form", "contact-info")}
           >
             <h3 className="text-xl font-bold text-gray-900 mb-4">
-              {language === "en"
+              {currentLanguage === "en"
                 ? "Personal Information and Address"
                 : "व्यक्तिगत जानकारी र ठेगाना"}
             </h3>
@@ -889,7 +888,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Mobile Number */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en" ? "Mobile Number" : "मोबाइल नम्बर"}{" "}
+                  {currentLanguage === "en" ? "Mobile Number" : "मोबाइल नम्बर"}{" "}
                   *
                 </label>
                 <input
@@ -906,7 +905,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Email */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en" ? "Email Address" : "इमेल ठेगाना"} *
+                  {currentLanguage === "en" ? "Email Address" : "इमेल ठेगाना"} *
                 </label>
                 <input
                   type="email"
@@ -922,14 +921,14 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Permanent Address */}
               <div className="col-span-2">
                 <h4 className="text-lg font-semibold text-gray-800 mb-2">
-                  {language === "en"
+                  {currentLanguage === "en"
                     ? "Permanent Address (as per Citizenship)"
                     : "स्थायी ठेगाना (नागरिकता अनुसार)"}
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en" ? "District" : "जिल्ला"} *
+                      {currentLanguage === "en" ? "District" : "जिल्ला"} *
                     </label>
                     <input
                       type="text"
@@ -947,7 +946,7 @@ const JobApplicationFormPage: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en"
+                      {currentLanguage === "en"
                         ? "VDC/Municipality/Metropolitan"
                         : "गाउँ/नगरपालिका/महानगरपालिका"}{" "}
                       *
@@ -968,7 +967,7 @@ const JobApplicationFormPage: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en" ? "Ward No." : "वडा नम्बर"} *
+                      {currentLanguage === "en" ? "Ward No." : "वडा नम्बर"} *
                     </label>
                     <input
                       type="number"
@@ -986,7 +985,7 @@ const JobApplicationFormPage: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en" ? "Village" : "गाउँ"} *
+                      {currentLanguage === "en" ? "Village" : "गाउँ"} *
                     </label>
                     <input
                       type="text"
@@ -1008,14 +1007,14 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Recent Permanent Address */}
               <div className="col-span-2">
                 <h4 className="text-lg font-semibold text-gray-800 mb-2">
-                  {language === "en"
+                  {currentLanguage === "en"
                     ? "Recent Permanent Address"
                     : "हालको स्थायी ठेगाना"}
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en" ? "District" : "जिल्ला"} *
+                      {currentLanguage === "en" ? "District" : "जिल्ला"} *
                     </label>
                     <input
                       type="text"
@@ -1033,7 +1032,7 @@ const JobApplicationFormPage: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en"
+                      {currentLanguage === "en"
                         ? "VDC/Municipality/Metropolitan"
                         : "गाउँ/नगरपालिका/महानगरपालिका"}{" "}
                       *
@@ -1056,7 +1055,7 @@ const JobApplicationFormPage: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en" ? "Ward No." : "वडा नम्बर"} *
+                      {currentLanguage === "en" ? "Ward No." : "वडा नम्बर"} *
                     </label>
                     <input
                       type="number"
@@ -1074,7 +1073,7 @@ const JobApplicationFormPage: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en" ? "Village" : "गाउँ"} *
+                      {currentLanguage === "en" ? "Village" : "गाउँ"} *
                     </label>
                     <input
                       type="text"
@@ -1096,12 +1095,12 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Recent Address */}
               <div className="col-span-2">
                 <h4 className="text-lg font-semibold text-gray-800 mb-2">
-                  {language === "en" ? "Recent Address" : "हालको ठेगाना"}
+                  {currentLanguage === "en" ? "Recent Address" : "हालको ठेगाना"}
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en" ? "District" : "जिल्ला"} *
+                      {currentLanguage === "en" ? "District" : "जिल्ला"} *
                     </label>
                     <input
                       type="text"
@@ -1119,7 +1118,7 @@ const JobApplicationFormPage: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en"
+                      {currentLanguage === "en"
                         ? "VDC/Municipality/Metropolitan"
                         : "गाउँ/नगरपालिका/महानगरपालिका"}{" "}
                       *
@@ -1140,7 +1139,7 @@ const JobApplicationFormPage: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en" ? "Ward No." : "वडा नम्बर"} *
+                      {currentLanguage === "en" ? "Ward No." : "वडा नम्बर"} *
                     </label>
                     <input
                       type="number"
@@ -1158,7 +1157,7 @@ const JobApplicationFormPage: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en" ? "Village" : "गाउँ"} *
+                      {currentLanguage === "en" ? "Village" : "गाउँ"} *
                     </label>
                     <input
                       type="text"
@@ -1184,7 +1183,7 @@ const JobApplicationFormPage: React.FC = () => {
         return (
           <div className="space-y-6" id={glbId("career", "form", "job")}>
             <h3 className="text-xl font-bold text-gray-900 mb-4">
-              {language === "en"
+              {currentLanguage === "en"
                 ? "Training background"
                 : "प्रशिक्षण सम्बन्धी जानकारी"}
             </h3>
@@ -1196,7 +1195,7 @@ const JobApplicationFormPage: React.FC = () => {
               >
                 <div className="flex justify-between items-center mb-4">
                   <h4 className="text-lg font-semibold text-gray-800">
-                    {language === "en"
+                    {currentLanguage === "en"
                       ? `Training ${index + 1}`
                       : `प्रशिक्षण ${index + 1}`}
                   </h4>
@@ -1206,7 +1205,7 @@ const JobApplicationFormPage: React.FC = () => {
                       onClick={() => removeTrainingEntry(index)}
                       className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
                     >
-                      {language === "en" ? "Remove" : "हटाउनुहोस्"}
+                      {currentLanguage === "en" ? "Remove" : "हटाउनुहोस्"}
                     </button>
                   )}
                 </div>
@@ -1215,7 +1214,7 @@ const JobApplicationFormPage: React.FC = () => {
                   {/* Training name */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en"
+                      {currentLanguage === "en"
                         ? "Training name"
                         : "प्रशिक्षण नाम"}{" "}
                       *
@@ -1238,7 +1237,7 @@ const JobApplicationFormPage: React.FC = () => {
                   {/* Training institution */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en" ? "Institution" : "संस्था"} *
+                      {currentLanguage === "en" ? "Institution" : "संस्था"} *
                     </label>
                     <input
                       type="text"
@@ -1258,7 +1257,7 @@ const JobApplicationFormPage: React.FC = () => {
                   {/* Training duration */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en"
+                      {currentLanguage === "en"
                         ? "Training Duration"
                         : "प्रशिक्षण अवधि"}{" "}
                       *
@@ -1283,7 +1282,7 @@ const JobApplicationFormPage: React.FC = () => {
                 onClick={addTrainingEntry}
                 className="px-6 py-2 bg-glb-primary-500 text-white rounded-lg hover:bg-glb-primary-600 transition font-medium"
               >
-                {language === "en"
+                {currentLanguage === "en"
                   ? "+ Add Another Training"
                   : "+ अर्को प्रशिक्षण थप्नुहोस्"}
               </button>
@@ -1291,7 +1290,7 @@ const JobApplicationFormPage: React.FC = () => {
 
             {formData.training.length === 3 && (
               <div className="p-4 bg-blue-100 border border-blue-300 rounded-lg text-blue-800">
-                {language === "en"
+                {currentLanguage === "en"
                   ? "Maximum 3 trainings allowed"
                   : "अधिकतम ३ प्रशिक्षण अनुमति दिइएको छ"}
               </div>
@@ -1303,13 +1302,13 @@ const JobApplicationFormPage: React.FC = () => {
         return (
           <div className="space-y-6" id={glbId("career", "form", "job")}>
             <h3 className="text-xl font-bold text-gray-900 mb-4">
-              {language === "en" ? "Job Information" : "जागिरको जानकारी"}
+              {currentLanguage === "en" ? "Job Information" : "जागिरको जानकारी"}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Advertisement Published Date */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en"
+                  {currentLanguage === "en"
                     ? "Advertisement Published Date"
                     : "विज्ञापन प्रकाशित मिति"}{" "}
                   *
@@ -1332,7 +1331,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Advertisement Number */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en"
+                  {currentLanguage === "en"
                     ? "Advertisement Number"
                     : "विज्ञापन नम्बर"}{" "}
                   *
@@ -1355,14 +1354,14 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Desired Position */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en" ? "Desired Position" : "चाहिएको पद"}{" "}
+                  {currentLanguage === "en" ? "Desired Position" : "चाहिएको पद"}{" "}
                   *
                 </label>
                 <input
                   type="text"
                   required
                   placeholder={
-                    language === "en"
+                    currentLanguage === "en"
                       ? "Enter desired position"
                       : "चाहिएको पद प्रविष्ट गर्नुहोस्"
                   }
@@ -1381,7 +1380,7 @@ const JobApplicationFormPage: React.FC = () => {
         return (
           <div className="space-y-6" id={glbId("career", "form", "education")}>
             <h3 className="text-xl font-bold text-gray-900 mb-4">
-              {language === "en"
+              {currentLanguage === "en"
                 ? "Educational Background"
                 : "शैक्षिक पृष्ठभूमि"}
             </h3>
@@ -1393,7 +1392,7 @@ const JobApplicationFormPage: React.FC = () => {
               >
                 <div className="flex justify-between items-center mb-4">
                   <h4 className="text-lg font-semibold text-gray-800">
-                    {language === "en"
+                    {currentLanguage === "en"
                       ? `Education ${index + 1}`
                       : `शिक्षा ${index + 1}`}
                   </h4>
@@ -1403,7 +1402,7 @@ const JobApplicationFormPage: React.FC = () => {
                       onClick={() => removeEducationEntry(index)}
                       className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
                     >
-                      {language === "en" ? "Remove" : "हटाउनुहोस्"}
+                      {currentLanguage === "en" ? "Remove" : "हटाउनुहोस्"}
                     </button>
                   )}
                 </div>
@@ -1411,7 +1410,7 @@ const JobApplicationFormPage: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en"
+                      {currentLanguage === "en"
                         ? "Highest Degree"
                         : "उच्चतम डिग्री"}{" "}
                       *
@@ -1429,7 +1428,7 @@ const JobApplicationFormPage: React.FC = () => {
                       }
                     >
                       <option value="">
-                        {language === "en"
+                        {currentLanguage === "en"
                           ? "Select Degree"
                           : "डिग्री छान्नुहोस्"}
                       </option>
@@ -1442,7 +1441,7 @@ const JobApplicationFormPage: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en"
+                      {currentLanguage === "en"
                         ? "University"
                         : "विश्वविद्यालय"}{" "}
                       *
@@ -1463,7 +1462,7 @@ const JobApplicationFormPage: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en"
+                      {currentLanguage === "en"
                         ? "Organization name"
                         : "संस्था"}{" "}
                       *
@@ -1484,7 +1483,7 @@ const JobApplicationFormPage: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en"
+                      {currentLanguage === "en"
                         ? "Graduation Year"
                         : "स्नातक वर्ष"}{" "}
                       *
@@ -1507,7 +1506,7 @@ const JobApplicationFormPage: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en"
+                      {currentLanguage === "en"
                         ? "Major Subject/Field of Study"
                         : "प्रमुख विषय/अध्ययन क्षेत्र"}{" "}
                       *
@@ -1528,7 +1527,7 @@ const JobApplicationFormPage: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en"
+                      {currentLanguage === "en"
                         ? "Grade/Percentage"
                         : "ग्रेड/प्रतिशत"}{" "}
                       *
@@ -1537,7 +1536,7 @@ const JobApplicationFormPage: React.FC = () => {
                       type="text"
                       required
                       placeholder={
-                        language === "en"
+                        currentLanguage === "en"
                           ? "A/3.5 GPA/75%"
                           : "A/३.५ GPA/७५%"
                       }
@@ -1558,7 +1557,7 @@ const JobApplicationFormPage: React.FC = () => {
                 onClick={addEducationEntry}
                 className="px-6 py-2 bg-glb-primary-500 text-white rounded-lg hover:bg-glb-primary-600 transition font-medium"
               >
-                {language === "en"
+                {currentLanguage === "en"
                   ? "+ Add Another Education"
                   : "+ अर्को शिक्षा थप्नुहोस्"}
               </button>
@@ -1566,7 +1565,7 @@ const JobApplicationFormPage: React.FC = () => {
 
             {formData.education.length === 4 && (
               <div className="p-4 bg-blue-100 border border-blue-300 rounded-lg text-blue-800">
-                {language === "en"
+                {currentLanguage === "en"
                   ? "Maximum 4 educations allowed"
                   : "अधिकतम ४ शिक्षा अनुमति दिइएको छ"}
               </div>
@@ -1577,7 +1576,7 @@ const JobApplicationFormPage: React.FC = () => {
         return (
           <div className="space-y-6" id={glbId("career", "form", "experience")}>
             <h3 className="text-xl font-bold text-gray-900 mb-4">
-              {language === "en" ? "Work Experience" : "कार्य अनुभव"}
+              {currentLanguage === "en" ? "Work Experience" : "कार्य अनुभव"}
             </h3>
 
             {formData.experience.map((exp, index) => (
@@ -1587,7 +1586,7 @@ const JobApplicationFormPage: React.FC = () => {
               >
                 <div className="flex justify-between items-center mb-4">
                   <h4 className="text-lg font-semibold text-gray-800">
-                    {language === "en"
+                    {currentLanguage === "en"
                       ? `Experience ${index + 1}`
                       : `अनुभव ${index + 1}`}
                   </h4>
@@ -1597,7 +1596,7 @@ const JobApplicationFormPage: React.FC = () => {
                       onClick={() => removeExperienceEntry(index)}
                       className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
                     >
-                      {language === "en" ? "Remove" : "हटाउनुहोस्"}
+                      {currentLanguage === "en" ? "Remove" : "हटाउनुहोस्"}
                     </button>
                   )}
                 </div>
@@ -1605,7 +1604,7 @@ const JobApplicationFormPage: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en"
+                      {currentLanguage === "en"
                         ? "Total Experience"
                         : "कुल अनुभव"}{" "}
                       *
@@ -1623,7 +1622,7 @@ const JobApplicationFormPage: React.FC = () => {
                       }
                     >
                       <option value="">
-                        {language === "en"
+                        {currentLanguage === "en"
                           ? "Select Experience"
                           : "अनुभव छान्नुहोस्"}
                       </option>
@@ -1637,7 +1636,7 @@ const JobApplicationFormPage: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en"
+                      {currentLanguage === "en"
                         ? "Current Position"
                         : "हालको पद"}
                     </label>
@@ -1656,7 +1655,7 @@ const JobApplicationFormPage: React.FC = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en"
+                      {currentLanguage === "en"
                         ? "Current Company"
                         : "हालको कम्पनी"}
                     </label>
@@ -1675,7 +1674,7 @@ const JobApplicationFormPage: React.FC = () => {
                   </div>
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      {language === "en"
+                      {currentLanguage === "en"
                         ? "Relevant Skills"
                         : "सान्दर्भिक सीपहरू"}{" "}
                       *
@@ -1684,7 +1683,7 @@ const JobApplicationFormPage: React.FC = () => {
                       required
                       rows={4}
                       placeholder={
-                        language === "en"
+                        currentLanguage === "en"
                           ? "List your relevant skills, certifications, and competencies..."
                           : "तपाईंका सान्दर्भिक सीपहरू, प्रमाणपत्रहरू, र दक्षताहरू सूचीबद्ध गर्नुहोस्..."
                       }
@@ -1709,7 +1708,7 @@ const JobApplicationFormPage: React.FC = () => {
                 onClick={addExperienceEntry}
                 className="px-6 py-2 bg-glb-primary-500 text-white rounded-lg hover:bg-glb-primary-600 transition font-medium"
               >
-                {language === "en"
+                {currentLanguage === "en"
                   ? "+ Add Another Experience"
                   : "+ अर्को अनुभव थप्नुहोस्"}
               </button>
@@ -1717,7 +1716,7 @@ const JobApplicationFormPage: React.FC = () => {
 
             {formData.experience.length === 3 && (
               <div className="p-4 bg-blue-100 border border-blue-300 rounded-lg text-blue-800">
-                {language === "en"
+                {currentLanguage === "en"
                   ? "Maximum 3 experiences allowed"
                   : "अधिकतम ३ अनुभव अनुमति दिइएको छ"}
               </div>
@@ -1729,13 +1728,13 @@ const JobApplicationFormPage: React.FC = () => {
         return (
           <div className="space-y-6" id={glbId("career", "form", "documents")}>
             <h3 className="text-xl font-bold text-gray-900 mb-4">
-              {language === "en" ? "Document Upload" : "कागजात अपलोड"}
+              {currentLanguage === "en" ? "Document Upload" : "कागजात अपलोड"}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Resume/CV */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en" ? "Resume/CV" : "बायोडाटा"} *
+                  {currentLanguage === "en" ? "Resume/CV" : "बायोडाटा"} *
                 </label>
                 <input
                   type="file"
@@ -1754,7 +1753,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Cover Letter */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en" ? "Cover Letter" : "कभर लेटर"}
+                  {currentLanguage === "en" ? "Cover Letter" : "कभर लेटर"}
                 </label>
                 <input
                   type="file"
@@ -1772,12 +1771,14 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Educational Certificates */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en"
+                  {currentLanguage === "en"
                     ? "Educational Certificates"
-                    : "शैक्षिक प्रमाणपत्रहरू"}
+                    : "शैक्षिक प्रमाणपत्रहरू"}{" "}
+                  *
                 </label>
                 <input
                   type="file"
+                  required
                   accept=".pdf,.jpg,.jpeg,.png"
                   multiple
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-glb-primary-500 focus:border-glb-primary-500"
@@ -1796,7 +1797,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Passport Photo */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en"
+                  {currentLanguage === "en"
                     ? "Passport Photo"
                     : "पासपोर्ट साइज फोटो"}{" "}
                   *
@@ -1816,7 +1817,7 @@ const JobApplicationFormPage: React.FC = () => {
               {/* Signature */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en" ? "Signature" : "हस्ताक्षर"} *
+                  {currentLanguage === "en" ? "Signature" : "हस्ताक्षर"} *
                 </label>
                 <input
                   type="file"
@@ -1828,7 +1829,7 @@ const JobApplicationFormPage: React.FC = () => {
                   }
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  {language === "en"
+                  {currentLanguage === "en"
                     ? "JPG, PNG (Max 2MB)"
                     : "JPG, PNG (अधिकतम २MB)"}
                 </p>
@@ -1837,7 +1838,7 @@ const JobApplicationFormPage: React.FC = () => {
                {/* Signature date */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {language === "en" ? "Signature Date" : "हस्ताक्षर मिति"} *
+                  {currentLanguage === "en" ? "Signature Date" : "हस्ताक्षर मिति"} *
                 </label>
                 <input
                   type="date"
@@ -1858,26 +1859,26 @@ const JobApplicationFormPage: React.FC = () => {
             {/* Important Notes */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <h4 className="font-medium text-blue-900 mb-2">
-                {language === "en"
+                {currentLanguage === "en"
                   ? "Important Notes:"
                   : "महत्वपूर्ण नोटहरू:"}
               </h4>
               <ul className="text-sm text-blue-800 space-y-1">
                 <li>
                   •{" "}
-                  {language === "en"
+                  {currentLanguage === "en"
                     ? "All documents must be clear and readable"
                     : "सबै कागजातहरू स्पष्ट र पढ्न योग्य हुनुपर्छ"}
                 </li>
                 <li>
                   •{" "}
-                  {language === "en"
+                  {currentLanguage === "en"
                     ? "File sizes must not exceed specified limits"
                     : "फाइल साइजहरू निर्दिष्ट सीमा भन्दा बढी हुनु हुँदैन"}
                 </li>
                 <li>
                   •{" "}
-                  {language === "en"
+                  {currentLanguage === "en"
                     ? "Only shortlisted candidates will be contacted"
                     : "छनोट भएका उम्मेदवारहरूलाई मात्र सम्पर्क गरिनेछ"}
                 </li>
@@ -1898,7 +1899,7 @@ const JobApplicationFormPage: React.FC = () => {
     >
       {/* Hero Section */}
       <section
-        className="bg-gradient-to-r from-glb-primary-600 to-glb-secondary-600 text-black py-20"
+        className="bg-gradient-to-r from-glb-primary-600 to-glb-secondary-600 text-white py-20"
         id={glbId("career", "form", "hero")}
       >
         <div className="container mx-auto px-4 text-center">
@@ -1906,15 +1907,15 @@ const JobApplicationFormPage: React.FC = () => {
             className="text-4xl md:text-5xl font-bold mb-6"
             id={glbId("career", "form", "title")}
           >
-            {language === "en"
+            {currentLanguage === "en"
               ? "Job Application Form"
               : "जागिर आवेदन फारम"}
           </h1>
           <p
-            className="text-xl text-black max-w-3xl mx-auto"
+            className="text-xl text-glb-primary-100 max-w-3xl mx-auto"
             id={glbId("career", "form", "subtitle")}
           >
-            {language === "en"
+            {currentLanguage === "en"
               ? "Complete the form below to apply for available positions at Gurans Laghubitta"
               : "गुराँस लघुवित्तमा उपलब्ध पदहरूका लागि आवेदन दिन तलको फारम भर्नुहोस्"}
           </p>
@@ -1927,17 +1928,41 @@ const JobApplicationFormPage: React.FC = () => {
         id={glbId("career", "form", "progress")}
       >
         <div className="container mx-auto px-4">
-          <div className="text-center">
+          <div className="flex items-center justify-center">
+            {Array.from({ length: totalSteps }, (_, index) => (
+              <div key={index} className="flex items-center">
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                    index + 1 <= currentStep
+                      ? "bg-glb-primary-600 text-white"
+                      : "bg-gray-300 text-gray-600"
+                  }`}
+                >
+                  {index + 1}
+                </div>
+                {index < totalSteps - 1 && (
+                  <div
+                    className={`w-12 h-0.5 mx-2 ${
+                      index + 1 < currentStep
+                        ? "bg-glb-primary-600"
+                        : "bg-gray-300"
+                    }`}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-4">
             <p className="text-sm text-gray-600">
-              {language === "en" ? "Step" : "चरण"} {currentStep}{" "}
-              {language === "en" ? "of" : "को"} {totalSteps}
+              {currentLanguage === "en" ? "Step" : "चरण"} {currentStep}{" "}
+              {currentLanguage === "en" ? "of" : "को"} {totalSteps}
             </p>
           </div>
         </div>
       </section>
 
       {/* Form Content */}
-      <section className="py-8" id={glbId("career", "form", "content")}>
+      <section className="py-20" id={glbId("career", "form", "content")}>
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <form onSubmit={handleSubmit}>
@@ -1949,44 +1974,87 @@ const JobApplicationFormPage: React.FC = () => {
                   type="button"
                   onClick={handlePrevious}
                   disabled={currentStep === 1}
-                  className={`px-6 py-2 rounded-md font-medium transition-colors duration-300 ${
+                  className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
                     currentStep === 1
                       ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                      : "bg-green-600 text-white hover:bg-green-700"
+                      : "bg-gray-500 text-white hover:bg-gray-600"
                   }`}
                 >
-                  {language === "en" ? "Previous" : "अघिल्लो"}
+                  {currentLanguage === "en" ? "Previous" : "अघिल्लो"}
                 </button>
 
                 {currentStep < totalSteps ? (
                   <button
                     type="button"
                     onClick={handleNext}
-                    className="px-6 py-2 bg-khaki text-white rounded-md font-medium hover:bg-opacity-90 transition-colors duration-300"
+                    className="px-6 py-3 bg-glb-primary-600 text-white rounded-lg font-semibold hover:bg-glb-primary-700 transition-colors"
                   >
-                    {language === "en" ? "Next" : "अर्को"}
+                    {currentLanguage === "en" ? "Next" : "अर्को"}
                   </button>
                 ) : (
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className={`px-6 py-2 rounded-md font-medium transition-colors duration-300 ${
+                    className={`px-8 py-3 rounded-lg font-semibold transition-colors ${
                       isSubmitting
                         ? "bg-gray-400 text-gray-600 cursor-not-allowed"
-                        : "bg-green-600 text-white hover:bg-green-700"
+                        : "bg-glb-secondary-600 text-white hover:bg-glb-secondary-700"
                     }`}
                   >
                     {isSubmitting
-                      ? language === "en"
+                      ? currentLanguage === "en"
                         ? "Submitting..."
                         : "पेश गर्दै..."
-                      : language === "en"
+                      : currentLanguage === "en"
                       ? "Submit Application"
                       : "आवेदन पेश गर्नुहोस्"}
                   </button>
                 )}
               </div>
             </form>
+          </div>
+        </div>
+      </section>
+
+      {/* Help Section */}
+      <section
+        className="py-16 bg-gray-50"
+        id={glbId("career", "form", "help")}
+      >
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              {currentLanguage === "en" ? "Need Help?" : "मद्दत चाहिन्छ?"}
+            </h2>
+            <p className="text-gray-700 max-w-2xl mx-auto">
+              {currentLanguage === "en"
+                ? "If you have any questions about the application process, please contact our HR department."
+                : "यदि तपाईंलाई आवेदन प्रक्रियाको बारेमा कुनै प्रश्न छ भने, कृपया हाम्रो मानव संसाधन विभागमा सम्पर्क गर्नुहोस्।"}
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <div className="bg-white p-6 rounded-lg shadow-lg border text-center">
+              <div className="w-12 h-12 bg-glb-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-glb-primary-600 text-xl">📞</span>
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                {currentLanguage === "en" ? "Phone Support" : "फोन सहयोग"}
+              </h3>
+              <p className="text-gray-600 text-sm">+977-25-581234</p>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow-lg border text-center">
+              <div className="w-12 h-12 bg-glb-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-glb-primary-600 text-xl">📧</span>
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                {currentLanguage === "en" ? "Email Support" : "इमेल सहयोग"}
+              </h3>
+              <p className="text-gray-600 text-sm">
+                hr@guranslaghubitta.com.np
+              </p>
+            </div>
           </div>
         </div>
       </section>
