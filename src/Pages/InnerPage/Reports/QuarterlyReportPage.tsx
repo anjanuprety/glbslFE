@@ -102,7 +102,7 @@ const QuarterlyReportPage: React.FC = () => {
     const fetchQuarterlyReports = async () => {
       try {
         setLoading(true);
-        const response = await reportsService.getAllReports();
+        const response = await reportsService.getReportsByType('quarterly');
         setReports(response.data || []);
       } catch (err) {
         setError('Failed to load quarterly reports');
