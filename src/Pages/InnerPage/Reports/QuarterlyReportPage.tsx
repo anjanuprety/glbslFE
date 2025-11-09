@@ -102,7 +102,7 @@ const QuarterlyReportPage: React.FC = () => {
     const fetchQuarterlyReports = async () => {
       try {
         setLoading(true);
-        const response = await reportsService.getAllReports();
+        const response = await reportsService.getReportsByType('quarterly');
         setReports(response.data || []);
       } catch (err) {
         setError('Failed to load quarterly reports');
@@ -309,11 +309,36 @@ const QuarterlyReportPage: React.FC = () => {
                         <BsDownload className="w-3 h-3 mr-1" />
                         Download
                       </button>
+                      <button
+                        onClick={() => handleShare(report)}
+                        className="flex items-center justify-center text-[13px] leading-[32px] bg-blue-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
+                        title="Share Report"
+                      >
+                        <BsShare className="w-3 h-3" />
+                      </button>
                     </div>
                   </div>
                   <div className="font-Garamond">
                     <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242]  border-t-0">
                       <div className="py-6 px-[30px]">
+                        {report.featured && (
+                          <div className="mb-2">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-khaki text-white">
+                              Featured
+                            </span>
+                          </div>
+                        )}
+                        {hasReportFile(report) && (
+                          <div className="mb-2">
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                              report.File_Source === 'Google_Drive' 
+                                ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' 
+                                : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                            }`}>
+                              {report.File_Source === 'Google_Drive' ? '📂 Google Drive' : '📁 Direct Upload'}
+                            </span>
+                          </div>
+                        )}
                         <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
                           {getQuarterDisplay(report)}
                         </h4>

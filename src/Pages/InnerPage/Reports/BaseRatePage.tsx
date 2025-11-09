@@ -1,122 +1,138 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import BreadCrumb from "../../../BreadCrumb/BreadCrumb";
 import { BsDownload, BsEye, BsShare } from "react-icons/bs";
 import { HiArrowLongLeft } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import PDFPreview from "../../../Components/Reports/PDFPreview";
+import PDFViewer from "../../../Components/Reports/PDFViewer";
+import { reportsService, googleDriveHelpers } from "../../../services/strapi";
+
+// TypeScript interface for Report from Strapi v5 API with Hybrid Upload Support
+interface StrapiReport {
+  id: number;
+  documentId: string;
+  title: string;
+  slug: string;
+  description?: string;
+  reportType?: string;
+  publishDate?: string;
+  fiscalYear?: string;
+  // NEW HYBRID UPLOAD FIELDS
+  File_Source?: "Upload" | "Google_Drive";
+  Uploaded_File?: {
+    url: string;
+    name: string;
+    size: number;
+    mime: string;
+  };
+  // EXISTING GOOGLE DRIVE FIELDS (still present for backwards compatibility)
+  file_Id?: string;
+  fileName?: string;
+}
 
 const BaseRatePage: React.FC = () => {
-  // Sample base rate documents data - in real implementation, this would come from Strapi CMS
-  const rateDocuments = [
-    {
-      id: 1,
-      title: "Interest Rate Schedule January 2025",
-      description: "Updated interest rates for all loan and deposit products",
-      effectiveDate: "January 1, 2025",
-      publishDate: "December 2024",
-      fileSize: "0.8 MB",
-      pdfUrl: "/reports/rates-jan-2025.pdf", // This would be the actual file URL from Strapi/Google Drive
-      baseRate: "12.5%",
-      category: "Current Rates"
-    },
-    {
-      id: 2,
-      title: "Base Rate Revision Notice December 2024", 
-      description: "Quarterly base rate revision and announcement",
-      effectiveDate: "December 15, 2024",
-      publishDate: "December 2024",
-      fileSize: "0.5 MB",
-      pdfUrl: "/reports/base-rate-dec-2024.pdf",
-      baseRate: "12.0%",
-      category: "Rate Revision"
-    },
-    {
-      id: 3,
-      title: "Interest Rate Schedule October 2024",
-      description: "Revised interest rates following NRB directives", 
-      effectiveDate: "October 1, 2024",
-      publishDate: "September 2024",
-      fileSize: "0.9 MB",
-      pdfUrl: "/reports/rates-oct-2024.pdf",
-      baseRate: "11.8%",
-      category: "Historical Rates"
-    },
-    {
-      id: 4,
-      title: "Special Rate Notification July 2024",
-      description: "Special interest rates for agricultural loans",
-      effectiveDate: "July 15, 2024", 
-      publishDate: "July 2024",
-      fileSize: "0.6 MB",
-      pdfUrl: "/reports/special-rates-jul-2024.pdf",
-      baseRate: "11.5%",
-      category: "Special Rates"
-    },
-    {
-      id: 5,
-      title: "Interest Rate Schedule April 2024",
-      description: "Quarterly interest rate update and changes",
-      effectiveDate: "April 1, 2024",
-      publishDate: "March 2024",
-      fileSize: "0.8 MB", 
-      pdfUrl: "/reports/rates-apr-2024.pdf",
-      baseRate: "11.2%",
-      category: "Historical Rates"
-    },
-    {
-      id: 6,
-      title: "Base Rate Policy Document 2024",
-      description: "Annual base rate methodology and policy framework",
-      effectiveDate: "January 1, 2024",
-      publishDate: "December 2023",
-      fileSize: "1.2 MB",
-      pdfUrl: "/reports/base-rate-policy-2024.pdf",
-      baseRate: "11.0%",
-      category: "Policy Document"
+  const [reports, setReports] = useState<StrapiReport[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [selectedReport, setSelectedReport] = useState<StrapiReport | null>(null);
+
+  useEffect(() => {
+    const fetchBaseRateReports = async () => {
+      try {
+        setLoading(true);
+        const response = await reportsService.getReportsByType('base-rate');
+        setReports(response.data || []);
+      } catch (err) {
+        setError('Failed to load base rate reports');
+        console.error('Error fetching base rate reports:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBaseRateReports();
+  }, []);
+
+  // HELPER: Get file URL based on source (Google Drive or Direct Upload)
+  const getReportFileUrl = (report: StrapiReport): string | null => {
+    if (report.File_Source === 'Google_Drive' && report.file_Id) {
+      return `https://drive.google.com/file/d/${report.file_Id}/view`;
+    } else if (report.File_Source === 'Upload' && report.Uploaded_File?.url) {
+      return report.Uploaded_File.url;
     }
-  ];
-
-  const handleDownload = (document: typeof rateDocuments[0]) => {
-    // Demo implementation - in real app, this would download from Strapi/Google Drive
-    alert(`Demo: Downloading ${document.title}`);
+    return null;
   };
 
-  const handleView = (document: typeof rateDocuments[0]) => {
-    // Demo implementation - in real app, this would open PDF in new tab
-    alert(`Demo: Opening ${document.title} for viewing`);
+  // HELPER: Determine download URL based on File_Source
+  const getReportDownloadUrl = (report: StrapiReport): string | null => {
+    if (report.File_Source === "Upload" && report.Uploaded_File?.url) {
+      return report.Uploaded_File.url;
+    } else if (report.File_Source === "Google_Drive" && report.file_Id) {
+      return googleDriveHelpers.getDownloadUrl(report.file_Id);
+    }
+    return null;
   };
 
-  const handleShare = async (document: typeof rateDocuments[0]) => {
-    // Demo implementation for sharing specific document
+  // HELPER: Get file name for download
+  const getReportFileName = (report: StrapiReport): string => {
+    if (report.File_Source === "Upload" && report.Uploaded_File?.name) {
+      return report.Uploaded_File.name;
+    } else if (report.File_Source === "Google_Drive" && report.fileName) {
+      return report.fileName;
+    }
+    return `${report.title}.pdf`;
+  };
+
+  // HELPER: Get file size display
+  const getFileSize = (report: StrapiReport): string => {
+    if (report.File_Source === "Upload" && report.Uploaded_File?.size) {
+      const sizeInMB = (report.Uploaded_File.size / (1024 * 1024)).toFixed(2);
+      return `${sizeInMB} MB`;
+    }
+    return "N/A";
+  };
+
+  const handleDownload = async (report: StrapiReport) => {
+    try {
+      const downloadUrl = getReportDownloadUrl(report);
+      if (downloadUrl) {
+        window.open(downloadUrl, '_blank');
+        alert(`Downloading ${getReportFileName(report)}`);
+      } else {
+        alert('No report file available for download.');
+      }
+    } catch (error) {
+      console.error('Error downloading report:', error);
+      alert('Failed to download the report. Please try again.');
+    }
+  };
+
+  const handleView = (report: StrapiReport) => {
+    setSelectedReport(report);
+    setViewerOpen(true);
+  };
+
+  const handleShare = async (report: StrapiReport) => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `${document.title} - GLBSL`,
-          text: `Check out our ${document.title}`,
-          url: `${window.location.origin}/reports/base-rate/${document.id}`,
+          title: `${report.title} - GLBSL`,
+          text: `Check out our ${report.title}`,
+          url: `${window.location.origin}/reports/base-rate/${report.slug}`,
         });
       } catch (error) {
         console.log('Error sharing:', error);
-        alert(`Demo: ${document.title} link copied to clipboard!`);
+        alert(`${report.title} link copied to clipboard!`);
       }
     } else {
-      alert(`Demo: ${document.title} link copied to clipboard!`);
-    }
-  };
-
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case "Current Rates": return "bg-green-600";
-      case "Rate Revision": return "bg-blue-600";
-      case "Special Rates": return "bg-purple-600";
-      case "Policy Document": return "bg-orange-600";
-      default: return "bg-gray-600";
+      alert(`${report.title} link copied to clipboard!`);
     }
   };
 
   return (
     <section className="">
-      <BreadCrumb title="BASE RATES & INTEREST RATES" home={"/"} />
+      <BreadCrumb title="BASE RATE REPORTS" home={"/"} />
 
       <div className="bg-whiteSmoke dark:bg-lightBlack py-20 2xl:py-[120px]">
         <div className="Container">
@@ -128,7 +144,7 @@ const BaseRatePage: React.FC = () => {
           >
             <div className="text-center">
               <h1 className="text-xl sm:text-2xl md:text-3xl 2xl:text-[38px] leading-7 sm:leading-8 md:leading-9 lg:leading-[42px] 2xl:leading-[52px] text-lightBlack dark:text-white font-Garamond font-semibold capitalize">
-                Interest Rates & Base Rate Information
+                Base Rate Reports
               </h1>
               <div className="flex items-center justify-center text-center mx-auto mt-2 lg:mt-[6px]">
                 <div className="w-[100px] h-[1px] bg-[#ccc] dark:bg-[#3b3b3b] mr-5 "></div>
@@ -140,82 +156,125 @@ const BaseRatePage: React.FC = () => {
                 <div className="w-[100px] h-[1px] bg-[#ccc] dark:bg-[#3b3b3b] ml-5"></div>
               </div>
               <p className="text-center text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray font-Lora font-normal mt-[10px]">
-                Access current and historical interest rates, base rate revisions, and policy documents
+                Interest rate and base rate documentation
               </p>
             </div>
           </div>
 
-          {/* Documents Grid */}
-          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 pt-8">
-            {rateDocuments.map((document, index) => (
-              <div
-                key={document.id}
-                className="overflow-x-hidden 3xl:w-[410px] group"
-                data-aos="fade-up"
-                data-aos-duration={800 + (index * 200)}
-              >
-                <div className="relative">
-                  <div className="overflow-hidden">
-                    <PDFPreview title={document.title} description={document.description} />
-                  </div>
+          {/* Loading State */}
+          {loading && (
+            <div className="flex justify-center items-center py-20">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-khaki mx-auto"></div>
+                <p className="mt-4 text-gray dark:text-lightGray">Loading base rate reports...</p>
+              </div>
+            </div>
+          )}
 
-                  <div className="flex space-x-2 absolute bottom-2 -left-52 group-hover:left-2 transition-all duration-300">
-                    <button
-                      onClick={() => handleView(document)}
-                      className="flex items-center justify-center text-[13px] leading-[32px] bg-khaki px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
-                      title="View PDF"
-                    >
-                      <BsEye className="w-3 h-3 mr-1" />
-                      View
-                    </button>
-                    <button
-                      onClick={() => handleDownload(document)}
-                      className="flex items-center justify-center text-[13px] leading-[32px] bg-green-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
-                      title="Download PDF"
-                    >
-                      <BsDownload className="w-3 h-3 mr-1" />
-                      Download
-                    </button>
+          {/* Error State */}
+          {error && (
+            <div className="flex justify-center items-center py-20">
+              <div className="text-center">
+                <p className="text-red-500">{error}</p>
+                <button 
+                  onClick={() => window.location.reload()} 
+                  className="mt-4 px-6 py-2 bg-khaki text-white rounded hover:bg-opacity-90 transition-all duration-300"
+                >
+                  Retry
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* No Reports State */}
+          {!loading && !error && reports.length === 0 && (
+            <div className="flex justify-center items-center py-20">
+              <div className="text-center">
+                <p className="text-gray dark:text-lightGray">No base rate reports available at the moment.</p>
+              </div>
+            </div>
+          )}
+
+          {/* Reports Grid */}
+          {!loading && !error && reports.length > 0 && (
+            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 pt-16 2xl:pt-20">
+              {reports.map((report, index) => (
+                <div
+                  key={report.documentId}
+                  className="overflow-x-hidden 3xl:w-[410px] group"
+                  data-aos="fade-up"
+                  data-aos-duration={800 + (index * 200)}
+                >
+                  <div className="relative">
+                    <div className="overflow-hidden">
+                      <PDFPreview title={report.title} description={report.description || ''} />
+                    </div>
+
+                    <div className="flex space-x-2 absolute bottom-2 -left-52 group-hover:left-2 transition-all duration-300">
+                      <button
+                        onClick={() => handleView(report)}
+                        className="flex items-center justify-center text-[13px] leading-[32px] bg-khaki px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
+                        title="View PDF"
+                      >
+                        <BsEye className="w-3 h-3 mr-1" />
+                        View
+                      </button>
+                      <button
+                        onClick={() => handleDownload(report)}
+                        className="flex items-center justify-center text-[13px] leading-[32px] bg-green-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
+                        title="Download PDF"
+                      >
+                        <BsDownload className="w-3 h-3 mr-1" />
+                        Download
+                      </button>
+                      <button
+                        onClick={() => handleShare(report)}
+                        className="flex items-center justify-center text-[13px] leading-[32px] bg-blue-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
+                        title="Share Report"
+                      >
+                        <BsShare className="w-3 h-3" />
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <div className="font-Garamond">
-                  <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242]  border-t-0">
-                    <div className="py-6 px-[30px]">
-                      <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
-                        Effective: {document.effectiveDate}
-                      </h4>
-                      <h2 className="text-lg lg:text-[20px] xl:text-[22px] leading-[24px] font-semibold text-lightBlack dark:text-white py-3">
-                        {document.title}
-                      </h2>
-                      <p className="text-sm font-normal text-gray dark:text-lightGray font-Lora mb-3">
-                        {document.description}
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
-                          File Size: {document.fileSize}
-                        </span>
-                        <div className="flex space-x-2">
-                          <button
-                            onClick={() => handleView(document)}
-                            className="text-xs text-khaki hover:text-opacity-80 transition-colors duration-300"
-                          >
-                            Quick View
-                          </button>
-                          <span className="text-xs text-gray-300">|</span>
-                          <button
-                            onClick={() => handleDownload(document)}
-                            className="text-xs text-green-600 hover:text-opacity-80 transition-colors duration-300"
-                          >
-                            Download
-                          </button>
+                  <div className="font-Garamond">
+                    <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242]  border-t-0">
+                      <div className="py-6 px-[30px]">
+                        <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
+                          {report.publishDate || report.fiscalYear || 'Date not available'}
+                        </h4>
+                        <h2 className="text-lg lg:text-[20px] xl:text-[22px] leading-[24px] font-semibold text-lightBlack dark:text-white py-3">
+                          {report.title}
+                        </h2>
+                        <p className="text-sm font-normal text-gray dark:text-lightGray font-Lora mb-3">
+                          {report.description || 'No description available'}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                            {report.File_Source === "Upload" ? `File Size: ${getFileSize(report)}` : 'Google Drive File'}
+                          </span>
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() => handleView(report)}
+                              className="text-xs text-khaki hover:text-opacity-80 transition-colors duration-300"
+                            >
+                              Quick View
+                            </button>
+                            <span className="text-xs text-gray-300">|</span>
+                            <button
+                              onClick={() => handleDownload(report)}
+                              className="text-xs text-green-600 hover:text-opacity-80 transition-colors duration-300"
+                            >
+                              Download
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Back to Reports Navigation */}
           <div className="flex justify-center mt-16">
@@ -229,6 +288,22 @@ const BaseRatePage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* PDF Viewer Modal */}
+      {selectedReport && (
+        <PDFViewer
+          isOpen={viewerOpen}
+          onClose={() => {
+            setViewerOpen(false);
+            setSelectedReport(null);
+          }}
+          fileUrl={selectedReport.File_Source === 'Google_Drive' 
+            ? selectedReport.file_Id || '' 
+            : getReportFileUrl(selectedReport) || ''}
+          fileName={getReportFileName(selectedReport)}
+          fileSource={selectedReport.File_Source}
+        />
+      )}
     </section>
   );
 };

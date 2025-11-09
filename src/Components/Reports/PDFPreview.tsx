@@ -85,6 +85,11 @@ const PDFPreview: React.FC<PDFPreviewProps> = ({
         <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">{description}</p>
         
         {/* Source indicator */}
+        {isDirectUpload && (
+          <span className="inline-block bg-green-500 text-white text-xs px-2 py-1 rounded mt-2">
+            Direct Upload
+          </span>
+        )}
         {thumbnailError && isGoogleDrive && (
           <span className="inline-block bg-yellow-500 text-white text-xs px-2 py-1 rounded mt-2">
             Preview unavailable

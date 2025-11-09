@@ -1,94 +1,132 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import BreadCrumb from "../../../BreadCrumb/BreadCrumb";
 import { BsDownload, BsEye, BsShare } from "react-icons/bs";
 import { HiArrowLongLeft } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import PDFPreview from "../../../Components/Reports/PDFPreview";
+import PDFViewer from "../../../Components/Reports/PDFViewer";
+import { reportsService, googleDriveHelpers } from "../../../services/strapi";
+
+// TypeScript interface for Report from Strapi v5 API with Hybrid Upload Support
+interface StrapiReport {
+  id: number;
+  documentId: string;
+  title: string;
+  slug: string;
+  description?: string;
+  reportType?: string;
+  publishDate?: string;
+  fiscalYear?: string;
+  // NEW HYBRID UPLOAD FIELDS
+  File_Source?: "Upload" | "Google_Drive";
+  Uploaded_File?: {
+    url: string;
+    name: string;
+    size: number;
+    mime: string;
+  };
+  // EXISTING GOOGLE DRIVE FIELDS (still present for backwards compatibility)
+  file_Id?: string;
+  fileName?: string;
+}
 
 const AnnualReportPage: React.FC = () => {
-  // Sample annual reports data - in real implementation, this would come from Strapi CMS
-  const annualReports = [
-    {
-      id: 1,
-      title: "Annual Report 2024",
-      description: "Comprehensive Annual Financial Report and Achievements",
-      publishDate: "April 2025",
-      fileSize: "8.2 MB",
-      pdfUrl: "/reports/annual-2024.pdf", // This would be the actual file URL from Strapi/Google Drive
-      highlights: "Record growth, expanded services, community impact"
-    },
-    {
-      id: 2,
-      title: "Annual Report 2023", 
-      description: "Institutional Growth and Financial Performance Review",
-      publishDate: "April 2024",
-      fileSize: "7.8 MB",
-      pdfUrl: "/reports/annual-2023.pdf",
-      highlights: "Digital transformation, increased membership"
-    },
-    {
-      id: 3,
-      title: "Annual Report 2022",
-      description: "Resilience and Adaptation in Challenging Times", 
-      publishDate: "April 2023",
-      fileSize: "7.5 MB",
-      pdfUrl: "/reports/annual-2022.pdf",
-      highlights: "COVID recovery, technology adoption"
-    },
-    {
-      id: 4,
-      title: "Annual Report 2021",
-      description: "Innovation and Community Support During Pandemic",
-      publishDate: "April 2022", 
-      fileSize: "7.1 MB",
-      pdfUrl: "/reports/annual-2021.pdf",
-      highlights: "Digital services launch, community resilience"
-    },
-    {
-      id: 5,
-      title: "Annual Report 2020",
-      description: "Stability and Growth in Microfinance Sector",
-      publishDate: "April 2021",
-      fileSize: "6.9 MB", 
-      pdfUrl: "/reports/annual-2020.pdf",
-      highlights: "Operational excellence, risk management"
-    },
-    {
-      id: 6,
-      title: "Annual Report 2019",
-      description: "Foundation Years and Strategic Development",
-      publishDate: "April 2020",
-      fileSize: "6.5 MB",
-      pdfUrl: "/reports/annual-2019.pdf",
-      highlights: "Market expansion, product diversification"
+  const [reports, setReports] = useState<StrapiReport[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [viewerOpen, setViewerOpen] = useState(false);
+  const [selectedReport, setSelectedReport] = useState<StrapiReport | null>(null);
+
+  useEffect(() => {
+    const fetchAnnualReports = async () => {
+      try {
+        setLoading(true);
+        const response = await reportsService.getReportsByType('annual');
+        setReports(response.data || []);
+      } catch (err) {
+        setError('Failed to load annual reports');
+        console.error('Error fetching annual reports:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAnnualReports();
+  }, []);
+
+  // HELPER: Get file URL based on source (Google Drive or Direct Upload)
+  const getReportFileUrl = (report: StrapiReport): string | null => {
+    if (report.File_Source === 'Google_Drive' && report.file_Id) {
+      return `https://drive.google.com/file/d/${report.file_Id}/view`;
+    } else if (report.File_Source === 'Upload' && report.Uploaded_File?.url) {
+      return report.Uploaded_File.url;
     }
-  ];
-
-  const handleDownload = (report: typeof annualReports[0]) => {
-    // Demo implementation - in real app, this would download from Strapi/Google Drive
-    alert(`Demo: Downloading ${report.title}`);
+    return null;
   };
 
-  const handleView = (report: typeof annualReports[0]) => {
-    // Demo implementation - in real app, this would open PDF in new tab
-    alert(`Demo: Opening ${report.title} for viewing`);
+  // HELPER: Determine download URL based on File_Source
+  const getReportDownloadUrl = (report: StrapiReport): string | null => {
+    if (report.File_Source === "Upload" && report.Uploaded_File?.url) {
+      return report.Uploaded_File.url;
+    } else if (report.File_Source === "Google_Drive" && report.file_Id) {
+      return googleDriveHelpers.getDownloadUrl(report.file_Id);
+    }
+    return null;
   };
 
-  const handleShare = async (report: typeof annualReports[0]) => {
-    // Demo implementation for sharing specific report
+  // HELPER: Get file name for download
+  const getReportFileName = (report: StrapiReport): string => {
+    if (report.File_Source === "Upload" && report.Uploaded_File?.name) {
+      return report.Uploaded_File.name;
+    } else if (report.File_Source === "Google_Drive" && report.fileName) {
+      return report.fileName;
+    }
+    return `${report.title}.pdf`;
+  };
+
+  // HELPER: Get file size display
+  const getFileSize = (report: StrapiReport): string => {
+    if (report.File_Source === "Upload" && report.Uploaded_File?.size) {
+      const sizeInMB = (report.Uploaded_File.size / (1024 * 1024)).toFixed(2);
+      return `${sizeInMB} MB`;
+    }
+    return "N/A";
+  };
+
+  const handleDownload = async (report: StrapiReport) => {
+    try {
+      const downloadUrl = getReportDownloadUrl(report);
+      if (downloadUrl) {
+        window.open(downloadUrl, '_blank');
+        alert(`Downloading ${getReportFileName(report)}`);
+      } else {
+        alert('No report file available for download.');
+      }
+    } catch (error) {
+      console.error('Error downloading report:', error);
+      alert('Failed to download the report. Please try again.');
+    }
+  };
+
+  const handleView = (report: StrapiReport) => {
+    setSelectedReport(report);
+    setViewerOpen(true);
+  };
+
+  const handleShare = async (report: StrapiReport) => {
     if (navigator.share) {
       try {
         await navigator.share({
           title: `${report.title} - GLBSL`,
           text: `Check out our ${report.title}`,
-          url: `${window.location.origin}/reports/annual/${report.id}`,
+          url: `${window.location.origin}/reports/annual/${report.slug}`,
         });
       } catch (error) {
         console.log('Error sharing:', error);
-        alert(`Demo: ${report.title} link copied to clipboard!`);
+        alert(`${report.title} link copied to clipboard!`);
       }
     } else {
-      alert(`Demo: ${report.title} link copied to clipboard!`);
+      alert(`${report.title} link copied to clipboard!`);
     }
   };
 
@@ -123,77 +161,120 @@ const AnnualReportPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Reports Grid */}
-          <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 pt-16 2xl:pt-20">
-            {annualReports.map((report, index) => (
-              <div
-                key={report.id}
-                className="overflow-x-hidden 3xl:w-[410px] group"
-                data-aos="fade-up"
-                data-aos-duration={800 + (index * 200)}
-              >
-                <div className="relative">
-                  <div className="overflow-hidden">
-                    <PDFPreview title={report.title} description={report.description} />
-                  </div>
+          {/* Loading State */}
+          {loading && (
+            <div className="flex justify-center items-center py-20">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-khaki mx-auto"></div>
+                <p className="mt-4 text-gray dark:text-lightGray">Loading annual reports...</p>
+              </div>
+            </div>
+          )}
 
-                  <div className="flex space-x-2 absolute bottom-2 -left-52 group-hover:left-2 transition-all duration-300">
-                    <button
-                      onClick={() => handleView(report)}
-                      className="flex items-center justify-center text-[13px] leading-[32px] bg-khaki px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
-                      title="View PDF"
-                    >
-                      <BsEye className="w-3 h-3 mr-1" />
-                      View
-                    </button>
-                    <button
-                      onClick={() => handleDownload(report)}
-                      className="flex items-center justify-center text-[13px] leading-[32px] bg-green-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
-                      title="Download PDF"
-                    >
-                      <BsDownload className="w-3 h-3 mr-1" />
-                      Download
-                    </button>
+          {/* Error State */}
+          {error && (
+            <div className="flex justify-center items-center py-20">
+              <div className="text-center">
+                <p className="text-red-500">{error}</p>
+                <button 
+                  onClick={() => window.location.reload()} 
+                  className="mt-4 px-6 py-2 bg-khaki text-white rounded hover:bg-opacity-90 transition-all duration-300"
+                >
+                  Retry
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* No Reports State */}
+          {!loading && !error && reports.length === 0 && (
+            <div className="flex justify-center items-center py-20">
+              <div className="text-center">
+                <p className="text-gray dark:text-lightGray">No annual reports available at the moment.</p>
+              </div>
+            </div>
+          )}
+
+          {/* Reports Grid */}
+          {!loading && !error && reports.length > 0 && (
+            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8 pt-16 2xl:pt-20">
+              {reports.map((report, index) => (
+                <div
+                  key={report.documentId}
+                  className="overflow-x-hidden 3xl:w-[410px] group"
+                  data-aos="fade-up"
+                  data-aos-duration={800 + (index * 200)}
+                >
+                  <div className="relative">
+                    <div className="overflow-hidden">
+                      <PDFPreview title={report.title} description={report.description || ''} />
+                    </div>
+
+                    <div className="flex space-x-2 absolute bottom-2 -left-52 group-hover:left-2 transition-all duration-300">
+                      <button
+                        onClick={() => handleView(report)}
+                        className="flex items-center justify-center text-[13px] leading-[32px] bg-khaki px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
+                        title="View PDF"
+                      >
+                        <BsEye className="w-3 h-3 mr-1" />
+                        View
+                      </button>
+                      <button
+                        onClick={() => handleDownload(report)}
+                        className="flex items-center justify-center text-[13px] leading-[32px] bg-green-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
+                        title="Download PDF"
+                      >
+                        <BsDownload className="w-3 h-3 mr-1" />
+                        Download
+                      </button>
+                      <button
+                        onClick={() => handleShare(report)}
+                        className="flex items-center justify-center text-[13px] leading-[32px] bg-blue-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
+                        title="Share Report"
+                      >
+                        <BsShare className="w-3 h-3" />
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <div className="font-Garamond">
-                  <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242]  border-t-0">
-                    <div className="py-6 px-[30px]">
-                      <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
-                        {report.publishDate}
-                      </h4>
-                      <h2 className="text-lg lg:text-[20px] xl:text-[22px] leading-[24px] font-semibold text-lightBlack dark:text-white py-3">
-                        {report.title}
-                      </h2>
-                      <p className="text-sm font-normal text-gray dark:text-lightGray font-Lora mb-3">
-                        {report.description}
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
-                          File Size: {report.fileSize}
-                        </span>
-                        <div className="flex space-x-2">
-                          <button
-                            onClick={() => handleView(report)}
-                            className="text-xs text-khaki hover:text-opacity-80 transition-colors duration-300"
-                          >
-                            Quick View
-                          </button>
-                          <span className="text-xs text-gray-300">|</span>
-                          <button
-                            onClick={() => handleDownload(report)}
-                            className="text-xs text-green-600 hover:text-opacity-80 transition-colors duration-300"
-                          >
-                            Download
-                          </button>
+                  <div className="font-Garamond">
+                    <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242]  border-t-0">
+                      <div className="py-6 px-[30px]">
+                        <h4 className="text-sm leading-[26px] text-khaki uppercase font-semibold">
+                          {report.publishDate || report.fiscalYear || 'Date not available'}
+                        </h4>
+                        <h2 className="text-lg lg:text-[20px] xl:text-[22px] leading-[24px] font-semibold text-lightBlack dark:text-white py-3">
+                          {report.title}
+                        </h2>
+                        <p className="text-sm font-normal text-gray dark:text-lightGray font-Lora mb-3">
+                          {report.description || 'No description available'}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                            {report.File_Source === "Upload" ? `File Size: ${getFileSize(report)}` : 'Google Drive File'}
+                          </span>
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() => handleView(report)}
+                              className="text-xs text-khaki hover:text-opacity-80 transition-colors duration-300"
+                            >
+                              Quick View
+                            </button>
+                            <span className="text-xs text-gray-300">|</span>
+                            <button
+                              onClick={() => handleDownload(report)}
+                              className="text-xs text-green-600 hover:text-opacity-80 transition-colors duration-300"
+                            >
+                              Download
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Back to Reports Navigation */}
           <div className="flex justify-center mt-16">
@@ -207,6 +288,22 @@ const AnnualReportPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* PDF Viewer Modal */}
+      {selectedReport && (
+        <PDFViewer
+          isOpen={viewerOpen}
+          onClose={() => {
+            setViewerOpen(false);
+            setSelectedReport(null);
+          }}
+          fileUrl={selectedReport.File_Source === 'Google_Drive' 
+            ? selectedReport.file_Id || '' 
+            : getReportFileUrl(selectedReport) || ''}
+          fileName={getReportFileName(selectedReport)}
+          fileSource={selectedReport.File_Source}
+        />
+      )}
     </section>
   );
 };

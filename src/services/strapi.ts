@@ -141,6 +141,18 @@ export const reportsService = {
     }
   },
 
+  // Get reports by type (quarterly, annual, agm, base-rate, staff-training, governance, other)
+  getReportsByType: async (reportType: string) => {
+    try {
+      const locale = getLocale();
+      const res = await api.get(`/api/reports?locale=${locale}&filters[reportType][$eq]=${reportType}&filters[isActive][$eq]=true&populate=*&sort=publishDate:desc`);
+      return res.data || { data: [] };
+    } catch (error) {
+      console.error(`Error fetching reports by type ${reportType}:`, error);
+      return { data: [] };
+    }
+  },
+
   // Get featured reports
   getFeaturedReports: async () => {
     try {

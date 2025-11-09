@@ -294,12 +294,26 @@ const NoticePage: React.FC = () => {
                               <BsDownload className="w-3 h-3 mr-1" />
                               Download
                             </button>
+                            <button
+                              onClick={() => handleShare(notice)}
+                              className="flex items-center justify-center text-[13px] leading-[32px] bg-blue-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
+                              title="Share Notice"
+                            >
+                              <BsShare className="w-3 h-3" />
+                            </button>
                           </div>
                         )}
                       </div>
                       <div className="font-Garamond">
                         <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242]  border-t-0">
                           <div className="py-6 px-[30px]">
+                            {notice.isUrgent && (
+                              <div className="mb-2">
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-500 text-white">
+                                  Urgent
+                                </span>
+                              </div>
+                            )}
                             <h2 className="text-lg lg:text-[20px] xl:text-[22px] leading-[24px] font-semibold text-lightBlack dark:text-white py-3">
                               {notice.title}
                             </h2>
@@ -319,6 +333,18 @@ const NoticePage: React.FC = () => {
                                   <span className="text-xs text-gray-600 dark:text-gray-400">
                                     📎 {getNoticeFileName(notice)}
                                   </span>
+                                  <div className="flex items-center space-x-2">
+                                    {notice.FileSource === 'Upload' && (
+                                      <span className="inline-block bg-green-500 text-white text-xs px-2 py-1 rounded">
+                                        Direct Download
+                                      </span>
+                                    )}
+                                    {notice.FileSource === 'Google_Drive' && (
+                                      <span className="inline-block bg-blue-500 text-white text-xs px-2 py-1 rounded">
+                                        Google Drive
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
                                 {getNoticeFileSize(notice) && (
                                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
