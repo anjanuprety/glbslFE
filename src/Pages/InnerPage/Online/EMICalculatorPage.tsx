@@ -1,35 +1,61 @@
 import React, { useState, useEffect } from "react";
 import BreadCrumb from "../../../BreadCrumb/BreadCrumb";
 import { useLanguage } from "../../../contexts/LanguageContext";
-import { loanProductsData } from "../../Services/services/LoanServices/data/loanData";
+import { servicesService } from "../../../services/strapi";
+
+interface LoanProduct {
+  id: number;
+  name: string;
+  rate: string;
+}
 
 const EMICalculatorPage: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [loanAmount, setLoanAmount] = useState<string>('');
   const [selectedLoanType, setSelectedLoanType] = useState<string>('');
   const [interestRate, setInterestRate] = useState<string>('');
   const [loanTenure, setLoanTenure] = useState<string>('');
   const [emiResult, setEmiResult] = useState<number | null>(null);
+  const [loanTypes, setLoanTypes] = useState<LoanProduct[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Only loan products for EMI calculation
-  const loanTypes = loanProductsData.map(loan => ({
-    name: loan.loanProductName,
-    rate: loan.interestRate
-  }));
+  // Fetch loan products from Strapi
+  useEffect(() => {
+    const fetchLoanProducts = async () => {
+      try {
+        setLoading(true);
+        const data = await servicesService.getLoanProducts();
+        const mappedLoanTypes = data.map((loan: any) => ({
+          id: loan.id,
+          name: loan.name || loan.attributes?.name,
+          rate: loan.rate || loan.attributes?.rate || '0'
+        }));
+        setLoanTypes(mappedLoanTypes);
+      } catch (error) {
+        console.error('Error fetching loan products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchLoanProducts();
+  }, [language]);
 
   // Auto-set interest rate when loan type is selected
   useEffect(() => {
     if (selectedLoanType) {
       const selectedProduct = loanTypes.find(product => product.name === selectedLoanType);
       if (selectedProduct) {
-        setInterestRate(selectedProduct.rate);
+        // Remove % symbol if present and set the rate
+        const rateValue = selectedProduct.rate.replace('%', '').trim();
+        setInterestRate(rateValue);
       }
     }
-  }, [selectedLoanType]);
+  }, [selectedLoanType, loanTypes]);
 
   const calculateEMI = () => {
     const principal = parseFloat(loanAmount);
-    const rate = parseFloat(interestRate) / 100 / 12; // Monthly interest rate
+    const rateValue = parseFloat(interestRate);
+    const rate = rateValue / 100 / 12; // Monthly interest rate
     const tenure = parseFloat(loanTenure) * 12; // Convert years to months
 
     if (principal && rate && tenure) {
@@ -112,11 +138,14 @@ const EMICalculatorPage: React.FC = () => {
                     <select
                       value={selectedLoanType}
                       onChange={(e) => setSelectedLoanType(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent"
+                      disabled={loading}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                     >
-                      <option value="">ऋण प्रकार छान्नुहोस्</option>
-                      {loanTypes.map((loan, index) => (
-                        <option key={index} value={loan.name}>
+                      <option value="">
+                        {loading ? 'लोड हुँदैछ...' : 'ऋण प्रकार छान्नुहोस्'}
+                      </option>
+                      {loanTypes.map((loan) => (
+                        <option key={loan.id} value={loan.name}>
                           {loan.name} ({loan.rate}% दर)
                         </option>
                       ))}

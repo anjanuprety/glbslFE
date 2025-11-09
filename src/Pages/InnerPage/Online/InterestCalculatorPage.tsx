@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import BreadCrumb from "../../../BreadCrumb/BreadCrumb";
 import { useLanguage } from "../../../contexts/LanguageContext";
-import { savingsProductsData } from "../../Services/services/SavingsServices/data/savingsData";
+import { servicesService } from "../../../services/strapi";
+
+interface SavingsProduct {
+  id: number;
+  name: string;
+  interestRate: string;
+}
 
 const InterestCalculatorPage: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [principal, setPrincipal] = useState<string>('');
   const [selectedLoanType, setSelectedLoanType] = useState<string>('');
   const [rate, setRate] = useState<string>('');
@@ -13,22 +19,41 @@ const InterestCalculatorPage: React.FC = () => {
     interest: number;
     totalAmount: number;
   } | null>(null);
+  const [savingsTypes, setSavingsTypes] = useState<SavingsProduct[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Only savings products for interest calculation
-  const savingsTypes = savingsProductsData.map(savings => ({
-    name: savings.savingProductName,
-    rate: savings.interestRate
-  }));
+  // Fetch savings products from Strapi
+  useEffect(() => {
+    const fetchSavingsProducts = async () => {
+      try {
+        setLoading(true);
+        const data = await servicesService.getSavingsProducts();
+        const mappedSavingsTypes = data.map((savings: any) => ({
+          id: savings.id,
+          name: savings.name || savings.attributes?.name,
+          interestRate: savings.interestRate || savings.attributes?.interestRate || '0'
+        }));
+        setSavingsTypes(mappedSavingsTypes);
+      } catch (error) {
+        console.error('Error fetching savings products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSavingsProducts();
+  }, [language]);
 
   // Auto-set interest rate when savings type is selected
   useEffect(() => {
     if (selectedLoanType) {
       const selectedProduct = savingsTypes.find(product => product.name === selectedLoanType);
       if (selectedProduct) {
-        setRate(selectedProduct.rate);
+        // Remove % symbol if present and set the rate
+        const rateValue = selectedProduct.interestRate.replace('%', '').trim();
+        setRate(rateValue);
       }
     }
-  }, [selectedLoanType]);
+  }, [selectedLoanType, savingsTypes]);
 
   const calculateInterest = () => {
     const p = parseFloat(principal);
@@ -123,12 +148,15 @@ const InterestCalculatorPage: React.FC = () => {
                     <select
                       value={selectedLoanType}
                       onChange={(e) => setSelectedLoanType(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent"
+                      disabled={loading}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                     >
-                      <option value="">बचत प्रकार छान्नुहोस्</option>
-                      {savingsTypes.map((product, index) => (
-                        <option key={index} value={product.name}>
-                          {product.name} ({product.rate}% दर)
+                      <option value="">
+                        {loading ? 'लोड हुँदैछ...' : 'बचत प्रकार छान्नुहोस्'}
+                      </option>
+                      {savingsTypes.map((product) => (
+                        <option key={product.id} value={product.name}>
+                          {product.name} ({product.interestRate}% दर)
                         </option>
                       ))}
                     </select>

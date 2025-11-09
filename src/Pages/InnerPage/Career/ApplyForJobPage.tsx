@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import BreadCrumb from '../../../BreadCrumb/BreadCrumb';
 import { useLanguage } from '../../../contexts/LanguageContext';
 import JobApplicationForm from './JobApplicationForm';
@@ -74,12 +75,12 @@ const ApplyForJobPage: React.FC = () => {
                     {language === 'en' ? 'Submit Another Application' : 'अर्को आवेदन पेश गर्नुहोस्'}
                   </button>
                   
-                  <a
-                    href="/career/notices"
+                  <Link
+                    to="/career/notices"
                     className="inline-block bg-gray-600 text-white px-6 py-2 rounded-md font-medium hover:bg-gray-700 transition-colors duration-300"
                   >
                     {language === 'en' ? 'View Job Notices' : 'जागिर सूचनाहरू हेर्नुहोस्'}
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -158,19 +159,19 @@ const ApplyForJobPage: React.FC = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <a
-                  href="/career/application-form"
+                <Link
+                  to="/career/application-form"
                   className="inline-block bg-blue-600 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-700 transition-colors duration-300 text-center"
                 >
                   {language === 'en' ? 'Download PDF Form' : 'PDF फारम डाउनलोड गर्नुहोस्'}
-                </a>
+                </Link>
                 
-                <a
-                  href="/contact"
+                <Link
+                  to="/contact"
                   className="inline-block bg-gray-600 text-white px-6 py-3 rounded-md font-medium hover:bg-gray-700 transition-colors duration-300 text-center"
                 >
                   {language === 'en' ? 'Contact Us' : 'सम्पर्क गर्नुहोस्'}
-                </a>
+                </Link>
               </div>
             </div>
           </div>

@@ -100,7 +100,7 @@ const Navbar: React.FC = () => {
                 <BiChevronDown className="ml-1 flex-shrink-0" />
               </span>
               <div className="absolute pt-5 lg:pt-8 z-20">
-                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
+                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[250px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/about" className="py-2 block">
@@ -162,7 +162,7 @@ const Navbar: React.FC = () => {
                 <BiChevronDown className="ml-1 flex-shrink-0" />
               </span>
               <div className="absolute pt-5 lg:pt-8 z-20">
-                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
+                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[250px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/services" className="py-2 block">
@@ -230,7 +230,7 @@ const Navbar: React.FC = () => {
                 <BiChevronDown className="ml-1 flex-shrink-0" />
               </span>
               <div className="absolute pt-5 lg:pt-8 z-20">
-                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
+                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[250px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/reports" className="block py-2">
@@ -312,7 +312,7 @@ const Navbar: React.FC = () => {
                 <BiChevronDown className="ml-1 flex-shrink-0" />
               </span>
               <div className="absolute pt-5 lg:pt-8 z-20">
-                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
+                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[250px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/career/notices" className="block py-2">
@@ -353,7 +353,7 @@ const Navbar: React.FC = () => {
                 <BiChevronDown className="ml-1 flex-shrink-0" />
               </span>
               <div className="absolute pt-5 lg:pt-8 z-20">
-                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
+                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[250px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/online/emi-calculator" className="block py-2">
@@ -394,7 +394,7 @@ const Navbar: React.FC = () => {
                 <BiChevronDown className="ml-1 flex-shrink-0" />
               </span>
               <div className="absolute pt-5 lg:pt-8 z-20">
-                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[200px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
+                <ul className="shadow-2xl hidden group-hover:block rounded-sm bg-white text-black w-[250px] text-left dark:bg-normalBlack dark:text-white transition-all duration-500 text-sm py-4 ">
                   <div className=" px-5 group hover:bg-khaki hover:text-white">
                     <li className="hover:ml-3 duration-300  ">
                       <NavLink to="/gunaso/register-complaint" className="block py-2">
