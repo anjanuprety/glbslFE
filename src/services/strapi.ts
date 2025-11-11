@@ -86,6 +86,22 @@ export const aboutService = {
     const res = await api.get(`/api/organization-structure?locale=${locale}&populate=*`);
     return res.data.data || null;
   },
+  // Get key officers for homepage
+  getInformationOfficer: async () => {
+    const locale = getLocale();
+    const res = await api.get(`/api/people?filters[personType][$eq]=informationOfficer&locale=${locale}&populate=*&sort=order:asc`);
+    return res.data.data?.[0] || null;
+  },
+  getComplianceOfficer: async () => {
+    const locale = getLocale();
+    const res = await api.get(`/api/people?filters[personType][$eq]=complianceOfficer&locale=${locale}&populate=*&sort=order:asc`);
+    return res.data.data?.[0] || null;
+  },
+  getComplaintOfficer: async () => {
+    const locale = getLocale();
+    const res = await api.get(`/api/people?filters[personType][$eq]=complaintOfficer&locale=${locale}&populate=*&sort=order:asc`);
+    return res.data.data?.[0] || null;
+  },
 };
 
 export const servicesService = {
@@ -224,6 +240,20 @@ export const noticesService = {
     } catch (error) {
       console.error('Error fetching notice:', error);
       return null;
+    }
+  }
+};
+
+// Hero Images Service
+export const heroImagesService = {
+  getHeroImages: async () => {
+    try {
+      const locale = getLocale();
+      const res = await api.get(`/api/hero-images?locale=${locale}&populate=*&sort=order:asc`);
+      return res.data.data || [];
+    } catch (error) {
+      console.error('Error fetching hero images:', error);
+      return [];
     }
   }
 };

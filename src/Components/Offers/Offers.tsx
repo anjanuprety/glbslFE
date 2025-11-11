@@ -1,34 +1,61 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PersonTile from "../../Pages/About/components/PersonTile";
-
-const teamMembers = [
-  {
-    id: 1,
-    name: "Team Member 1",
-    position: "Contact Specialist",
-    email: "contact1@example.com",
-    phone: "+977-1-6000001",
-    image: "/images/inner/member-1.jpg",
-  },
-  {
-    id: 2,
-    name: "Team Member 2", 
-    position: "Customer Service",
-    email: "contact2@example.com",
-    phone: "+977-1-6000002",
-    image: "/images/inner/member-2.jpg",
-  },
-  {
-    id: 3,
-    name: "Team Member 3",
-    position: "Support Manager",
-    email: "contact3@example.com", 
-    phone: "+977-1-6000003",
-    image: "/images/inner/member-3.jpg",
-  },
-];
+import { aboutService, getStrapiMediaUrl } from "../../services/strapi";
+import { mapStrapiPersonData } from "../../utils/strapiHelpers";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 const Offers: React.FC = () => {
+  const [officers, setOfficers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { language } = useLanguage();
+
+  useEffect(() => {
+    const fetchOfficers = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const [informationOfficer, complianceOfficer, complaintOfficer] = await Promise.all([
+          aboutService.getInformationOfficer().catch(err => {
+            console.error('Error fetching information officer:', err);
+            return null;
+          }),
+          aboutService.getComplianceOfficer().catch(err => {
+            console.error('Error fetching compliance officer:', err);
+            return null;
+          }),
+          aboutService.getComplaintOfficer().catch(err => {
+            console.error('Error fetching complaint officer:', err);
+            return null;
+          }),
+        ]);
+
+        console.log('Fetched officers:', { informationOfficer, complianceOfficer, complaintOfficer });
+
+        const officersList = [informationOfficer, complianceOfficer, complaintOfficer]
+          .filter(officer => officer !== null)
+          .map((officer: any) => {
+            const mapped = mapStrapiPersonData(officer);
+            return {
+              ...mapped,
+              image: getStrapiMediaUrl(mapped.image),
+            };
+          });
+
+        console.log('Mapped officers list:', officersList);
+        setOfficers(officersList);
+      } catch (err) {
+        console.error("Error fetching officers:", err);
+        setError("Failed to load contact officers");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOfficers();
+  }, [language]);
+
   return (
     <section className="bg-[#f8f6f3] dark:bg-lightBlack">
       <div className="Container py-20 lg:py-[120px]">
@@ -53,7 +80,28 @@ const Offers: React.FC = () => {
 
         {/* Section Content */}
         <div className="mt-[60px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-[30px]">
-          {teamMembers.map((m) => (
+          {loading && (
+            <div className="col-span-full text-center py-10">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-khaki mx-auto"></div>
+              <p className="mt-4 text-gray dark:text-lightGray">Loading contact officers...</p>
+            </div>
+          )}
+          {error && (
+            <div className="col-span-full text-center py-10">
+              <p className="text-red-500">{error}</p>
+            </div>
+          )}
+          {!loading && !error && officers.length === 0 && (
+            <div className="col-span-full text-center py-10">
+              <p className="text-gray dark:text-lightGray">
+                No contact officers configured in the system yet.
+              </p>
+              <p className="text-sm text-gray dark:text-lightGray mt-2">
+                Please add people with personType: informationOfficer, complianceOfficer, or complaintOfficer in Strapi CMS.
+              </p>
+            </div>
+          )}
+          {!loading && !error && officers.map((m) => (
             <PersonTile key={m.id} id={m.id} name={m.name} position={m.position} email={m.email} phone={m.phone} image={m.image} />
           ))}
         </div>
