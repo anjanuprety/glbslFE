@@ -14,11 +14,24 @@ const Offers: React.FC = () => {
     const fetchOfficers = async () => {
       try {
         setLoading(true);
+        setError(null);
+        
         const [informationOfficer, complianceOfficer, complaintOfficer] = await Promise.all([
-          aboutService.getInformationOfficer(),
-          aboutService.getComplianceOfficer(),
-          aboutService.getComplaintOfficer(),
+          aboutService.getInformationOfficer().catch(err => {
+            console.error('Error fetching information officer:', err);
+            return null;
+          }),
+          aboutService.getComplianceOfficer().catch(err => {
+            console.error('Error fetching compliance officer:', err);
+            return null;
+          }),
+          aboutService.getComplaintOfficer().catch(err => {
+            console.error('Error fetching complaint officer:', err);
+            return null;
+          }),
         ]);
+
+        console.log('Fetched officers:', { informationOfficer, complianceOfficer, complaintOfficer });
 
         const officersList = [informationOfficer, complianceOfficer, complaintOfficer]
           .filter(officer => officer !== null)
@@ -30,6 +43,7 @@ const Offers: React.FC = () => {
             };
           });
 
+        console.log('Mapped officers list:', officersList);
         setOfficers(officersList);
       } catch (err) {
         console.error("Error fetching officers:", err);
@@ -79,7 +93,12 @@ const Offers: React.FC = () => {
           )}
           {!loading && !error && officers.length === 0 && (
             <div className="col-span-full text-center py-10">
-              <p className="text-gray dark:text-lightGray">No contact officers available at the moment.</p>
+              <p className="text-gray dark:text-lightGray">
+                No contact officers configured in the system yet.
+              </p>
+              <p className="text-sm text-gray dark:text-lightGray mt-2">
+                Please add people with personType: informationOfficer, complianceOfficer, or complaintOfficer in Strapi CMS.
+              </p>
             </div>
           )}
           {!loading && !error && officers.map((m) => (

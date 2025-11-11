@@ -244,6 +244,20 @@ export const noticesService = {
   }
 };
 
+// Hero Images Service
+export const heroImagesService = {
+  getHeroImages: async () => {
+    try {
+      const locale = getLocale();
+      const res = await api.get(`/api/hero-images?locale=${locale}&populate=*&sort=order:asc`);
+      return res.data.data || [];
+    } catch (error) {
+      console.error('Error fetching hero images:', error);
+      return [];
+    }
+  }
+};
+
 // Helper functions for Google Drive integration
 export const googleDriveHelpers = {
   // Generate view URL for embedding
