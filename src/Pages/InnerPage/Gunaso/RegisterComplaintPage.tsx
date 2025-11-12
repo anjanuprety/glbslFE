@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import BreadCrumb from "../../../BreadCrumb/BreadCrumb";
 import { useLanguage } from "../../../contexts/LanguageContext";
 import { getBranches } from "../../Branches/data/index";
+import Swal from "sweetalert2";
 
 const RegisterComplaintPage: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [formData, setFormData] = useState({
     fullName: '',
     mobileNumber: '',
@@ -13,7 +14,6 @@ const RegisterComplaintPage: React.FC = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
   const [branches, setBranches] = useState<string[]>([]);
 
   // Fetch branches on component mount
@@ -36,10 +36,42 @@ const RegisterComplaintPage: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitSuccess(true);
+    try {
+      // Show loading state
+      Swal.fire({
+        title: t('complaint.sending'),
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          formType: 'complaint',
+          data: {
+            ...formData,
+            language: language
+          }
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send email');
+      }
+
+      // Success
+      Swal.fire({
+        icon: 'success',
+        title: t('complaint.success'),
+        text: t('complaint.successMessage'),
+        confirmButtonColor: '#DAA520'
+      });
+
       // Reset form
       setFormData({
         fullName: '',
@@ -47,30 +79,19 @@ const RegisterComplaintPage: React.FC = () => {
         branchOffice: '',
         complaint: ''
       });
-    }, 2000);
-  };
 
-  if (submitSuccess) {
-    return (
-      <div>
-        <BreadCrumb title={t('gunaso.register_complaint')} />
-        <div className="py-20 2xl:py-[120px] dark:bg-lightBlack">
-          <div className="Container text-center">
-            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative max-w-md mx-auto">
-              <strong className="font-bold">{t('form.success')}</strong>
-              <span className="block sm:inline"> {t('form.success_message')}</span>
-              <button
-                onClick={() => setSubmitSuccess(false)}
-                className="mt-4 bg-khaki text-white px-4 py-2 rounded hover:bg-opacity-90"
-              >
-                {t('form.new_complaint')}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+    } catch (error) {
+      console.error('Error sending complaint:', error);
+      Swal.fire({
+        icon: 'error',
+        title: t('complaint.error'),
+        text: t('complaint.errorMessage'),
+        confirmButtonColor: '#1a3a1a'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div>

@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import BreadCrumb from "../../../BreadCrumb/BreadCrumb";
 import { useLanguage } from "../../../contexts/LanguageContext";
 import { getBranches } from "../../Branches/data/index";
+import Swal from "sweetalert2";
 
 const ApplyForLoanPage: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -19,7 +20,6 @@ const ApplyForLoanPage: React.FC = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
   const [branches, setBranches] = useState<string[]>([]);
 
   // Fetch branches on component mount
@@ -51,10 +51,42 @@ const ApplyForLoanPage: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitSuccess(true);
+    try {
+      // Show loading state
+      Swal.fire({
+        title: t('loan.sending'),
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          formType: 'loan',
+          data: {
+            ...formData,
+            language: language
+          }
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send email');
+      }
+
+      // Success
+      Swal.fire({
+        icon: 'success',
+        title: t('loan.success'),
+        text: t('loan.successMessage'),
+        confirmButtonColor: '#DAA520'
+      });
+
       // Reset form
       setFormData({
         fullName: '',
@@ -68,30 +100,19 @@ const ApplyForLoanPage: React.FC = () => {
         loanAmount: '',
         specialNote: ''
       });
-    }, 2000);
-  };
 
-  if (submitSuccess) {
-    return (
-      <div>
-        <BreadCrumb title={t('online.apply_for_loan')} />
-        <div className="py-20 2xl:py-[120px] dark:bg-lightBlack">
-          <div className="Container text-center">
-            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative max-w-md mx-auto">
-              <strong className="font-bold">सफल!</strong>
-              <span className="block sm:inline"> तपाईंको ऋण आवेदन सफलतापूर्वक पेश गरिएको छ। हामी छिट्टै तपाईंलाई सम्पर्क गर्नेछौं।</span>
-              <button
-                onClick={() => setSubmitSuccess(false)}
-                className="mt-4 bg-khaki text-white px-4 py-2 rounded hover:bg-opacity-90"
-              >
-                नयाँ आवेदन
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+    } catch (error) {
+      console.error('Error sending loan application:', error);
+      Swal.fire({
+        icon: 'error',
+        title: t('loan.error'),
+        text: t('loan.errorMessage'),
+        confirmButtonColor: '#1a3a1a'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div>
