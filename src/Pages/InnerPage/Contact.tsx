@@ -126,7 +126,7 @@ const Contact: React.FC = () => {
                     Call Us Now
                   </p>
                   <p className="font-Garamond text-lg sm:text-xl md:text-[22px] leading-[26px] text-lightBlack dark:text-white font-medium">
-                    +980 123 (4567) 890
+                    021-464453
                   </p>
                 </div>
               </div>
@@ -141,10 +141,10 @@ const Contact: React.FC = () => {
                 </div>
                 <div className="ml-3 md:ml-4">
                   <p className="font-Lora text-sm leading-[26px] text-gray dark:text-lightGray font-normal">
-                    Send Email
+                    Send us an Email
                   </p>
                   <p className="font-Garamond text-lg sm:text-xl md:text-[22px] leading-[26px] text-lightBlack dark:text-white font-medium ">
-                    example@gmail.com
+                    info@glbsl.com.np
                   </p>
                 </div>
               </div>
@@ -159,11 +159,11 @@ const Contact: React.FC = () => {
                 </div>
                 <div className="ml-3 md:ml-4">
                   <p className="font-Lora text-sm leading-[26px] text-gray dark:text-lightGray font-normal">
-                    Our Locations
+                    Our Location
                   </p>
                   <p className="font-Garamond text-lg sm:text-xl md:text-[22px] leading-[26px] text-lightBlack dark:text-white font-medium ">
-                    New elephant Road, Dhanmondi <br />
-                    Dhaka - 1212
+                    Buddhiganga-1,<br /> PuspalalChowk
+Morang
                   </p>
                 </div>
               </div>
