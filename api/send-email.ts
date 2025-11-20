@@ -180,19 +180,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     switch (formType) {
       case 'contact':
-        recipientEmail = 'info@example.com';
+        recipientEmail = 'info@rootalpine.com';
         subject = `New Contact Form Submission - ${data.name || 'Unknown'}`;
         htmlContent = getContactEmailHtml(data);
         break;
 
       case 'complaint':
-        recipientEmail = 'mail@swornimpangeni.com.np';
+        recipientEmail = 'info@rootalpine.com';
         subject = `New Complaint Registration - ${data.fullName || 'Unknown'}`;
         htmlContent = getComplaintEmailHtml(data);
         break;
 
       case 'loan':
-        recipientEmail = 'hr@example.com';
+        recipientEmail = 'info@rootalpine.com';
         subject = `New Loan Application - ${data.fullName || 'Unknown'} (रु ${data.loanAmount ? Number(data.loanAmount).toLocaleString('en-NP') : 'N/A'})`;
         htmlContent = getLoanEmailHtml(data);
         break;
