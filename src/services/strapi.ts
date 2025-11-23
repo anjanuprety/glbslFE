@@ -258,6 +258,20 @@ export const heroImagesService = {
   }
 };
 
+// Testimonials Service
+export const testimonialsService = {
+  getTestimonials: async () => {
+    try {
+      const locale = getLocale();
+      const res = await api.get(`/api/testimonials?locale=${locale}&populate=*&sort=Order:asc`);
+      return res.data.data || [];
+    } catch (error) {
+      console.error('Error fetching testimonials:', error);
+      return [];
+    }
+  }
+};
+
 // Helper functions for Google Drive integration
 export const googleDriveHelpers = {
   // Generate view URL for embedding
@@ -284,7 +298,7 @@ export const googleDriveHelpers = {
   // Download file directly
   downloadFile: async (fileId: string, fileName: string, trackingCallback?: () => void) => {
     const downloadUrl = googleDriveHelpers.getDownloadUrl(fileId);
-    
+
     // Track download if callback provided
     if (trackingCallback) {
       trackingCallback();
