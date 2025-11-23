@@ -1,64 +1,175 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import BreadCrumb from "../../../BreadCrumb/BreadCrumb";
 import { BsDownload, BsEye, BsPrinter } from "react-icons/bs";
 import { HiArrowLongLeft } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import PDFPreview from "../../../Components/Reports/PDFPreview";
+import PDFViewer from "../../../Components/Reports/PDFViewer";
+import { noticesService, googleDriveHelpers } from "../../../services/strapi";
+
+// Reuse the StrapiNotice interface
+interface StrapiNotice {
+  id: number;
+  documentId: string;
+  title: string;
+  slug: string;
+  content?: Array<{
+    type: string;
+    children: Array<{
+      text: string;
+      type: string;
+    }>;
+  }>;
+  noticeType?: string;
+  publishDate?: string;
+  expiryDate?: string;
+  isUrgent?: boolean;
+  priority?: number;
+  isActive?: boolean;
+  FileSource?: "Upload" | "Google_Drive";
+  UploadedFile?: {
+    url: string;
+    name: string;
+    size: number;
+    mime: string;
+  };
+  attatchmentFile_Id?: string;
+  attatchmentFileName?: string;
+  attatchmentFileSize?: string;
+  updatedAt: string;
+}
+
+// Helper to extract text
+const extractTextFromContent = (content?: Array<any>): string => {
+  if (!content || !Array.isArray(content)) return '';
+  return content.map(block => {
+    if (block.children && Array.isArray(block.children)) {
+      return block.children.map((child: any) => child.text || '').join('');
+    }
+    return '';
+  }).join(' ');
+};
+
+// Helper to get file URL
+const getNoticeFileUrl = (notice: StrapiNotice): string | null => {
+  if (notice.FileSource === 'Google_Drive' && notice.attatchmentFile_Id) {
+    return `https://drive.google.com/file/d/${notice.attatchmentFile_Id}/view`;
+  } else if (notice.FileSource === 'Upload' && notice.UploadedFile?.url) {
+    return notice.UploadedFile.url;
+  }
+  return null;
+};
+
+// Helper to get download URL
+const getNoticeDownloadUrl = (notice: StrapiNotice): string | null => {
+  if (notice.FileSource === 'Google_Drive' && notice.attatchmentFile_Id) {
+    return googleDriveHelpers.getDownloadUrl(notice.attatchmentFile_Id);
+  } else if (notice.FileSource === 'Upload' && notice.UploadedFile?.url) {
+    return notice.UploadedFile.url;
+  }
+  return null;
+};
+
+// Helper to get file name
+const getNoticeFileName = (notice: StrapiNotice): string => {
+  if (notice.FileSource === 'Google_Drive' && notice.attatchmentFileName) {
+    return notice.attatchmentFileName;
+  } else if (notice.FileSource === 'Upload' && notice.UploadedFile?.name) {
+    return notice.UploadedFile.name;
+  }
+  return 'Application Form';
+};
+
+// Helper to get file size
+const getNoticeFileSize = (notice: StrapiNotice): string => {
+  if (notice.FileSource === 'Google_Drive' && notice.attatchmentFileSize) {
+    return notice.attatchmentFileSize;
+  } else if (notice.FileSource === 'Upload' && notice.UploadedFile?.size) {
+    const size = notice.UploadedFile.size;
+    if (size < 1024) return `${size} B`;
+    if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)} KB`;
+    return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+  }
+  return '';
+};
 
 const ApplicationFormPage: React.FC = () => {
-  // Sample application forms data - in real implementation, this would come from Strapi CMS
-  const applicationForms = [
-    {
-      id: 1,
-      title: "General Job Application Form",
-      description: "Standard application form for all general positions. Fill this form for most job openings.",
-      pdfUrl: "/career-forms/general-application-form.pdf",
-      fileSize: "245 KB",
-      lastUpdated: "January 2025"
-    },
-    {
-      id: 2,
-      title: "Banking Officer Application Form", 
-      description: "Specialized form for Banking Officer positions with additional banking-related questions.",
-      pdfUrl: "/career-forms/banking-officer-application.pdf",
-      fileSize: "320 KB", 
-      lastUpdated: "December 2024"
-    },
-    {
-      id: 3,
-      title: "Management Position Application Form",
-      description: "Application form for senior and management level positions with leadership experience sections.",
-      pdfUrl: "/career-forms/management-application-form.pdf",
-      fileSize: "380 KB",
-      lastUpdated: "January 2025"
-    },
-    {
-      id: 4,
-      title: "IT Position Application Form",
-      description: "Technical application form for IT and technology-related positions.",
-      pdfUrl: "/career-forms/it-position-application.pdf",
-      fileSize: "295 KB",
-      lastUpdated: "November 2024"
+  const [applicationForm, setApplicationForm] = useState<StrapiNotice | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [viewerOpen, setViewerOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchApplicationForm = async () => {
+      try {
+        setLoading(true);
+        // Fetch all notices
+        const response = await noticesService.getNotices();
+
+        // Find a notice that looks like the application form
+        // We look for "application form" in the title (case insensitive)
+        const formNotice = response.data.find((notice: StrapiNotice) =>
+          notice.title.toLowerCase().includes('application form') &&
+          notice.isActive !== false
+        );
+
+        if (formNotice) {
+          setApplicationForm(formNotice);
+        } else {
+          // If no specific form found, we could show a fallback or nothing
+          // For now, we'll just leave it null which will show the "No form available" state
+          console.log('No application form notice found');
+        }
+        setError(null);
+      } catch (err) {
+        console.error('Failed to fetch application form:', err);
+        setError('Failed to load application form. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchApplicationForm();
+  }, []);
+
+  const handleDownload = () => {
+    if (!applicationForm) return;
+    const downloadUrl = getNoticeDownloadUrl(applicationForm);
+    if (downloadUrl) {
+      window.open(downloadUrl, '_blank');
+    } else {
+      alert('No file attached to this form.');
     }
-  ];
-
-  const handleDownload = (form: typeof applicationForms[0]) => {
-    // Demo implementation - in real app, this would download from Strapi/Google Drive
-    alert(`Demo: Downloading ${form.title}`);
   };
 
-  const handleView = (form: typeof applicationForms[0]) => {
-    // Demo implementation - in real app, this would open PDF in new tab
-    alert(`Demo: Opening ${form.title} for viewing`);
+  const handleView = () => {
+    if (applicationForm) {
+      setViewerOpen(true);
+    }
   };
 
-  const handlePrint = (form: typeof applicationForms[0]) => {
-    // Demo implementation for printing
-    alert(`Demo: Sending ${form.title} to printer`);
+  const handlePrint = () => {
+    if (applicationForm) {
+      // For printing, we usually just open the PDF and let the browser print
+      handleView();
+    }
   };
 
   return (
     <section className="">
+      {/* PDF Viewer Modal */}
+      {applicationForm && (
+        <PDFViewer
+          isOpen={viewerOpen}
+          onClose={() => setViewerOpen(false)}
+          fileUrl={applicationForm.FileSource === 'Google_Drive'
+            ? applicationForm.attatchmentFile_Id || ''
+            : getNoticeFileUrl(applicationForm) || ''}
+          fileName={getNoticeFileName(applicationForm)}
+          fileSource={applicationForm.FileSource}
+        />
+      )}
+
       <BreadCrumb title="APPLICATION FORMS" home={"/"} />
 
       <div className="bg-whiteSmoke dark:bg-lightBlack py-20 2xl:py-[120px]">
@@ -71,7 +182,7 @@ const ApplicationFormPage: React.FC = () => {
           >
             <div className="text-center">
               <h1 className="text-xl sm:text-2xl md:text-3xl 2xl:text-[38px] leading-7 sm:leading-8 md:leading-9 lg:leading-[42px] 2xl:leading-[52px] text-lightBlack dark:text-white font-Garamond font-semibold capitalize">
-                Job Application Forms
+                Job Application Form
               </h1>
               <div className="flex items-center justify-center text-center mx-auto mt-2 lg:mt-[6px]">
                 <div className="w-[100px] h-[1px] bg-[#ccc] dark:bg-[#3b3b3b] mr-5 "></div>
@@ -83,108 +194,129 @@ const ApplicationFormPage: React.FC = () => {
                 <div className="w-[100px] h-[1px] bg-[#ccc] dark:bg-[#3b3b3b] ml-5"></div>
               </div>
               <p className="text-center text-sm lg:text-base leading-[26px] text-gray dark:text-lightGray font-Lora font-normal mt-[10px]">
-                Download and fill out the appropriate application form for your desired position
+                Download and fill out the application form below
               </p>
             </div>
           </div>
 
-          {/* Application Forms Grid */}
-          <div className="grid md:grid-cols-2 gap-8 pt-8">
-            {applicationForms.map((form, index) => (
-              <div
-                key={form.id}
-                className="overflow-x-hidden group"
-                data-aos="fade-up"
-                data-aos-duration={800 + (index * 200)}
-              >
-                <div className="relative">
-                  <div className="overflow-hidden">
-                    <PDFPreview title={form.title} description={form.description} />
-                  </div>
+          {/* Loading State */}
+          {loading && (
+            <div className="flex justify-center py-16">
+              <div className="text-center">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-khaki"></div>
+                <p className="mt-4 text-gray-600 dark:text-gray-400">Loading application form...</p>
+              </div>
+            </div>
+          )}
 
-                  <div className="flex space-x-2 absolute bottom-2 -left-52 group-hover:left-2 transition-all duration-300">
-                    <button
-                      onClick={() => handleView(form)}
-                      className="flex items-center justify-center text-[13px] leading-[32px] bg-khaki px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
-                      title="View PDF"
-                    >
-                      <BsEye className="w-3 h-3 mr-1" />
-                      View
-                    </button>
-                    <button
-                      onClick={() => handleDownload(form)}
-                      className="flex items-center justify-center text-[13px] leading-[32px] bg-green-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
-                      title="Download PDF"
-                    >
-                      <BsDownload className="w-3 h-3 mr-1" />
-                      Download
-                    </button>
-                    <button
-                      onClick={() => handlePrint(form)}
-                      className="flex items-center justify-center text-[13px] leading-[32px] bg-blue-600 px-4 py-1 text-white hover:bg-opacity-90 transition-all duration-300"
-                      title="Print Form"
-                    >
-                      <BsPrinter className="w-3 h-3" />
-                    </button>
-                  </div>
-                </div>
-                <div className="font-Garamond">
-                  <div className=" border-[1px] border-[#e8e8e8] dark:border-[#424242]  border-t-0">
-                    <div className="py-6 px-[30px]">
-                      <h2 className="text-lg lg:text-[20px] xl:text-[22px] leading-[24px] font-semibold text-lightBlack dark:text-white py-3">
-                        {form.title}
-                      </h2>
-                      <p className="text-sm font-normal text-gray dark:text-lightGray font-Lora mb-3">
-                        {form.description}
-                      </p>
-                      <div className="flex justify-between items-center mb-3">
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
-                          File Size: {form.fileSize}
-                        </span>
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
-                          Updated: {form.lastUpdated}
-                        </span>
+          {/* Error State */}
+          {error && (
+            <div className="text-center py-16">
+              <p className="text-red-500 dark:text-red-400">{error}</p>
+            </div>
+          )}
+
+          {/* Application Form Display */}
+          {!loading && !error && (
+            <div className="flex justify-center pt-8">
+              {applicationForm ? (
+                <div
+                  className="w-full max-w-2xl bg-white dark:bg-normalBlack border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-lg"
+                  data-aos="fade-up"
+                  data-aos-duration="1000"
+                >
+                  <div className="p-6 md:p-8">
+                    <div className="flex flex-col md:flex-row md:items-start gap-6">
+                      {/* Preview Thumbnail */}
+                      <div className="w-full md:w-1/3 flex-shrink-0">
+                        <div className="aspect-[3/4] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600 relative group cursor-pointer" onClick={handleView}>
+                          <PDFPreview
+                            title={applicationForm.title}
+                            description=""
+                            fileId={applicationForm.FileSource === 'Google_Drive' ? applicationForm.attatchmentFile_Id : undefined}
+                            fileUrl={applicationForm.FileSource === 'Upload' ? applicationForm.UploadedFile?.url : undefined}
+                            showThumbnail={true}
+                          />
+                          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                            <BsEye className="text-white opacity-0 group-hover:opacity-100 w-8 h-8 drop-shadow-lg transform scale-75 group-hover:scale-100 transition-all duration-300" />
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex space-x-2">
-                        <button
-                          onClick={() => handleView(form)}
-                          className="text-xs text-khaki hover:text-opacity-80 transition-colors duration-300"
-                        >
-                          Preview
-                        </button>
-                        <span className="text-xs text-gray-300">|</span>
-                        <button
-                          onClick={() => handleDownload(form)}
-                          className="text-xs text-green-600 hover:text-opacity-80 transition-colors duration-300"
-                        >
-                          Download
-                        </button>
-                        <span className="text-xs text-gray-300">|</span>
-                        <button
-                          onClick={() => handlePrint(form)}
-                          className="text-xs text-blue-600 hover:text-opacity-80 transition-colors duration-300"
-                        >
-                          Print
-                        </button>
+
+                      {/* Details & Actions */}
+                      <div className="flex-grow">
+                        <h2 className="text-2xl font-Garamond font-semibold text-lightBlack dark:text-white mb-3">
+                          {applicationForm.title}
+                        </h2>
+                        <p className="text-gray dark:text-lightGray font-Lora mb-4 text-sm leading-relaxed">
+                          {extractTextFromContent(applicationForm.content) || "Please download and fill out this application form to apply for positions at GLBSL."}
+                        </p>
+
+                        <div className="flex flex-wrap gap-4 mb-6 text-sm text-gray-500 dark:text-gray-400">
+                          <div className="flex items-center">
+                            <span className="font-semibold mr-2">File Name:</span>
+                            {getNoticeFileName(applicationForm)}
+                          </div>
+                          <div className="flex items-center">
+                            <span className="font-semibold mr-2">Size:</span>
+                            {getNoticeFileSize(applicationForm)}
+                          </div>
+                          <div className="flex items-center">
+                            <span className="font-semibold mr-2">Updated:</span>
+                            {new Date(applicationForm.updatedAt).toLocaleDateString()}
+                          </div>
+                        </div>
+
+                        <div className="flex flex-wrap gap-3">
+                          <button
+                            onClick={handleDownload}
+                            className="flex items-center justify-center bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded transition-colors duration-300 shadow-sm"
+                          >
+                            <BsDownload className="w-4 h-4 mr-2" />
+                            Download Form
+                          </button>
+                          <button
+                            onClick={handleView}
+                            className="flex items-center justify-center bg-khaki hover:bg-opacity-90 text-white px-6 py-2.5 rounded transition-colors duration-300 shadow-sm"
+                          >
+                            <BsEye className="w-4 h-4 mr-2" />
+                            Preview
+                          </button>
+                          <button
+                            onClick={handlePrint}
+                            className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded transition-colors duration-300 shadow-sm"
+                          >
+                            <BsPrinter className="w-4 h-4 mr-2" />
+                            Print
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ) : (
+                <div className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-lg w-full max-w-2xl border border-dashed border-gray-300 dark:border-gray-600">
+                  <p className="text-gray-500 dark:text-gray-400 text-lg">
+                    No application form is currently available.
+                  </p>
+                  <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">
+                    Please check back later or contact the HR department.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Instructions Section */}
-          <div className="mt-16 bg-white dark:bg-normalBlack border border-gray-200 dark:border-gray-700 rounded-lg p-8">
+          <div className="mt-16 bg-white dark:bg-normalBlack border border-gray-200 dark:border-gray-700 rounded-lg p-8 max-w-4xl mx-auto">
             <h3 className="text-xl font-semibold text-lightBlack dark:text-white mb-4 font-Garamond">
               Application Instructions
             </h3>
             <div className="text-gray dark:text-lightGray font-Lora space-y-3">
-              <p>1. <strong>Choose the Right Form:</strong> Select the application form that matches the position you're applying for.</p>
-              <p>2. <strong>Download & Fill:</strong> Download the PDF form and fill it out completely using a PDF reader or print and fill by hand.</p>
-              <p>3. <strong>Required Documents:</strong> Attach all required documents as mentioned in the job posting.</p>
-              <p>4. <strong>Submission:</strong> Submit your completed application as instructed in the job notice.</p>
-              <p>5. <strong>Contact:</strong> For questions about the application process, contact our HR department.</p>
+              <p>1. <strong>Download:</strong> Click the download button above to get the official application form.</p>
+              <p>2. <strong>Fill:</strong> Complete the form clearly. You can fill it digitally or print and fill it by hand.</p>
+              <p>3. <strong>Attach Documents:</strong> Prepare all necessary documents (CV, photos, academic certificates, etc.).</p>
+              <p>4. <strong>Submit:</strong> Submit your application to the nearest branch or via our online portal if available.</p>
             </div>
           </div>
 
