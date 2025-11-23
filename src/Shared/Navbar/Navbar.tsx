@@ -16,8 +16,7 @@ const Navbar: React.FC = () => {
   // scrolling tracker
   const scrollPosition = useScrollPosition();
   // background color add and remover
-  const navbarBgColor =
-    scrollPosition > 100 ? "lg:bg-lightBlack" : "lg:bg-transparent";
+  const navbarBgColor = "lg:bg-lightBlack"; // Always opaque for better accessibility
 
   const toggleNavbar = (): void => {
     setIsOpen(!isOpen);

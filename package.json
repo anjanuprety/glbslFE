@@ -13,7 +13,7 @@
     "check-node": "node -e \"const v=process.versions.node.split('.').map(Number); if(v[0]>20 || (v[0]===20 && (v[1]>19 || (v[1]===19 && v[2]>=0)))){console.log('Node OK',process.versions.node);} else {console.error('Node version too old:',process.versions.node); process.exit(1);} \""
   },
   "dependencies": {
-    "@vercel/node": "^2.3.0",
+    "@vercel/node": "^5.5.9",
     "aos": "^3.0.0-beta.6",
     "axios": "^1.11.0",
     "flowbite-react": "^0.6.0",
