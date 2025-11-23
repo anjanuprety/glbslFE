@@ -210,3 +210,71 @@ option:hover {
 .member {
   @apply p-[30px] border border-lightGray dark:border-gray px-[30px]  text-center  relative z-[1] before:absolute before:w-0 before:h-full before:left-1/2 before:top-0 before:bg-normalBlack before:z-[-1] before:transition-all before:duration-500 before:hover:w-full before:hover:left-0 overflow-hidden bg-center bg-cover hover:shadow-xl transition-all duration-500;
 }
+
+/* Search Bar Enhancements */
+.search-container {
+  position: relative;
+}
+
+.search-results-dropdown {
+  position: absolute;
+  top: 100%;
+  margin-top: 0.5rem;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  z-index: 50;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.dark .search-results-dropdown {
+  background-color: #082418;
+  border-color: #374151;
+}
+
+/* Custom scrollbar for search results */
+.search-results-dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.search-results-dropdown::-webkit-scrollbar-track {
+  background-color: #f3f4f6;
+  border-radius: 4px;
+}
+
+.dark .search-results-dropdown::-webkit-scrollbar-track {
+  background-color: #082418;
+}
+
+.search-results-dropdown::-webkit-scrollbar-thumb {
+  background-color: #ffc300;
+  border-radius: 4px;
+}
+
+.search-results-dropdown::-webkit-scrollbar-thumb:hover {
+  background-color: #e6b000;
+}
+
+/* Search input focus animation */
+.search-input-wrapper:focus-within {
+  box-shadow: 0 0 0 2px rgba(255, 195, 0, 0.5);
+}
+
+/* Search result item hover effect */
+.search-result-item {
+  transition: all 0.2s;
+}
+
+.search-result-item:hover {
+  background-color: #f9fafb;
+  padding-left: 1.5rem;
+}
+
+.dark .search-result-item:hover {
+  background-color: #082418;
+}

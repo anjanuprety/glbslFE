@@ -1,9 +1,91 @@
-import React from "react";
+import React, { useState } from "react";
 import { MdEmail, MdOutlineShareLocation } from "react-icons/md";
 import BreadCrumb from "../../BreadCrumb/BreadCrumb";
 import { IoIosCall } from "react-icons/io";
+import Swal from "sweetalert2";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 const Contact: React.FC = () => {
+  const { t, language } = useLanguage();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      // Show loading state
+      Swal.fire({
+        title: t('contact.sending'),
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          formType: 'contact',
+          data: {
+            ...formData,
+            language: language
+          }
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send email');
+      }
+
+      // Success
+      Swal.fire({
+        icon: 'success',
+        title: t('contact.success'),
+        text: t('contact.successMessage'),
+        confirmButtonColor: '#DAA520'
+      });
+
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+      });
+
+    } catch (error) {
+      console.error('Error sending email:', error);
+      Swal.fire({
+        icon: 'error',
+        title: t('contact.error'),
+        text: t('contact.errorMessage'),
+        confirmButtonColor: '#1a3a1a'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div>
       <BreadCrumb title="Contact " />
@@ -44,7 +126,7 @@ const Contact: React.FC = () => {
                     Call Us Now
                   </p>
                   <p className="font-Garamond text-lg sm:text-xl md:text-[22px] leading-[26px] text-lightBlack dark:text-white font-medium">
-                    +980 123 (4567) 890
+                    021-464453
                   </p>
                 </div>
               </div>
@@ -59,10 +141,10 @@ const Contact: React.FC = () => {
                 </div>
                 <div className="ml-3 md:ml-4">
                   <p className="font-Lora text-sm leading-[26px] text-gray dark:text-lightGray font-normal">
-                    Send Email
+                    Send us an Email
                   </p>
                   <p className="font-Garamond text-lg sm:text-xl md:text-[22px] leading-[26px] text-lightBlack dark:text-white font-medium ">
-                    example@gmail.com
+                    info@glbsl.com.np
                   </p>
                 </div>
               </div>
@@ -77,11 +159,11 @@ const Contact: React.FC = () => {
                 </div>
                 <div className="ml-3 md:ml-4">
                   <p className="font-Lora text-sm leading-[26px] text-gray dark:text-lightGray font-normal">
-                    Our Locations
+                    Our Location
                   </p>
                   <p className="font-Garamond text-lg sm:text-xl md:text-[22px] leading-[26px] text-lightBlack dark:text-white font-medium ">
-                    New elephant Road, Dhanmondi <br />
-                    Dhaka - 1212
+                    Buddhiganga-1,<br /> PuspalalChowk
+Morang
                   </p>
                 </div>
               </div>
@@ -91,80 +173,99 @@ const Contact: React.FC = () => {
               data-aos="zoom-in-up"
               data-aos-duration="1000"
             >
-              <div className="bg-lightBlack  p-[30px] lg:p-[45px] 2xl:p-[61px]">
-                <h2 className="font-Garamond text-[22px] sm:text-2xl md:text-[28px] leading-7 md:leading-8 lg:leading-9 xl:leading-10 2xl:leading-[44px] text-white font-semibold text-center">
+              <div className="bg-lightBlack p-[30px] lg:p-[45px] 2xl:p-[61px]">
+                <h2 className="font-Garamond text-[22px] sm:text-2xl md:text-[28px] leading-7 md:leading-8 lg:leading-9 xl:leading-10 2xl:leading-[44px] text-white font-semibold text-center mb-8">
                   GET IN TOUCH
                 </h2>
-                <div className="grid items-center grid-cols-1 gap-2 mt-8">
-                  <input
-                    type="text"
-                    className="w-full h-12 md:h-13 lg:h-[59px] px-4 border border-gray dark:border-lightGray text-gray dark:text-lightGray outline-none  bg-transparent mt-4 focus:ring-0 placeholder:text-gray focus:border-gray dark:focus:border-lightGray focus:outline-none"
-                    placeholder="Your Name"
-                    required
-                  />
-                  <input
-                    type="email"
-                    className="w-full h-12 md:h-13 lg:h-[59px] px-4 border  border-gray dark:border-lightGray text-gray dark:text-lightGray outline-none  bg-transparent mt-4 focus:ring-0 placeholder:text-gray focus:border-gray dark:focus:border-lightGray focus:outline-none"
-                    placeholder="Enter E-mail"
-                    required
-                  />
-                  <select
-                    className="w-full h-12 md:h-13 lg:h-[59px] px-4 border border-gray dark:border-lightGray text-gray dark:text-lightGray outline-none  bg-transparent mt-4 focus:ring-0  focus:border-gray dark:focus:border-lightGray focus:outline-none"
-                    onFocus={(e) => {
-                      e.target.size = 6;
-                    }}
-                    onBlur={(e) => {
-                      e.target.size = 0;
-                    }}
-                    onChange={(e) => {
-                      e.target.size = 1;
-                      e.target.blur();
-                    }}
+                
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-white text-sm font-medium mb-2">
+                      Your Name *
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent"
+                      placeholder="Your Name"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-white text-sm font-medium mb-2">
+                      Email Address *
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent"
+                      placeholder="Enter E-mail"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-white text-sm font-medium mb-2">
+                      Phone Number *
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent"
+                      placeholder="Phone Number"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-white text-sm font-medium mb-2">
+                      Subject *
+                    </label>
+                    <select
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent"
+                    >
+                      <option value="">Select Subject</option>
+                      <option value="General Inquiry">General Inquiry</option>
+                      <option value="Loan Information">Loan Information</option>
+                      <option value="Account Services">Account Services</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-white text-sm font-medium mb-2">
+                      Message *
+                    </label>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-khaki focus:border-transparent resize-none"
+                      rows={6}
+                      placeholder="Write Message:"
+                    ></textarea>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-khaki text-white py-3 px-6 rounded-md hover:bg-opacity-90 transition-all duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <option
-                      className="bg-khaki text-white px-3 py-3"
-                      value=""
-                      disabled
-                    >
-                      Select Subject
-                    </option>
-                    <option
-                      className="bg-whiteSmoke dark:bg-normalBlack text-lightBlack dark:text-white px-3 py-3"
-                      value="option1"
-                    >
-                      Subject One
-                    </option>
-                    <option
-                      className="bg-whiteSmoke dark:bg-normalBlack text-lightBlack dark:text-white px-3 py-3"
-                      value="option2"
-                    >
-                      Subject Two
-                    </option>
-                    <option
-                      className="bg-whiteSmoke dark:bg-normalBlack text-lightBlack dark:text-white px-3 py-3"
-                      value="option3"
-                    >
-                      Select Three
-                    </option>
-                    <option
-                      className="bg-whiteSmoke dark:bg-normalBlack text-lightBlack dark:text-white px-3 py-3"
-                      value="option4"
-                    >
-                      Select Four
-                    </option>
-                  </select>
-                  <textarea
-                    name=""
-                    id=""
-                    cols={30}
-                    rows={10}
-                    className="w-full h-[121px] px-4 border border-gray dark:border-lightGray text-gray dark:text-lightGray outline-none  bg-transparent mt-4 focus:ring-0 placeholder:text-gray resize-none focus:border-gray dark:focus:border-lightGray focus:outline-none"
-                    placeholder="Write Message:"
-                  ></textarea>
-                  <button className="w-full bg-khaki text-white text-center h-10 2xl:h-[55px] mt-5">
-                    SEND MESSAGE
+                    {isSubmitting ? 'Sending...' : 'SEND MESSAGE'}
                   </button>
-                </div>
+                </form>
               </div>
             </div>
           </div>

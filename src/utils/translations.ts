@@ -1097,5 +1097,97 @@ export const translations: Translations = {
   'form.invalid_mobile': {
     en: 'Please enter a valid mobile number',
     ne: 'कृपया मान्य मोबाइल नम्बर प्रविष्ट गर्नुहोस्'
+  },
+
+  // Contact Form Email
+  'contact.success': {
+    en: 'Success!',
+    ne: 'सफल!'
+  },
+  'contact.successMessage': {
+    en: 'Your message has been sent successfully. We\'ll get back to you soon.',
+    ne: 'तपाईंको सन्देश सफलतापूर्वक पठाइएको छ। हामी छिट्टै सम्पर्कमा रहनेछौं।'
+  },
+  'contact.error': {
+    en: 'Error',
+    ne: 'त्रुटि'
+  },
+  'contact.errorMessage': {
+    en: 'Failed to send message. Please try again later.',
+    ne: 'सन्देश पठाउन असफल भयो। कृपया पुन: प्रयास गर्नुहोस्।'
+  },
+  'contact.sending': {
+    en: 'Sending...',
+    ne: 'पठाउँदै...'
+  },
+
+  // Complaint Form Email
+  'complaint.success': {
+    en: 'Success!',
+    ne: 'सफल!'
+  },
+  'complaint.successMessage': {
+    en: 'Your complaint has been registered successfully. We\'ll review it shortly.',
+    ne: 'तपाईंको गुनासो सफलतापूर्वक दर्ता भएको छ। हामी चाँडै समीक्षा गर्नेछौं।'
+  },
+  'complaint.error': {
+    en: 'Error',
+    ne: 'त्रुटि'
+  },
+  'complaint.errorMessage': {
+    en: 'Failed to register complaint. Please try again later.',
+    ne: 'गुनासो दर्ता गर्न असफल भयो। कृपया पुन: प्रयास गर्नुहोस्।'
+  },
+  'complaint.sending': {
+    en: 'Submitting...',
+    ne: 'पेश गर्दै...'
+  },
+
+  // Loan Application Form Email
+  'loan.success': {
+    en: 'Success!',
+    ne: 'सफल!'
+  },
+  'loan.successMessage': {
+    en: 'Your loan application has been submitted successfully. Our team will contact you soon.',
+    ne: 'तपाईंको ऋण आवेदन सफलतापूर्वक पेश गरिएको छ। हाम्रो टोलीले छिट्टै सम्पर्क गर्नेछ।'
+  },
+  'loan.error': {
+    en: 'Error',
+    ne: 'त्रुटि'
+  },
+  'loan.errorMessage': {
+    en: 'Failed to submit application. Please try again later.',
+    ne: 'आवेदन पेश गर्न असफल भयो। कृपया पुन: प्रयास गर्नुहोस्।'
+  },
+  'loan.sending': {
+    en: 'Submitting...',
+    ne: 'पेश गर्दै...'
+  },
+
+  // Search related translations
+  'search.placeholder': {
+    en: 'Search...',
+    ne: 'खोज्नुहोस्...'
+  },
+  'search.searching': {
+    en: 'Searching...',
+    ne: 'खोजिदै...'
+  },
+  'search.results_found': {
+    en: 'results found',
+    ne: 'परिणाम फेला पर्यो'
+  },
+  'search.no_results': {
+    en: 'No results found',
+    ne: 'कुनै परिणाम फेला परेन'
+  },
+  'search.try_different_keywords': {
+    en: 'Try searching with different keywords',
+    ne: 'फरक कुञ्जी शब्दहरूसँग खोज्ने प्रयास गर्नुहोस्'
+  },
+  'search.clear_search': {
+    en: 'Clear search',
+    ne: 'खोज खाली गर्नुहोस्'
   }
 };
