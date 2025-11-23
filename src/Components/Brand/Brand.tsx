@@ -18,9 +18,9 @@ const Brand: React.FC = () => {
         <span>
           {/* <img src="/images/home-1/brand-3.png" alt="" className="lg:hidden" /> */}
         </span>
-        <img src="/images/home-1/brand-1.png" alt="" className="" />
-        <img src="/images/home-1/brand-2.png" alt="" className="" />
-        <img src="/images/home-1/brand-3.png" alt="" className="" />
+        <img src="/images/home-1/brand-1.png" alt="" className="h-32 w-32 object-contain" />
+        <img src="/images/home-1/brand-2.png" alt="" className="h-32 w-32 object-contain" />
+        <img src="/images/home-1/brand-3.png" alt="" className="h-32 w-32 object-contain" />
       </div>
     </div>
   );
