@@ -6,6 +6,7 @@ import { IoMdClose } from "react-icons/io";
 import { BiChevronDown } from "react-icons/bi";
 import { useState } from "react";
 import { useLanguage } from "../../contexts/LanguageContext";
+import SearchBar from "../SearchBar/SearchBar";
 
 const Navbar: React.FC = () => {
   // modal openar
@@ -78,6 +79,14 @@ const Navbar: React.FC = () => {
               </button>
             </div>
           </div>
+          
+          {/* Mobile Search Bar - shown when menu is open */}
+          {isOpen && (
+            <div className="lg:hidden bg-white dark:bg-normalBlack border-t border-gray-200 dark:border-gray-700">
+              <SearchBar isMobile={true} />
+            </div>
+          )}
+          
           {/* All navLink are hear with active */}
           <ul
             className={`${
@@ -428,7 +437,11 @@ const Navbar: React.FC = () => {
           </ul>
 
           {/* large device visible button and search icon */}
-          <div className="hidden lg:flex items-center lg:pl-8">
+          <div className="hidden lg:flex items-center lg:pl-8 gap-4">
+            {/* Search Bar */}
+            <SearchBar />
+            
+            {/* Language Toggle */}
             <span onClick={toggleLanguage} className="cursor-pointer group">
               <span 
                 className="language-toggle"

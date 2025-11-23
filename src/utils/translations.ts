@@ -1163,5 +1163,31 @@ export const translations: Translations = {
   'loan.sending': {
     en: 'Submitting...',
     ne: 'पेश गर्दै...'
+  },
+
+  // Search related translations
+  'search.placeholder': {
+    en: 'Search...',
+    ne: 'खोज्नुहोस्...'
+  },
+  'search.searching': {
+    en: 'Searching...',
+    ne: 'खोजिदै...'
+  },
+  'search.results_found': {
+    en: 'results found',
+    ne: 'परिणाम फेला पर्यो'
+  },
+  'search.no_results': {
+    en: 'No results found',
+    ne: 'कुनै परिणाम फेला परेन'
+  },
+  'search.try_different_keywords': {
+    en: 'Try searching with different keywords',
+    ne: 'फरक कुञ्जी शब्दहरूसँग खोज्ने प्रयास गर्नुहोस्'
+  },
+  'search.clear_search': {
+    en: 'Clear search',
+    ne: 'खोज खाली गर्नुहोस्'
   }
 };
