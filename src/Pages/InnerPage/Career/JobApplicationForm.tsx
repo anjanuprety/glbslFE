@@ -429,7 +429,7 @@ const JobApplicationFormPage: React.FC = () => {
     });
 
     try {
-      const response = await fetch("http://localhost:5001/submit-application", {
+      const response = await fetch("/job-api/submit-application", {
         method: "POST",
         body: formDataToSend,
       });
