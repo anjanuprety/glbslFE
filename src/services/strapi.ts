@@ -241,6 +241,18 @@ export const noticesService = {
       console.error('Error fetching notice:', error);
       return null;
     }
+  },
+
+  // Get popup notices
+  getPopupNotices: async () => {
+    try {
+      const locale = getLocale();
+      const res = await api.get(`/api/notices?locale=${locale}&filters[DisplayPopup][$eq]=true&filters[isActive][$eq]=true&sort=publishDate:desc&populate=*`);
+      return res.data?.data || [];
+    } catch (error) {
+      console.error('Error fetching popup notices:', error);
+      return [];
+    }
   }
 };
 
