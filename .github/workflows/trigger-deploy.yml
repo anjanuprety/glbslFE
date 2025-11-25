@@ -1,0 +1,25 @@
+name: Trigger Main Repo Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  trigger-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Trigger deployment in main repository
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.MAIN_REPO_TOKEN }}
+          repository: AlpineRoot-Technologies/Glbsl-unified
+          event-type: submodule-update
+          client-payload: '{"source": "frontend", "ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+      
+      - name: Log trigger
+        run: |
+          echo "🚀 Triggered deployment in Glbsl-unified"
+          echo "Source: frontend"
+          echo "Commit: ${{ github.sha }}"
